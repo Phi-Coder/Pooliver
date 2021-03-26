@@ -94,4 +94,6 @@
     <string name="title_activity_maps">Map</string>
     <string name="from">Enter Pickup location</string>
     <string name="to">Enter Drop location</string>
+    <string name="find_driver">Find Driver</string>
+    <string name="cashPayment">Due to some Technical Error Payment Gateways are not acti ve right now. So cash has been set the default payment for now</string>
 </resources>

@@ -8,14 +8,14 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/textTopic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="5dp"
             android:text="Create a Delivery"
             android:textColor="@color/black"
             android:textSize="30dp" />
@@ -24,7 +24,7 @@
             android:id="@+id/maps"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="350dp"
+            android:layout_height="400dp"
             android:layout_below="@id/textTopic"
             android:layout_margin="5dp"
             tools:ignore="RedundantNamespace">
@@ -42,52 +42,82 @@
             android:src="@drawable/point"
             app:fabSize="mini" />
 
-        <EditText
-            android:id="@+id/from"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/maps"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="30dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:hint="@string/from"
-            android:inputType="textAutoComplete" />
+            android:layout_height="match_parent"
+            android:layout_below="@id/maps">
 
-        <EditText
-            android:id="@+id/to"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/from"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="30dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:hint="@string/to"
-            android:inputType="text" />
+            <RelativeLayout
+                android:id="@+id/relativeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <Spinner
-            android:id="@+id/productType"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/to"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="6dp" />
+                <EditText
+                    android:id="@+id/from"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="28dp"
+                    android:layout_marginEnd="30dp"
+                    android:background="#B2E6DDDD"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:hint="@string/from"
+                    android:inputType="textAutoComplete"
+                    android:padding="8dp"
+                    android:textSize="12dp" />
 
-        <Button
-            android:id="@+id/CalcPrice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/productType"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
-            android:backgroundTint="#6DD1C8"
-            android:text="Estimate price"
-            android:textColor="@color/black" />
+                <EditText
+                    android:id="@+id/to"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/from"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="30dp"
+                    android:background="#B2E6DDDD"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:hint="@string/to"
+                    android:inputType="text"
+                    android:padding="8dp"
+                    android:textSize="12dp" />
 
+                <LinearLayout
+                    android:id="@+id/linLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/to"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="2dp"
+                        android:text="Product Type: "
+                        android:textColor="@color/black"
+                        android:textSize="18dp" />
+
+                    <Spinner
+                        android:id="@+id/productType"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/CalcPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/linLayout"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:backgroundTint="#6DD1C8"
+                    android:text="Estimate price"
+                    android:textColor="@color/black" />
+            </RelativeLayout>
+        </ScrollView>
     </RelativeLayout>
-
 </FrameLayout>

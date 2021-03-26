@@ -18,6 +18,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -51,6 +53,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -63,7 +66,7 @@ import pub.devrel.easypermissions.EasyPermissions;
  * Use the  factory method to
  * create an instance of this fragment.
  */
-public class tab2 extends Fragment implements OnMapReadyCallback {
+public class tab2 extends Fragment implements OnMapReadyCallback, AdapterView.OnItemSelectedListener {
 
     private GoogleMap mMap;
     private FusedLocationProviderClient mLocationClient;
@@ -86,14 +89,14 @@ public class tab2 extends Fragment implements OnMapReadyCallback {
         // finding the view
         fab = view.findViewById(R.id.fab);
         EstmPrice = view.findViewById(R.id.CalcPrice);
-        ProductType = view.findViewById(R.id.productType);
+        ProductType = (Spinner) view.findViewById(R.id.productType);
         From = view.findViewById(R.id.from);
         To = view.findViewById(R.id.to);
 
 
         requestLocationPermission();
 
-        // initiate map fragment
+        /* INITIATE MAP FRAGMENT */
         initMap();
 
         mLocationClient = new FusedLocationProviderClient(getContext());
@@ -104,9 +107,23 @@ public class tab2 extends Fragment implements OnMapReadyCallback {
             }
         });
 
+        /* DROP DOWN MENU TO CHOOSE THE TYPE OF PRODUCT USER WANT TO DELIVER*/
+        List<String> categories = new ArrayList<>();
+        categories.add("Food");
+        categories.add("Medicine");
+        categories.add("Clothing");
+        categories.add("Electronics");
+        categories.add("Other");
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, categories);
+        dataAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+
+        ProductType.setAdapter(dataAdapter);
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         return view;
     }
+
 
     // hard coded lat long for marker display on google map whenever map starts
     @SuppressLint("MissingPermission")
@@ -159,6 +176,7 @@ public class tab2 extends Fragment implements OnMapReadyCallback {
         });
     }
 
+    @SuppressLint("SetTextI18n")
     private void gotoLocation(double latitude, double longitude) {
 
         LatLng latLng = new LatLng(latitude, longitude);
@@ -179,6 +197,7 @@ public class tab2 extends Fragment implements OnMapReadyCallback {
             List<Address> myaddress = geocoder.getFromLocation(latitude, longitude, 1);
             String address = myaddress.get(0).getAddressLine(0);
             String city = myaddress.get(0).getLocality();
+            From.setText(address + " " + city);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -217,5 +236,16 @@ public class tab2 extends Fragment implements OnMapReadyCallback {
 
             }
         }
+    }
+
+    // spinner -> product type
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String item = parent.getItemAtPosition(position).toString();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        parent.setSelection(0);
     }
 }
