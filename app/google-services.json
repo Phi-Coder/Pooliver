@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "268490503860",
+    "project_id": "poolliver-1a6d9",
+    "storage_bucket": "poolliver-1a6d9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:268490503860:android:0e9c6e33bb91f53ed9c9e1",
+        "android_client_info": {
+          "package_name": "com.example.poolliver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "268490503860-6mv2rmffjl3i51ejidu8g6taipk5lehv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.poolliver",
+            "certificate_hash": "b330195797959a5206aecacce18161ed272b65c8"
+          }
+        },
+        {
+          "client_id": "268490503860-5b8huq718a4rocbaumc52dpataeqq4p5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbg6V0V-9b_PqfWfneYRk_Mu8w99lhtw0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "268490503860-5b8huq718a4rocbaumc52dpataeqq4p5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
