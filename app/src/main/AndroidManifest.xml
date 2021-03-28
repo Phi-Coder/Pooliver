@@ -17,7 +17,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Poolliver">
-        <activity android:name=".PriceEstimation"></activity>
+        <activity android:name=".DeliveryInfo"></activity>
+        <activity android:name=".PriceEstimation" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").

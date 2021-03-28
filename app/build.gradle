@@ -49,6 +49,9 @@ dependencies {
     implementation 'com.google.android.gms:play-services-location:18.0.0'
     implementation 'pub.devrel:easypermissions:2.0.1'
 
+    // Place api dependency for auto complete
+    implementation 'com.google.android.libraries.places:places:2.4.0'
+
 
     implementation 'androidx.browser:browser:1.3.0'
 

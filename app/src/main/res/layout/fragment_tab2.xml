@@ -24,7 +24,7 @@
             android:id="@+id/maps"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="300dp"
             android:layout_below="@id/textTopic"
             android:layout_margin="5dp"
             tools:ignore="RedundantNamespace">
@@ -59,13 +59,12 @@
                     android:layout_marginStart="30dp"
                     android:layout_marginTop="28dp"
                     android:layout_marginEnd="30dp"
-                    android:background="#B2E6DDDD"
                     android:clickable="true"
                     android:focusable="true"
                     android:hint="@string/from"
                     android:inputType="textAutoComplete"
                     android:padding="8dp"
-                    android:textSize="12dp" />
+                    android:textSize="12sp" />
 
                 <EditText
                     android:id="@+id/to"
@@ -75,17 +74,16 @@
                     android:layout_marginStart="30dp"
                     android:layout_marginTop="12dp"
                     android:layout_marginEnd="30dp"
-                    android:background="#B2E6DDDD"
                     android:clickable="true"
                     android:focusable="true"
                     android:hint="@string/to"
                     android:inputType="text"
                     android:padding="8dp"
-                    android:textSize="12dp" />
+                    android:textSize="12sp" />
 
                 <LinearLayout
                     android:id="@+id/linLayout"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/to"
                     android:layout_marginStart="32dp"
@@ -96,13 +94,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="2dp"
-                        android:text="Product Type: "
+                        android:text="Product Type:"
                         android:textColor="@color/black"
-                        android:textSize="18dp" />
+                        android:textSize="18sp" />
 
                     <Spinner
                         android:id="@+id/productType"
-                        android:layout_width="150dp"
+                        android:layout_width="120dp"
                         android:layout_height="wrap_content" />
 
                 </LinearLayout>
@@ -113,7 +111,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/linLayout"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="50dp"
                     android:backgroundTint="#6DD1C8"
                     android:text="Estimate price"
                     android:textColor="@color/black" />

@@ -10,10 +10,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="4dp"
         android:fontFamily="serif-monospace"
         android:text="Price Estimation"
         android:textColor="@color/black"
-        android:textSize="35dp" />
+        android:textSize="35sp" />
 
     <LinearLayout
         android:id="@+id/linLayout0"
@@ -42,7 +43,7 @@
             android:paddingEnd="15dp"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
-            android:textSize="40dp" />
+            android:textSize="40sp" />
 
         <ImageButton
             android:id="@+id/add"
@@ -66,7 +67,7 @@
             android:layout_marginStart="40dp"
             android:text="Max Price:"
             android:textColor="@color/black"
-            android:textSize="27dp" />
+            android:textSize="27sp" />
 
         <TextView
             android:id="@+id/maxPrice"
@@ -74,7 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:text="55"
-            android:textSize="25dp" />
+            android:textSize="25sp" />
     </LinearLayout>
 
 
@@ -91,7 +92,7 @@
             android:layout_marginStart="40dp"
             android:text="Min Price: "
             android:textColor="@color/black"
-            android:textSize="27dp" />
+            android:textSize="27sp" />
 
         <TextView
             android:id="@+id/minPrice"
@@ -99,7 +100,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:text="35"
-            android:textSize="25dp" />
+            android:textSize="25sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -117,13 +118,13 @@
             android:layout_height="wrap_content"
             android:text="Payment Method"
             android:textColor="@color/black"
-            android:textSize="24dp" />
+            android:textSize="24sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/cashPayment"
-            android:textSize="18dp" />
+            android:textSize="18sp" />
     </LinearLayout>
 
     <Button
@@ -132,7 +133,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/linLayout3"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="100dp"
         android:text="@string/find_driver"
         android:textAllCaps="false"
         android:textSize="22sp" />

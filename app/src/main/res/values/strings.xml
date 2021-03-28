@@ -96,4 +96,5 @@
     <string name="to">Enter Drop location</string>
     <string name="find_driver">Find Driver</string>
     <string name="cashPayment">Due to some Technical Error Payment Gateways are not acti ve right now. So cash has been set the default payment for now</string>
+    <string name="mapsApiKey">AIzaSyC_GU8BS1MyKcCFS46JzBqrm-mpHk5yEfA</string>
 </resources>
