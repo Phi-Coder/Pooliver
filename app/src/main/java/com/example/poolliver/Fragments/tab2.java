@@ -135,7 +135,7 @@ public class tab2 extends Fragment implements OnMapReadyCallback, AdapterView.On
         ProductType.setAdapter(dataAdapter);
 
         /* PLACE API AUTO COMPLETE ON FROM AND TO EDITTEXT */
-        Places.initialize(getContext(), "AIzaSyBXJdylCOZ0E2ZvE4myna_JDyhDCkWA4b4");
+        Places.initialize(getContext(), "");
 
         From.setOnTouchListener((v, event) -> {
             List<Place.Field> fields = Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME);
