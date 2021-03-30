@@ -17,7 +17,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Poolliver">
-        <activity android:name=".DeliveryInfo"></activity>
+        <activity
+            android:name=".DeliveryInfo"
+            android:parentActivityName=".MainActivity" />
         <activity android:name=".PriceEstimation" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -29,7 +31,7 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
+            android:value="AIzaSyBaNK2qsRwYhxQFcBnFWQL-aGCWJpj2tLU" />
 
         <activity android:name=".MainActivity">
             <intent-filter>

@@ -37,6 +37,7 @@ import androidx.fragment.app.FragmentManager;
 import com.example.poolliver.Adapters.PageAdapter;
 import com.example.poolliver.PriceEstimation;
 import com.example.poolliver.R;
+import com.example.poolliver.database.dataHolder;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.GoogleApi;
 import com.google.android.gms.common.api.GoogleApiActivity;
@@ -59,6 +60,8 @@ import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -83,7 +86,7 @@ public class tab2 extends Fragment implements OnMapReadyCallback, AdapterView.On
     private final int GPS_REQUEST_CODE = 2;
     private final int AUTOCOMPLETE_FROM_REQUEST_CODE = 3;
     private final int AUTOCOMPLETE_TO_REQUEST_CODE = 4;
-
+    double lat1 = 0, long1 = 0, lat2 = 0, long2 = 0;
 
     Marker currentMarker;
     Marker DestMarker;
@@ -135,7 +138,7 @@ public class tab2 extends Fragment implements OnMapReadyCallback, AdapterView.On
         ProductType.setAdapter(dataAdapter);
 
         /* PLACE API AUTO COMPLETE ON FROM AND TO EDITTEXT */
-        Places.initialize(getContext(), "");
+        Places.initialize(getContext(), getString(R.string.key));
 
         From.setOnTouchListener((v, event) -> {
             List<Place.Field> fields = Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME);
@@ -143,29 +146,18 @@ public class tab2 extends Fragment implements OnMapReadyCallback, AdapterView.On
             Intent placeIntent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
                     .build(getContext());
             startActivityForResult(placeIntent, AUTOCOMPLETE_FROM_REQUEST_CODE);
-            return false;
+            return true;
         });
 
-
-//        From.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME);
-//
-//                Intent placeIntent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
-//                        .build(getContext());
-//                startActivityForResult(placeIntent, AUTOCOMPLETE_FROM_REQUEST_CODE);
-//            }
-//        });
-
-        To.setOnClickListener(new View.OnClickListener() {
+        To.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME);
+            public boolean onTouch(View v, MotionEvent event) {
+                List<Place.Field> fields = Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME);
 
                 Intent placeIntent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
                         .build(getContext());
                 startActivityForResult(placeIntent, AUTOCOMPLETE_TO_REQUEST_CODE);
+                return true;
             }
         });
 
@@ -174,11 +166,23 @@ public class tab2 extends Fragment implements OnMapReadyCallback, AdapterView.On
         EstmPrice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+//                    Location loc1 = new Location("");
+//                    loc1.setLongitude(currentlatLng.longitude);
+//                    loc1.setLatitude(currentlatLng.latitude);
+//
+//                    Location loc2 = new Location("");
+//                    loc2.setLongitude(destlatLng.longitude);
+//                    loc2.setLatitude(destlatLng.latitude);
+//
+//                    float distance = loc1.distanceTo(loc2);
+
                 Intent priceEstIntent = new Intent(getContext(), PriceEstimation.class);
                 startActivity(priceEstIntent);
             }
+//
         });
-
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         return view;
@@ -192,6 +196,7 @@ public class tab2 extends Fragment implements OnMapReadyCallback, AdapterView.On
         mMap = googleMap;
         googleMap.setMyLocationEnabled(true);
         getCurrLoc();
+
     }
 
     private void initMap() {
@@ -299,7 +304,17 @@ public class tab2 extends Fragment implements OnMapReadyCallback, AdapterView.On
             String name = place.getName();
             currentlatLng = place.getLatLng();
 
-            currentMarker.setPosition(currentlatLng);
+            if (currentMarker == null) {
+                MarkerOptions options2 = new MarkerOptions();
+                options2.title("Pickup Point");
+                options2.position(currentlatLng);
+
+                currentMarker = mMap.addMarker(options2);
+            } else {
+                currentMarker.setPosition(currentlatLng);
+
+            }
+
             From.setText(place.getAddress());
 
         } else if (requestCode == AUTOCOMPLETE_TO_REQUEST_CODE && resultCode == getActivity().RESULT_OK) {
@@ -309,7 +324,7 @@ public class tab2 extends Fragment implements OnMapReadyCallback, AdapterView.On
 
             if (DestMarker == null) {
                 MarkerOptions options1 = new MarkerOptions();
-                options1.title("Destination");
+                options1.title("Drop Point");
                 options1.position(destlatLng);
 
                 DestMarker = mMap.addMarker(options1);
@@ -335,4 +350,6 @@ public class tab2 extends Fragment implements OnMapReadyCallback, AdapterView.On
     public void onNothingSelected(AdapterView<?> parent) {
         parent.setSelection(0);
     }
+
+
 }
