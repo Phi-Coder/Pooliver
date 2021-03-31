@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.poolliver.DeliveryInfo;
@@ -47,18 +48,20 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.dropAddress.setText(String.valueOf(itemPosition.getdropAddress()));
         myViewHolderclass.Time.setText(String.valueOf(itemPosition.getTime()));
 
-        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(holder.parentLayout.getContext(), DeliveryInfo.class);
-                intent.putExtra("pickupaddress", itemPosition.getPickupAddress());
-                intent.putExtra("dropaddress", itemPosition.getdropAddress());
-                intent.putExtra("timings", itemPosition.getTime());
-                intent.putExtra("itemtype", itemPosition.getitemtype());
-                intent.putExtra("username", itemPosition.getname());
-                intent.putExtra("price", itemPosition.getPrice());
-                holder.parentLayout.getContext().startActivity(intent);
-            }
+        holder.cardView.setOnClickListener(v -> {
+            Intent intent = new Intent(holder.cardView.getContext(), DeliveryInfo.class);
+            intent.putExtra("pickupaddress", String.valueOf(itemPosition.getPickupAddress()));
+            intent.putExtra("pLat", String.valueOf(itemPosition.getpLat()));
+            intent.putExtra("pLong", String.valueOf(itemPosition.getpLong()));
+            intent.putExtra("dropaddress", String.valueOf(itemPosition.getdropAddress()));
+            intent.putExtra("dLat", String.valueOf(itemPosition.getdLat()));
+            intent.putExtra("dLong", String.valueOf(itemPosition.getdLong()));
+            intent.putExtra("timings", String.valueOf(itemPosition.getTime()));
+            intent.putExtra("itemtype", String.valueOf(itemPosition.getitemtype()));
+            intent.putExtra("username", String.valueOf(itemPosition.getname()));
+            intent.putExtra("price", String.valueOf(itemPosition.getPrice()));
+
+            holder.cardView.getContext().startActivity(intent);
         });
 
     }
@@ -71,7 +74,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView username, pickupAddress, dropAddress, itemtype, Price, Time;
-        RelativeLayout parentLayout;
+        TextView pLat, pLong, dLat, dLong;
+        CardView cardView;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -81,7 +85,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             itemtype = itemView.findViewById(R.id.cItemType);
             Price = itemView.findViewById(R.id.cPrice);
             Time = itemView.findViewById(R.id.ctime);
-            parentLayout = itemView.findViewById(R.id.parentRelative);
+            cardView = itemView.findViewById(R.id.cardview);
 
         }
     }

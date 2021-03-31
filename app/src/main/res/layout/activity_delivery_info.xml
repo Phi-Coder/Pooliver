@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/parentRelative"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".DeliveryInfo">
@@ -13,17 +12,30 @@
         android:layout_height="350dp"
         android:layout_margin="10dp" />
 
+    <Button
+        android:id="@+id/getDirections"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/delMaps"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="5dp"
+        android:backgroundTint="#27000000"
+        android:text="Get Directions"
+        android:textAllCaps="false" />
+
     <LinearLayout
         android:id="@+id/layoutOne"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/delMaps"
-        android:layout_margin="5dp">
+        android:layout_below="@id/getDirections"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="5dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="From: "
+            android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -31,7 +43,9 @@
             android:id="@+id/pickAdd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:text="address"
+            android:textColor="@color/black"
             android:textSize="18sp" />
 
     </LinearLayout>
@@ -41,12 +55,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/layoutOne"
-        android:layout_margin="5dp">
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="5dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="To:      "
+
+            android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -54,7 +71,9 @@
             android:id="@+id/dropAdd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:text="address"
+            android:textColor="@color/black"
             android:textSize="18sp" />
 
     </LinearLayout>
@@ -64,13 +83,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/layoutTwo"
-        android:layout_margin="5dp">
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="5dp">
 
         <TextView
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Timings: "
+
+            android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -79,6 +101,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="12-1pm"
+            android:textColor="@color/black"
+
             android:textSize="18sp" />
 
     </LinearLayout>
@@ -88,13 +112,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/layoutThree"
-        android:layout_margin="5dp">
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="5dp">
 
         <TextView
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:text="Item Type: "
+            android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -103,6 +130,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Medicine"
+
+            android:textColor="@color/black"
             android:textSize="18sp" />
 
     </LinearLayout>
@@ -112,14 +141,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/layoutFour"
-        android:layout_margin="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/Name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:text="Username"
+            android:textColor="@color/black"
             android:textSize="20sp" />
 
         <TextView
@@ -127,6 +159,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="email"
+
+            android:textColor="@color/black"
             android:textSize="18sp" />
 
         <TextView
@@ -134,6 +168,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Phone Num"
+
+            android:textColor="@color/black"
             android:textSize="18sp" />
 
     </LinearLayout>
@@ -149,7 +185,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:text="Rs "
+            android:textColor="@color/black"
             android:textSize="25dp"
             android:textStyle="bold|italic" />
 
@@ -157,7 +195,9 @@
             android:id="@+id/Price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:text="50"
+            android:textColor="@color/black"
             android:textSize="25dp"
             android:textStyle="bold|italic" />
 
@@ -174,7 +214,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="4dp"
-            android:text="accept"
+            android:text="Accept"
+            android:textAllCaps="false"
             android:textSize="16sp" />
 
         <Button
@@ -182,6 +223,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Bid Price"
+            android:textAllCaps="false"
             android:textSize="16sp" />
     </LinearLayout>
 

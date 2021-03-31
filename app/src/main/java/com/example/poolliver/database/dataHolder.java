@@ -11,8 +11,10 @@ public class dataHolder {
     int price;
     double pLat, pLong, dLong, dLat;
 
-    public dataHolder(String name, String itemtype, int price, double pLat, double pLong, double dLong, double dLat) {
+    public dataHolder(String name, String pickupAddress, String dropAddress, String itemtype, int price, double pLat, double pLong, double dLong, double dLat) {
         this.name = name;
+        this.pickupAddress = pickupAddress;
+        this.dropAddress = dropAddress;
         this.itemtype = itemtype;
         this.price = price;
         this.pLat = pLat;
@@ -34,12 +36,6 @@ public class dataHolder {
         this.price = price;
     }
 
-    public dataHolder(String name, String itemtype, int price) {
-        this.name = name;
-        this.itemtype = itemtype;
-        this.price = price;
-
-    }
 
     public String getPickupAddress() {
         return pickupAddress;

@@ -14,7 +14,7 @@ import com.google.android.material.tabs.TabLayout;
 public class MainActivity extends AppCompatActivity {
 
     TabLayout tabLayout;
-    TabItem tab1, tab2;
+    TabItem tab1, tab2, tab3;
     ViewPager viewPager;
     PageAdapter pageAdapter;
 
@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.viewPager);
         tab1 = findViewById(R.id.tab2);
         tab2 = findViewById(R.id.tab1);
+        tab3 = findViewById(R.id.tab3);
 
         pageAdapter = new PageAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(pageAdapter);
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
 
-                if (tab.getPosition() != 0 || tab.getPosition() != 1) {
+                if (tab.getPosition() != 0 || tab.getPosition() != 1 || tab.getPosition() != 2) {
                     pageAdapter.notifyDataSetChanged();
                 }
             }

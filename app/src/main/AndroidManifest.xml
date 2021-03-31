@@ -33,13 +33,14 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBaNK2qsRwYhxQFcBnFWQL-aGCWJpj2tLU" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>

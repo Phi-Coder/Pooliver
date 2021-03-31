@@ -2,6 +2,8 @@ package com.example.poolliver;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,7 +12,7 @@ import android.widget.TextView;
 public class DeliveryInfo extends AppCompatActivity {
 
     TextView pickupAddress, dropAddress, Timings, ItemType, name, phoneNum, Price;
-    Button Accept, PriceBid;
+    Button Accept, PriceBid, getDirections;
 
 
     @Override
@@ -21,6 +23,7 @@ public class DeliveryInfo extends AppCompatActivity {
         pickupAddress = findViewById(R.id.pickAdd);
         dropAddress = findViewById(R.id.dropAdd);
         Timings = findViewById(R.id.Time);
+        getDirections = findViewById(R.id.getDirections);
         ItemType = findViewById(R.id.ItemType);
         name = findViewById(R.id.Name);
         Price = findViewById(R.id.Price);
@@ -43,6 +46,15 @@ public class DeliveryInfo extends AppCompatActivity {
             }
         });
 
+        getDirections.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String dropaddress = getIntent().getStringExtra("dropaddress");
+                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q=" + String.valueOf(dropaddress)));
+                i.setPackage("com.google.android.apps.maps");
+                startActivity(i);
+            }
+        });
     }
 
     private void InncomingIntent() {
@@ -53,16 +65,16 @@ public class DeliveryInfo extends AppCompatActivity {
         String username = getIntent().getStringExtra("username");
         String price = getIntent().getStringExtra("price");
 
-        fillData();
+        fillData(pickupaddress, dropaddress, timings, itemtype, username, price);
 
     }
-    private void fillData(String pickupaddress, String dropaddress, String timings, String itemtype, String username, String price)
-    {
+
+    private void fillData(String pickupaddress, String dropaddress, String timings, String itemtype, String username, String price) {
         pickupAddress.setText(pickupaddress);
         dropAddress.setText(dropaddress);
-        pickupAddress.setText(pickupAddress);
-        pickupAddress.setText(pickupAddress);
-        pickupAddress.setText(pickupAddress);
-        pickupAddress.setText(pickupAddress);
+        Timings.setText(timings);
+        ItemType.setText(itemtype);
+        name.setText(username);
+        Price.setText(price);
     }
 }

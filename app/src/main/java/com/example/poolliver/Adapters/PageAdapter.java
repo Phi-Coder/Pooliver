@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.example.poolliver.Fragments.tab1;
 import com.example.poolliver.Fragments.tab2;
+import com.example.poolliver.Fragments.tab3;
 
 public class PageAdapter extends FragmentPagerAdapter {
 
@@ -26,6 +27,8 @@ public class PageAdapter extends FragmentPagerAdapter {
                 return new tab1();
             case 1:
                 return new tab2();
+            case 2:
+                return new tab3();
         }
         return null;
     }
