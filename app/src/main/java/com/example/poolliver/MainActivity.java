@@ -1,5 +1,6 @@
 package com.example.poolliver;
 
+import androidx.annotation.MainThread;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
@@ -56,4 +57,5 @@ public class MainActivity extends AppCompatActivity {
         // listen for scroll  or page change
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
     }
+
 }

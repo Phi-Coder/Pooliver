@@ -6,116 +6,113 @@
     android:layout_height="match_parent"
     tools:context=".Fragments.tab2">
 
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:layout_below="@id/maps">
 
-        <TextView
-            android:id="@+id/textTopic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="5dp"
-            android:text="Create a Delivery"
-            android:textColor="@color/black"
-            android:textSize="30dp" />
-
-        <fragment xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/maps"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:layout_below="@id/textTopic"
-            android:layout_margin="5dp"
-            tools:ignore="RedundantNamespace">
+            android:layout_height="wrap_content">
 
-        </fragment>
+            <TextView
+                android:id="@+id/textTopic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="5dp"
+                android:text="Create a Delivery"
+                android:textColor="@color/black"
+                android:textSize="30dp" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignEnd="@id/maps"
-            android:layout_alignBottom="@id/maps"
-            android:backgroundTint="#C9EFEBEB"
-            android:contentDescription="TODO"
-            android:src="@drawable/point"
-            app:fabSize="mini" />
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/maps">
-
-            <RelativeLayout
-                android:id="@+id/relativeLayout"
+            <fragment xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/maps"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="340dp"
+                android:layout_below="@id/textTopic"
+                android:layout_margin="5dp"
+                tools:ignore="RedundantNamespace">
 
-                <EditText
-                    android:id="@+id/from"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="28dp"
-                    android:layout_marginEnd="30dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:hint="@string/from"
-                    android:inputType="textAutoComplete"
-                    android:padding="8dp"
-                    android:textSize="12sp" />
+            </fragment>
 
-                <EditText
-                    android:id="@+id/to"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/from"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginEnd="30dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:hint="@string/to"
-                    android:inputType="text"
-                    android:padding="8dp"
-                    android:textSize="12sp" />
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@id/maps"
+                android:layout_alignBottom="@id/maps"
+                android:backgroundTint="#C9EFEBEB"
+                android:contentDescription="TODO"
+                android:src="@drawable/point"
+                android:visibility="invisible"
+                app:fabSize="mini" />
 
-                <LinearLayout
-                    android:id="@+id/linLayout"
+
+            <EditText
+                android:id="@+id/from"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/maps"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="28dp"
+                android:layout_marginEnd="30dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:hint="@string/from"
+                android:inputType="textAutoComplete"
+                android:padding="8dp"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/to"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/from"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="30dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:hint="@string/to"
+                android:inputType="text"
+                android:padding="8dp"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:id="@+id/linLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/to"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/to"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
+                    android:layout_marginEnd="2dp"
+                    android:text="Product Type:"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="2dp"
-                        android:text="Product Type:"
-                        android:textColor="@color/black"
-                        android:textSize="18sp" />
+                <Spinner
+                    android:id="@+id/productType"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content" />
 
-                    <Spinner
-                        android:id="@+id/productType"
-                        android:layout_width="120dp"
-                        android:layout_height="wrap_content" />
+            </LinearLayout>
 
-                </LinearLayout>
-
-                <Button
-                    android:id="@+id/CalcPrice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/linLayout"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="50dp"
-                    android:backgroundTint="#6DD1C8"
-                    android:text="Estimate price"
-                    android:textColor="@color/black" />
-            </RelativeLayout>
-        </ScrollView>
-    </RelativeLayout>
+            <Button
+                android:id="@+id/CalcPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/linLayout"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="50dp"
+                android:backgroundTint="#6DD1C8"
+                android:text="Estimate price"
+                android:textColor="@color/black" />
+        </RelativeLayout>
+    </ScrollView>
 </FrameLayout>

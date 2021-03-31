@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -6,226 +7,234 @@
     android:layout_height="match_parent"
     tools:context=".DeliveryInfo">
 
-    <FrameLayout
-        android:id="@+id/delMaps"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="350dp"
-        android:layout_margin="10dp" />
+        android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/getDirections"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/delMaps"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="5dp"
-        android:backgroundTint="#27000000"
-        android:text="Get Directions"
-        android:textAllCaps="false" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/layoutOne"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/getDirections"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="5dp">
+            <FrameLayout
+                android:id="@+id/delMaps"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_margin="10dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="From: "
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            <Button
+                android:id="@+id/getDirections"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/delMaps"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="5dp"
+                android:backgroundTint="#27000000"
+                android:text="Get Directions"
+                android:textAllCaps="false" />
 
-        <TextView
-            android:id="@+id/pickAdd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            <LinearLayout
+                android:id="@+id/layoutOne"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/getDirections"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="5dp">
 
-            android:text="address"
-            android:textColor="@color/black"
-            android:textSize="18sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="From: "
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/pickAdd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
 
-    <LinearLayout
-        android:id="@+id/layoutTwo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/layoutOne"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="5dp">
+                    android:text="address"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="To:      "
+            </LinearLayout>
 
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            <LinearLayout
+                android:id="@+id/layoutTwo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/layoutOne"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="5dp">
 
-        <TextView
-            android:id="@+id/dropAdd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="To:      "
 
-            android:text="address"
-            android:textColor="@color/black"
-            android:textSize="18sp" />
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/dropAdd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
 
-    <LinearLayout
-        android:id="@+id/layoutThree"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/layoutTwo"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="5dp">
+                    android:text="address"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
 
-        <TextView
+            </LinearLayout>
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Timings: "
+            <LinearLayout
+                android:id="@+id/layoutThree"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/layoutTwo"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="5dp">
 
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+                <TextView
 
-        <TextView
-            android:id="@+id/Time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="12-1pm"
-            android:textColor="@color/black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Timings: "
 
-            android:textSize="18sp" />
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/Time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="12-1pm"
+                    android:textColor="@color/black"
 
-    <LinearLayout
-        android:id="@+id/layoutFour"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/layoutThree"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="5dp">
+                    android:textSize="18sp" />
 
-        <TextView
+            </LinearLayout>
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            <LinearLayout
+                android:id="@+id/layoutFour"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/layoutThree"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="5dp">
 
-            android:text="Item Type: "
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+                <TextView
 
-        <TextView
-            android:id="@+id/ItemType"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Medicine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
 
-            android:textColor="@color/black"
-            android:textSize="18sp" />
+                    android:text="Item Type: "
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/ItemType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Medicine"
 
-    <LinearLayout
-        android:id="@+id/layoutFive"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/layoutFour"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="15dp"
-        android:orientation="vertical">
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/Name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            </LinearLayout>
 
-            android:text="Username"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
+            <LinearLayout
+                android:id="@+id/layoutFive"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/layoutFour"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/Email"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="email"
+                <TextView
+                    android:id="@+id/Name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
 
-            android:textColor="@color/black"
-            android:textSize="18sp" />
+                    android:text="Username"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/PhoneNum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Phone Num"
+                <TextView
+                    android:id="@+id/Email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="email"
 
-            android:textColor="@color/black"
-            android:textSize="18sp" />
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
 
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/PhoneNum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Phone Num"
 
-    <LinearLayout
-        android:id="@+id/layoutSix"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/layoutFive"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="5dp">
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            </LinearLayout>
 
-            android:text="Rs "
-            android:textColor="@color/black"
-            android:textSize="25dp"
-            android:textStyle="bold|italic" />
+            <LinearLayout
+                android:id="@+id/layoutSix"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/layoutFive"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="5dp">
 
-        <TextView
-            android:id="@+id/Price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
 
-            android:text="50"
-            android:textColor="@color/black"
-            android:textSize="25dp"
-            android:textStyle="bold|italic" />
+                    android:text="Rs "
+                    android:textColor="@color/black"
+                    android:textSize="25dp"
+                    android:textStyle="bold|italic" />
 
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/Price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/layoutSix"
-        android:layout_centerHorizontal="true">
+                    android:text="50"
+                    android:textColor="@color/black"
+                    android:textSize="25dp"
+                    android:textStyle="bold|italic" />
 
-        <Button
-            android:id="@+id/acceptRide"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="4dp"
-            android:text="Accept"
-            android:textAllCaps="false"
-            android:textSize="16sp" />
+            </LinearLayout>
 
-        <Button
-            android:id="@+id/priceBid"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Bid Price"
-            android:textAllCaps="false"
-            android:textSize="16sp" />
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/layoutSix"
+                android:layout_centerHorizontal="true">
 
+                <Button
+                    android:id="@+id/acceptRide"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="4dp"
+                    android:text="Accept"
+                    android:textAllCaps="false"
+                    android:textSize="16sp" />
 
+                <Button
+                    android:id="@+id/priceBid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bid Price"
+                    android:textAllCaps="false"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
 </RelativeLayout>

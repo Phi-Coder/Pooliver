@@ -66,6 +66,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -78,7 +79,7 @@ import pub.devrel.easypermissions.EasyPermissions;
  * Use the  factory method to
  * create an instance of this fragment.
  */
-public class tab2 extends Fragment implements OnMapReadyCallback, AdapterView.OnItemSelectedListener {
+public class tab2 extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private FusedLocationProviderClient mLocationClient;
@@ -95,11 +96,13 @@ public class tab2 extends Fragment implements OnMapReadyCallback, AdapterView.On
     FloatingActionButton fab;
     Button EstmPrice;
     Spinner ProductType;
+    String Item;
     EditText From, To;
 
     @SuppressLint({"VisibleForTests", "ClickableViewAccessibility"})
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tab2, container, false);
 
@@ -115,14 +118,8 @@ public class tab2 extends Fragment implements OnMapReadyCallback, AdapterView.On
 
         /* INITIATE MAP FRAGMENT */
         initMap();
-
         mLocationClient = new FusedLocationProviderClient(getContext());
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getCurrLoc();
-            }
-        });
+
 
         /* DROP DOWN MENU TO CHOOSE THE TYPE OF PRODUCT USER WANT TO DELIVER*/
         List<String> categories = new ArrayList<>();
@@ -133,33 +130,49 @@ public class tab2 extends Fragment implements OnMapReadyCallback, AdapterView.On
         categories.add("Other");
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, categories);
-        dataAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
 
         ProductType.setAdapter(dataAdapter);
+        ProductType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Item = parent.getItemAtPosition(position).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                parent.setSelection(-1);
+            }
+        });
+
+
 
         /* PLACE API AUTO COMPLETE ON FROM AND TO EDITTEXT */
         Places.initialize(getContext(), getString(R.string.key));
 
-        From.setOnTouchListener((v, event) -> {
-            List<Place.Field> fields = Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME);
 
-            Intent placeIntent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
-                    .build(getContext());
-            startActivityForResult(placeIntent, AUTOCOMPLETE_FROM_REQUEST_CODE);
-            return true;
-        });
+        /* NEED BILLING ACCOUNT TO USE PLACES API */
 
-        To.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                List<Place.Field> fields = Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME);
+//        From.setOnTouchListener((v, event) -> {
+//            List<Place.Field> fields = Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME);
+//
+//            Intent placeIntent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
+//                    .build(getContext());
+//            startActivityForResult(placeIntent, AUTOCOMPLETE_FROM_REQUEST_CODE);
+//            return true;
+//        });
 
-                Intent placeIntent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
-                        .build(getContext());
-                startActivityForResult(placeIntent, AUTOCOMPLETE_TO_REQUEST_CODE);
-                return true;
-            }
-        });
+//        To.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                List<Place.Field> fields = Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME);
+//
+//                Intent placeIntent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
+//                        .build(getContext());
+//                startActivityForResult(placeIntent, AUTOCOMPLETE_TO_REQUEST_CODE);
+//                return true;
+//            }
+//        });
 
 
         /* PRICE ESTIMATION SCREEN */
@@ -168,18 +181,31 @@ public class tab2 extends Fragment implements OnMapReadyCallback, AdapterView.On
             public void onClick(View v) {
 
 
-//                    Location loc1 = new Location("");
-//                    loc1.setLongitude(currentlatLng.longitude);
-//                    loc1.setLatitude(currentlatLng.latitude);
-//
-//                    Location loc2 = new Location("");
-//                    loc2.setLongitude(destlatLng.longitude);
-//                    loc2.setLatitude(destlatLng.latitude);
-//
-//                    float distance = loc1.distanceTo(loc2);
+                Location loc1 = new Location("");
+                loc1.setLatitude(currentlatLng.latitude);
+                loc1.setLongitude(currentlatLng.longitude);
+
+                Location loc2 = new Location("");
+                loc2.setLatitude(26.842281);
+                loc2.setLongitude(75.830548);
+
+
+                float distance = loc1.distanceTo(loc2) / 1000;
+                int PriceFinal = (int) (distance * 5);
+                Toast.makeText(getContext(), String.valueOf(distance), Toast.LENGTH_SHORT).show();
 
                 Intent priceEstIntent = new Intent(getContext(), PriceEstimation.class);
-                startActivity(priceEstIntent);
+                if (To.getText().toString().isEmpty()) {
+                    To.setError("destination address needed");
+                } else {
+                    priceEstIntent.putExtra("pickupAddress", String.valueOf(From.getText()));
+                    priceEstIntent.putExtra("price", PriceFinal);
+                    priceEstIntent.putExtra("productType", String.valueOf(Item));
+                    priceEstIntent.putExtra("dropAddress", String.valueOf(To.getText().toString()));
+                    startActivity(priceEstIntent);
+                }
+
+
             }
 //
         });
@@ -338,18 +364,5 @@ public class tab2 extends Fragment implements OnMapReadyCallback, AdapterView.On
             Toast.makeText(getContext(), status.getStatusMessage(), Toast.LENGTH_SHORT).show();
         }
     }
-
-
-    // spinner -> product type
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        String item = parent.getItemAtPosition(position).toString();
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-        parent.setSelection(0);
-    }
-
 
 }

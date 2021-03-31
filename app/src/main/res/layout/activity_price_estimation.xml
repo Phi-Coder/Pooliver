@@ -6,138 +6,147 @@
     android:layout_height="match_parent"
     tools:context=".PriceEstimation">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="4dp"
-        android:fontFamily="serif-monospace"
-        android:text="Price Estimation"
-        android:textColor="@color/black"
-        android:textSize="35sp" />
-
-    <LinearLayout
-        android:id="@+id/linLayout0"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="142dp"
-        android:orientation="horizontal">
-
-        <ImageButton
-            android:id="@+id/sub"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="12dp"
-            android:src="@drawable/minus" />
-
-        <EditText
-            android:id="@+id/price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/black"
-            android:padding="10dp"
-            android:paddingStart="15dp"
-            android:paddingEnd="15dp"
-            android:text="40"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
-            android:textSize="40sp"
-            tools:ignore="HardcodedText" />
-
-        <ImageButton
-            android:id="@+id/add"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="15dp"
-            android:src="@drawable/add" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linLayout1"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/linLayout0"
-        android:layout_marginTop="55dp">
+        tools:ignore="NestedScrolling">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:text="Max Price:"
-            android:textColor="@color/black"
-            android:textSize="27sp" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/maxPrice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:text="55"
-            android:textSize="25sp" />
-    </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="4dp"
+                android:fontFamily="serif-monospace"
+                android:text="Price Estimation"
+                android:textColor="@color/black"
+                android:textSize="35sp" />
 
+            <LinearLayout
+                android:id="@+id/linLayout0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="142dp"
+                android:orientation="horizontal">
 
-    <LinearLayout
-        android:id="@+id/linLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/linLayout1"
-        android:layout_marginTop="12dp">
+                <ImageButton
+                    android:id="@+id/sub"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="12dp"
+                    android:src="@drawable/minus" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:text="Min Price: "
-            android:textColor="@color/black"
-            android:textSize="27sp" />
+                <EditText
+                    android:id="@+id/price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/black"
+                    android:padding="10dp"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white"
+                    android:textSize="40sp"
+                    tools:ignore="HardcodedText" />
 
-        <TextView
-            android:id="@+id/minPrice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:text="35"
-            android:textSize="25sp" />
-    </LinearLayout>
+                <ImageButton
+                    android:id="@+id/add"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="15dp"
+                    android:src="@drawable/add" />
+            </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/linLayout3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/linLayout2"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="18dp"
-        android:layout_marginEnd="15dp"
-        android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/linLayout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/linLayout0"
+                android:layout_marginTop="55dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Payment Method"
-            android:textColor="@color/black"
-            android:textSize="24sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:text="Max Price:"
+                    android:textColor="@color/black"
+                    android:textSize="27sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/cashPayment"
-            android:textSize="18sp" />
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/findDriver"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/linLayout3"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp"
-        android:text="@string/find_driver"
-        android:textAllCaps="false"
-        android:textSize="22sp" />
+                <TextView
+                    android:id="@+id/maxPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="55"
+                    android:textSize="25sp" />
+            </LinearLayout>
 
 
+            <LinearLayout
+                android:id="@+id/linLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/linLayout1"
+                android:layout_marginTop="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:text="Min Price: "
+                    android:textColor="@color/black"
+                    android:textSize="27sp" />
+
+                <TextView
+                    android:id="@+id/minPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="35"
+                    android:textSize="25sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linLayout3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/linLayout2"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="18dp"
+                android:layout_marginEnd="15dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Payment Method"
+                    android:textColor="@color/black"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cashPayment"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/findDriver"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/linLayout3"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="100dp"
+                android:text="@string/find_driver"
+                android:textAllCaps="false"
+                android:textSize="22sp" />
+
+        </RelativeLayout>
+    </ScrollView>
 </RelativeLayout>

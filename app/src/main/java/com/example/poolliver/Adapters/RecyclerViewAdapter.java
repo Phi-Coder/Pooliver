@@ -41,11 +41,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         MyViewHolder myViewHolderclass = (MyViewHolder) holder;
         dataHolder itemPosition = dataHolderList.get(position);
 
-        myViewHolderclass.username.setText(itemPosition.getname());
+        myViewHolderclass.name.setText(String.valueOf(itemPosition.getname()));
         myViewHolderclass.itemtype.setText(itemPosition.getitemtype());
         myViewHolderclass.Price.setText(String.valueOf(itemPosition.getPrice()));
-        holder.pickupAddress.setText(String.valueOf(itemPosition.getPickupAddress()));
-        holder.dropAddress.setText(String.valueOf(itemPosition.getdropAddress()));
+        myViewHolderclass.pickupAddress.setText(String.valueOf(itemPosition.getPickupAddress()));
+        myViewHolderclass.dropAddress.setText(String.valueOf(itemPosition.getdropAddress()));
         myViewHolderclass.Time.setText(String.valueOf(itemPosition.getTime()));
 
         holder.cardView.setOnClickListener(v -> {
@@ -58,7 +58,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             intent.putExtra("dLong", String.valueOf(itemPosition.getdLong()));
             intent.putExtra("timings", String.valueOf(itemPosition.getTime()));
             intent.putExtra("itemtype", String.valueOf(itemPosition.getitemtype()));
-            intent.putExtra("username", String.valueOf(itemPosition.getname()));
+            intent.putExtra("name", String.valueOf(itemPosition.getname()));
             intent.putExtra("price", String.valueOf(itemPosition.getPrice()));
 
             holder.cardView.getContext().startActivity(intent);
@@ -73,13 +73,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView username, pickupAddress, dropAddress, itemtype, Price, Time;
+        TextView name, pickupAddress, dropAddress, itemtype, Price, Time;
         TextView pLat, pLong, dLat, dLong;
         CardView cardView;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            username = itemView.findViewById(R.id.userName);
+            name = itemView.findViewById(R.id.userName);
             pickupAddress = itemView.findViewById(R.id.pickupAdds);
             dropAddress = itemView.findViewById(R.id.dropAdds);
             itemtype = itemView.findViewById(R.id.cItemType);

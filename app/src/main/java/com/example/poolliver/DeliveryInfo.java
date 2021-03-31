@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class DeliveryInfo extends AppCompatActivity {
 
@@ -35,14 +36,15 @@ public class DeliveryInfo extends AppCompatActivity {
         Accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent Driverintent = new Intent();
+                startActivity(Driverintent);
             }
         });
 
         PriceBid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Toast.makeText(DeliveryInfo.this, "work under construction", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -62,7 +64,7 @@ public class DeliveryInfo extends AppCompatActivity {
         String dropaddress = getIntent().getStringExtra("dropaddress");
         String timings = getIntent().getStringExtra("timings");
         String itemtype = getIntent().getStringExtra("itemtype");
-        String username = getIntent().getStringExtra("username");
+        String username = getIntent().getStringExtra("name");
         String price = getIntent().getStringExtra("price");
 
         fillData(pickupaddress, dropaddress, timings, itemtype, username, price);

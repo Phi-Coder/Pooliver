@@ -5,10 +5,9 @@ import java.util.List;
 public class dataHolder {
 
     String name;
-
     String itemtype, pickupAddress, dropAddress;
     String time;
-    int price;
+    int price, phoneNum;
     double pLat, pLong, dLong, dLat;
 
     public dataHolder(String name, String pickupAddress, String dropAddress, String itemtype, int price, double pLat, double pLong, double dLong, double dLat) {
@@ -36,6 +35,13 @@ public class dataHolder {
         this.price = price;
     }
 
+    public String getname() {
+        return name;
+    }
+
+    public void setname(String name) {
+        this.name = name;
+    }
 
     public String getPickupAddress() {
         return pickupAddress;
@@ -61,13 +67,6 @@ public class dataHolder {
         this.time = time;
     }
 
-    public String getname() {
-        return name;
-    }
-
-    public void setname(String name) {
-        this.name = name;
-    }
 
     public String getitemtype() {
         return itemtype;
