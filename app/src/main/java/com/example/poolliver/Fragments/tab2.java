@@ -99,7 +99,7 @@ public class tab2 extends Fragment implements OnMapReadyCallback {
     Button EstmPrice;
     Spinner ProductType;
     String Item;
-    EditText From, To;
+    EditText From, To, timings;
 
     @SuppressLint({"VisibleForTests", "ClickableViewAccessibility"})
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -114,6 +114,7 @@ public class tab2 extends Fragment implements OnMapReadyCallback {
         ProductType = (Spinner) view.findViewById(R.id.productType);
         From = view.findViewById(R.id.from);
         To = view.findViewById(R.id.to);
+        timings = view.findViewById(R.id.timings);
 
         requestLocationPermission();
 
@@ -188,13 +189,13 @@ public class tab2 extends Fragment implements OnMapReadyCallback {
                 loc1.setLongitude(currentlatLng.longitude);
 
                 Location loc2 = new Location("");
-                loc2.setLatitude(26.842281);
-                loc2.setLongitude(75.830548);
+                loc2.setLatitude(26.896663);
+                loc2.setLongitude(75.842842);
 
 
                 float distance = loc1.distanceTo(loc2) / 1000;
                 int PriceFinal = (int) (distance * 5);
-                Toast.makeText(getContext(), String.valueOf(distance), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), String.valueOf(distance), Toast.LENGTH_SHORT).show();
 
                 Intent priceEstIntent = new Intent(getContext(), PriceEstimation.class);
                 if (To.getText().toString().isEmpty()) {
@@ -203,10 +204,10 @@ public class tab2 extends Fragment implements OnMapReadyCallback {
                     priceEstIntent.putExtra("pickupAddress", String.valueOf(From.getText()));
                     priceEstIntent.putExtra("price", PriceFinal);
                     priceEstIntent.putExtra("productType", String.valueOf(Item));
-                    priceEstIntent.putExtra("dropAddress", String.valueOf(To.getText().toString()));
+                    priceEstIntent.putExtra("dropAddress", String.valueOf(To.getText()));
+                    priceEstIntent.putExtra("time", String.valueOf(timings.getText()));
                     startActivity(priceEstIntent);
                 }
-
 
             }
 //

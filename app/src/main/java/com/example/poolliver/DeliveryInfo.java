@@ -36,8 +36,8 @@ public class DeliveryInfo extends AppCompatActivity {
         Accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent Driverintent = new Intent();
-                startActivity(Driverintent);
+//                Intent Driverintent = new Intent();
+//                startActivity(Driverintent);
             }
         });
 

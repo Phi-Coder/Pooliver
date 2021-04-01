@@ -16,10 +16,10 @@
             <ImageView
                 android:id="@+id/dp"
                 android:layout_width="100dp"
-                android:src="@drawable/common_google_signin_btn_icon_light_normal"
                 android:layout_height="100dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="25dp" />
+                android:layout_marginTop="25dp"
+                android:src="@drawable/common_google_signin_btn_icon_light_normal" />
 
             <TextView
                 android:id="@+id/username"
@@ -28,7 +28,7 @@
                 android:layout_below="@+id/dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="5dp"
-                android:text="User Name"
+                android:text="Yuvraj Dagur"
                 android:textColor="@color/black"
                 android:textSize="30sp" />
 
@@ -37,11 +37,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/username"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="20dp"
                 android:text="Your Activity:"
-                android:layout_marginStart="10dp"
                 android:textColor="@color/black"
                 android:textSize="35dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/userRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/a"
+                android:layout_marginTop="4dp" />
 
 
         </RelativeLayout>

@@ -139,7 +139,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Medicine"
-
                     android:textColor="@color/black"
                     android:textSize="18sp" />
 
@@ -151,7 +150,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/layoutFour"
                 android:layout_marginStart="15dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="20dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -172,15 +171,6 @@
                     android:textColor="@color/black"
                     android:textSize="18sp" />
 
-                <TextView
-                    android:id="@+id/PhoneNum"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Phone Num"
-
-                    android:textColor="@color/black"
-                    android:textSize="18sp" />
-
             </LinearLayout>
 
             <LinearLayout
@@ -188,6 +178,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/layoutFive"
+
                 android:layout_centerHorizontal="true"
                 android:layout_margin="5dp">
 

@@ -103,11 +103,37 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/linLayout1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/linLayout"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="2dp"
+                    android:text="Time:"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/timings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="5-6pm" />
+
+            </LinearLayout>
+
+
             <Button
                 android:id="@+id/CalcPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/linLayout"
+                android:layout_below="@id/linLayout1"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="50dp"
                 android:backgroundTint="#6DD1C8"
