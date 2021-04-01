@@ -10,7 +10,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="Pool"
+        android:text="Pooliver"
+        android:textColor="@color/black"
         android:textSize="40sp" />
 
     <EditText

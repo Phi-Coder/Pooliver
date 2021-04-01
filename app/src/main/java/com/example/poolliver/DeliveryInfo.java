@@ -38,6 +38,8 @@ public class DeliveryInfo extends AppCompatActivity {
             public void onClick(View v) {
 //                Intent Driverintent = new Intent();
 //                startActivity(Driverintent);
+                Toast.makeText(DeliveryInfo.this, "work under construction", Toast.LENGTH_SHORT).show();
+
             }
         });
 
