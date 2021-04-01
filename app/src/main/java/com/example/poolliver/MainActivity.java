@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.poolliver.Adapters.PageAdapter;
@@ -29,6 +30,10 @@ public class MainActivity extends AppCompatActivity {
         tab1 = findViewById(R.id.tab2);
         tab2 = findViewById(R.id.tab1);
         tab3 = findViewById(R.id.tab3);
+
+        String name = getIntent().getStringExtra("name");
+        String phoneNumber = getIntent().getStringExtra("phoneNumber");
+
 
         pageAdapter = new PageAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(pageAdapter);

@@ -16,9 +16,11 @@ import android.widget.Toast;
 
 import com.example.poolliver.Adapters.RecyclerViewAdapter;
 import com.example.poolliver.LoginActivity;
+import com.example.poolliver.MainActivity;
 import com.example.poolliver.R;
 import com.example.poolliver.database.dataHolder;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -40,6 +42,7 @@ public class tab1 extends Fragment {
 
     RecyclerView recyclerView;
     List<dataHolder> itemList;
+    String user;
     RecyclerViewAdapter recyclerViewAdapter;
     DatabaseReference node;
     FirebaseDatabase db;
@@ -80,7 +83,6 @@ public class tab1 extends Fragment {
         return view;
 
     }
-
 
 
 }

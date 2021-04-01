@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -22,7 +23,6 @@ import java.util.HashMap;
 public class PriceEstimation extends AppCompatActivity {
 
     ImageButton subtractPrice, addPrice;
-    DatabaseReference mDatabase;
     EditText Price;
     int priceFinal;
     TextView maxPrice, minPrice;
@@ -82,12 +82,14 @@ public class PriceEstimation extends AppCompatActivity {
         findDriver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 HashMap<String, Object> map = new HashMap<>();
                 map.put("pickupAddress", String.valueOf(pickupaddress));
                 map.put("dropAddress", String.valueOf(dropaddress));
                 map.put("price", priceFinal);
                 map.put("itemtype", String.valueOf(itemtype));
-                FirebaseDatabase.getInstance().getReference("user").push().child("post").updateChildren(map);
+                FirebaseDatabase.getInstance().getReference("user").child(uid).child("post").updateChildren(map);
+
 
                 Intent intentFinal = new Intent(PriceEstimation.this, MainActivity.class);
                 startActivity(intentFinal);

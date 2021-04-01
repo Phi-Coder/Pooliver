@@ -22,7 +22,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 public class LoginActivity extends AppCompatActivity {
@@ -31,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText verifyCode, phoneNum;
     FirebaseAuth mAuth;
     FirebaseUser user;
+    String phoneNumber;
     String verificationCode;
 
     @Override
@@ -44,10 +47,12 @@ public class LoginActivity extends AppCompatActivity {
         phoneNum = findViewById(R.id.phoneNum);
 
         mAuth = FirebaseAuth.getInstance();
-        user = FirebaseAuth.getInstance().getCurrentUser();
+        user = mAuth.getCurrentUser();
+
 
         if (user != null) {
             Intent i = new Intent(LoginActivity.this, MainActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(i);
             finish();
         }
@@ -89,8 +94,11 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            Intent intent = new Intent(LoginActivity.this, UserInfo.class);
+                            intent.putExtra("phoneNum", phoneNumber);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                             startActivity(intent);
+                            finish();
                         } else {
                             // Sign in failed, display a message and update the UI
                             Log.w("SignIn", "signInWithCredential:failure", task.getException());
@@ -104,7 +112,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void sendVerificationCode() {
-        String phoneNumber = "+91" + phoneNum.getText().toString();
+        phoneNumber = "+91" + phoneNum.getText().toString();
 
         if (phoneNumber.isEmpty()) {
             phoneNum.setError("Phone Number is Required");

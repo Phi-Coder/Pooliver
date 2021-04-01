@@ -30,6 +30,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -81,6 +82,7 @@ import pub.devrel.easypermissions.EasyPermissions;
  */
 public class tab2 extends Fragment implements OnMapReadyCallback {
 
+    private static final int TAG_CODE_PERMISSION_LOCATION = 12;
     private GoogleMap mMap;
     private FusedLocationProviderClient mLocationClient;
     private final int REQUEST_LOCATION_PERMISSION = 1;
@@ -113,12 +115,12 @@ public class tab2 extends Fragment implements OnMapReadyCallback {
         From = view.findViewById(R.id.from);
         To = view.findViewById(R.id.to);
 
-
         requestLocationPermission();
 
         /* INITIATE MAP FRAGMENT */
         initMap();
         mLocationClient = new FusedLocationProviderClient(getContext());
+        getCurrLoc();
 
 
         /* DROP DOWN MENU TO CHOOSE THE TYPE OF PRODUCT USER WANT TO DELIVER*/
@@ -216,12 +218,18 @@ public class tab2 extends Fragment implements OnMapReadyCallback {
 
 
     // hard coded lat long for marker display on google map whenever map starts
-    @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION},
+                    TAG_CODE_PERMISSION_LOCATION);
+            return;
+        }
         googleMap.setMyLocationEnabled(true);
-        getCurrLoc();
+
 
     }
 
@@ -256,7 +264,11 @@ public class tab2 extends Fragment implements OnMapReadyCallback {
 
     private void getCurrLoc() {
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
+            Log.e("permissions", "location permission");
+            ActivityCompat.requestPermissions(getActivity(), new String[]{
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION},
+                    TAG_CODE_PERMISSION_LOCATION);
         }
         mLocationClient.getLastLocation().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
