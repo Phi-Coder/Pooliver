@@ -1,42 +1,33 @@
 {
   "project_info": {
-    "project_number": "268490503860",
-    "firebase_url": "https://poolliver-1a6d9-default-rtdb.firebaseio.com",
-    "project_id": "poolliver-1a6d9",
-    "storage_bucket": "poolliver-1a6d9.appspot.com"
+    "project_number": "591066840917",
+    "project_id": "poolliver",
+    "storage_bucket": "poolliver.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:268490503860:android:0e9c6e33bb91f53ed9c9e1",
+        "mobilesdk_app_id": "1:591066840917:android:5870a2a0f976d36b6279dc",
         "android_client_info": {
           "package_name": "com.example.poolliver"
         }
       },
       "oauth_client": [
         {
-          "client_id": "268490503860-mpj52g257663icou8al25s8b5boj67lj.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.poolliver",
-            "certificate_hash": "b330195797959a5206aecacce18161ed272b65c8"
-          }
-        },
-        {
-          "client_id": "268490503860-5b8huq718a4rocbaumc52dpataeqq4p5.apps.googleusercontent.com",
+          "client_id": "591066840917-j42uftmjtvgmhnobshhnlpm7qdrkje04.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBbg6V0V-9b_PqfWfneYRk_Mu8w99lhtw0"
+          "current_key": "AIzaSyBIkTPrHapAtWAGp0bIu-J8KFY-_b9ksRM"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "268490503860-5b8huq718a4rocbaumc52dpataeqq4p5.apps.googleusercontent.com",
+              "client_id": "591066840917-j42uftmjtvgmhnobshhnlpm7qdrkje04.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
