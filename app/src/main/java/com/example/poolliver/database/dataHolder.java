@@ -5,6 +5,7 @@ import java.util.List;
 public class dataHolder {
 
     String name;
+    String uid;
     String itemtype, pickupAddress, dropAddress;
     String time;
     int price, phoneNum;
@@ -33,6 +34,14 @@ public class dataHolder {
         this.dropAddress = dropAddress;
         this.itemtype = itemtype;
         this.price = price;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getname() {

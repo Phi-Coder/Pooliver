@@ -14,6 +14,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -27,6 +29,7 @@ public class PriceEstimation extends AppCompatActivity {
     int priceFinal;
     TextView maxPrice, minPrice;
     Button findDriver;
+    public static final String SHARED_PREFS = "sharedPrefs";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,7 @@ public class PriceEstimation extends AppCompatActivity {
         maxPrice = findViewById(R.id.maxPrice);
         minPrice = findViewById(R.id.minPrice);
         findDriver = findViewById(R.id.findDriver);
+
 
         String pickupaddress = getIntent().getStringExtra("pickupAddress");
         String dropaddress = getIntent().getStringExtra("dropAddress");
@@ -83,14 +87,20 @@ public class PriceEstimation extends AppCompatActivity {
         findDriver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+                String name = sharedPreferences.getString("name", "");
+                String phoneNumber = sharedPreferences.getString("phoneNumber", "");
+
                 String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 HashMap<String, Object> map = new HashMap<>();
                 map.put("pickupAddress", String.valueOf(pickupaddress));
                 map.put("dropAddress", String.valueOf(dropaddress));
                 map.put("price", priceFinal);
                 map.put("time", time);
-                map.put("name", "Yuvraj Dagur");
+                map.put("name", name);
                 map.put("itemtype", String.valueOf(itemtype));
+                map.put("phoneNumber", phoneNumber);
+                map.put("uid", uid);
                 FirebaseDatabase.getInstance().getReference("user").child(uid).child("post").updateChildren(map);
 
 

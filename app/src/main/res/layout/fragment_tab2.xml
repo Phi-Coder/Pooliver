@@ -45,7 +45,6 @@
                 android:backgroundTint="#C9EFEBEB"
                 android:contentDescription="TODO"
                 android:src="@drawable/point"
-                android:visibility="invisible"
                 app:fabSize="mini" />
 
 

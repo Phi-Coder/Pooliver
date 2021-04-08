@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,18 +12,18 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.poolliver.DeliveryInfo;
-import com.example.poolliver.MainActivity;
 import com.example.poolliver.R;
 import com.example.poolliver.database.dataHolder;
+import com.example.poolliver.userDeliveryInfo;
 
 import java.util.List;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
+public class userActivityRecyclerAdapter extends RecyclerView.Adapter<userActivityRecyclerAdapter.MyViewHolder> {
 
     List<dataHolder> dataHolderList;
     Context context;
 
-    public RecyclerViewAdapter(List<dataHolder> dataHolderList, Context context) {
+    public userActivityRecyclerAdapter(List<dataHolder> dataHolderList, Context context) {
         this.dataHolderList = dataHolderList;
         this.context = context;
     }
@@ -33,7 +31,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.ordercardview, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.userordercardview, parent, false);
         MyViewHolder viewHolder = new MyViewHolder(view);
 
         return viewHolder;
@@ -53,7 +51,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         myViewHolderclass.Time.setText(String.valueOf(itemPosition.getTime()));
 
         myViewHolderclass.cardView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, DeliveryInfo.class);
+            Intent intent = new Intent(context, userDeliveryInfo.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
             intent.putExtra("pickupaddress", String.valueOf(itemPosition.getPickupAddress()));
             intent.putExtra("pLat", String.valueOf(itemPosition.getpLat()));
@@ -90,7 +88,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             itemtype = itemView.findViewById(R.id.cItemType);
             Price = itemView.findViewById(R.id.cPrice);
             Time = itemView.findViewById(R.id.ctime);
-            cardView = itemView.findViewById(R.id.cardview);
+            cardView = itemView.findViewById(R.id.userCardview);
 
         }
     }

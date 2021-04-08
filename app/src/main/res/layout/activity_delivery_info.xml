@@ -163,10 +163,10 @@
                     android:textSize="20sp" />
 
                 <TextView
-                    android:id="@+id/Email"
+                    android:id="@+id/Address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="email"
+                    android:text="User Address"
 
                     android:textColor="@color/black"
                     android:textSize="18sp" />

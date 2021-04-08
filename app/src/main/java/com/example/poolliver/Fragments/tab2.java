@@ -57,6 +57,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
@@ -121,8 +122,6 @@ public class tab2 extends Fragment implements OnMapReadyCallback {
         /* INITIATE MAP FRAGMENT */
         initMap();
         mLocationClient = new FusedLocationProviderClient(getContext());
-        getCurrLoc();
-
 
         /* DROP DOWN MENU TO CHOOSE THE TYPE OF PRODUCT USER WANT TO DELIVER*/
         List<String> categories = new ArrayList<>();
@@ -152,6 +151,7 @@ public class tab2 extends Fragment implements OnMapReadyCallback {
 
         /* PLACE API AUTO COMPLETE ON FROM AND TO EDITTEXT */
         Places.initialize(getContext(), getString(R.string.key));
+        PlacesClient placesClient = Places.createClient(getContext());
 
 
         /* NEED BILLING ACCOUNT TO USE PLACES API */
@@ -164,7 +164,7 @@ public class tab2 extends Fragment implements OnMapReadyCallback {
 //            startActivityForResult(placeIntent, AUTOCOMPLETE_FROM_REQUEST_CODE);
 //            return true;
 //        });
-
+//
 //        To.setOnTouchListener(new View.OnTouchListener() {
 //            @Override
 //            public boolean onTouch(View v, MotionEvent event) {
@@ -182,7 +182,6 @@ public class tab2 extends Fragment implements OnMapReadyCallback {
         EstmPrice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
 
                 Location loc1 = new Location("");
                 loc1.setLatitude(currentlatLng.latitude);
@@ -213,6 +212,14 @@ public class tab2 extends Fragment implements OnMapReadyCallback {
 //
         });
 
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getCurrLoc();
+
+            }
+        });
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         return view;
     }
@@ -230,7 +237,7 @@ public class tab2 extends Fragment implements OnMapReadyCallback {
             return;
         }
         googleMap.setMyLocationEnabled(true);
-
+        getCurrLoc();
 
     }
 
@@ -320,7 +327,7 @@ public class tab2 extends Fragment implements OnMapReadyCallback {
     public void requestLocationPermission() {
         String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
         if (EasyPermissions.hasPermissions(getContext(), perms)) {
-            Toast.makeText(getContext(), "Permission already granted", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getContext(), "Permission already granted", Toast.LENGTH_SHORT).show();
         } else {
             EasyPermissions.requestPermissions(this, "Please grant the location permission", REQUEST_LOCATION_PERMISSION, perms);
         }
