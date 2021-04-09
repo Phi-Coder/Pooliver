@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.here.sdk"
+    android:versionCode="1"
+    android:versionName="4.7.0.0.4971-release" >
+
+    <uses-sdk
+        android:minSdkVersion="21"
+        android:targetSdkVersion="29" />
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application>
+
+        <!-- ${applicationId} will be replaced to ${applicationId} after the manifest merge. -->
+        <provider
+            android:name="com.here.sdk.engine.InitProvider"
+            android:authorities="${applicationId}.com.here.sdk.engine.InitProvider"
+            android:exported="false" />
+    </application>
+
+</manifest>

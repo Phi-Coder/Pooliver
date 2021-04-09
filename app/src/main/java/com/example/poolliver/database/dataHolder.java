@@ -8,6 +8,7 @@ public class dataHolder {
     String uid;
     String itemtype, pickupAddress, dropAddress;
     String time;
+
     int price, phoneNum;
     double pLat, pLong, dLong, dLat;
 

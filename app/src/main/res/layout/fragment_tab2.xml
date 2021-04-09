@@ -138,6 +138,9 @@
                 android:backgroundTint="#6DD1C8"
                 android:text="Estimate price"
                 android:textColor="@color/black" />
+
         </RelativeLayout>
+
+
     </ScrollView>
 </FrameLayout>

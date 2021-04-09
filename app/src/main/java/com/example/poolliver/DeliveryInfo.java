@@ -1,11 +1,7 @@
 package com.example.poolliver;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -13,30 +9,22 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.algolia.search.saas.places.PlacesClient;
-import com.example.poolliver.database.dataHolder;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class DeliveryInfo extends AppCompatActivity {
 
     TextView pickupAddress, dropAddress, Timings, ItemType, name, phoneNum, Price;
     Button Accept, PriceBid, getDirections;
+    public static final String SHARED_PREFS = "sharedPrefs";
     FirebaseUser firebaseUser;
     FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference;
-
-
+    DatabaseReference dbRef;
+    int i;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,17 +44,31 @@ public class DeliveryInfo extends AppCompatActivity {
 
         InncomingIntent();
         String uid = getIntent().getStringExtra("uid");
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         Accept.setOnClickListener(v -> {
             FirebaseAuth mAuth = FirebaseAuth.getInstance();
             FirebaseUser user = mAuth.getCurrentUser();
+
+            if (i == 0) {
+                dbRef = database.getReference("user").child(uid).child("post").child("accept").child("1").child("UserName");
+            } else if (i == 1) {
+                dbRef = database.getReference("user").child(uid).child("post").child("accept").child("2").child("UserName");
+            } else if (i >= 2) {
+                Accept.setEnabled(false);
+            }
+
             String userUid = user.getUid();
+
             if (userUid.equals(uid)) {
                 Toast.makeText(DeliveryInfo.this, "Cannot accept your own delivery", Toast.LENGTH_SHORT).show();
+
             } else if (userUid != uid) {
                 Toast.makeText(DeliveryInfo.this, "accept request sent to the owner", Toast.LENGTH_SHORT).show();
-
+                dbRef.setValue(setName());
+                i++;
             }
+
 
         });
 
@@ -109,6 +111,13 @@ public class DeliveryInfo extends AppCompatActivity {
         Price.setText(price);
     }
 
+    public String setName() {
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        String name = sharedPreferences.getString("name", "");
+        return name;
+
+    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -117,4 +126,5 @@ public class DeliveryInfo extends AppCompatActivity {
         finishAffinity();
 //        moveTaskToBack(true);
     }
+
 }

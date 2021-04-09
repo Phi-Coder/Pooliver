@@ -97,4 +97,6 @@
     <string name="find_driver">Find Driver</string>
     <string name="cashPayment">Due to some Technical Error Payment Gateways are not active right now. So cash is the default payment method for now</string>
     <string name="key">AIzaSyBIkTPrHapAtWAGp0bIu-J8KFY-_b9ksRM</string>
+    <string name="mapbox_access_token">pk.eyJ1IjoidWpqd2FsMTAxMCIsImEiOiJja25hbTFkdGcwcDhqMm5ueTN2NzZhc2wyIn0.qb9yzgJMF3990l2iyryHjA</string>
+
 </resources>

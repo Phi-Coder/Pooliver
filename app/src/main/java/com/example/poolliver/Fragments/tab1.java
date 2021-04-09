@@ -44,9 +44,9 @@ import static android.content.ContentValues.TAG;
 public class tab1 extends Fragment {
 
     RecyclerView recyclerView;
+    RecyclerViewAdapter recyclerViewAdapter;
     List<dataHolder> itemList;
     String user;
-    RecyclerViewAdapter recyclerViewAdapter;
     DatabaseReference node;
     FirebaseDatabase db;
 

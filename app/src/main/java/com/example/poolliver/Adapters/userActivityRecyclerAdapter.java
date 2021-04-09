@@ -11,59 +11,58 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.poolliver.DeliveryInfo;
 import com.example.poolliver.R;
 import com.example.poolliver.database.dataHolder;
 import com.example.poolliver.userDeliveryInfo;
 
 import java.util.List;
 
-public class userActivityRecyclerAdapter extends RecyclerView.Adapter<userActivityRecyclerAdapter.MyViewHolder> {
+public class userActivityRecyclerAdapter extends RecyclerView.Adapter<userActivityRecyclerAdapter.MyUserViewHolder> {
 
-    List<dataHolder> dataHolderList;
+    List<dataHolder> userDataHolderList;
     Context context;
 
-    public userActivityRecyclerAdapter(List<dataHolder> dataHolderList, Context context) {
-        this.dataHolderList = dataHolderList;
+    public userActivityRecyclerAdapter(List<dataHolder> userDataHolderList, Context context) {
+        this.userDataHolderList = userDataHolderList;
         this.context = context;
     }
 
     @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MyUserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.userordercardview, parent, false);
-        MyViewHolder viewHolder = new MyViewHolder(view);
+        MyUserViewHolder viewHolder = new MyUserViewHolder(view);
 
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyUserViewHolder holder, int position) {
 
-        MyViewHolder myViewHolderclass = (MyViewHolder) holder;
-        dataHolder itemPosition = dataHolderList.get(position);
+        MyUserViewHolder myUserViewHolderclass = (MyUserViewHolder) holder;
+        dataHolder UseritemPosition = userDataHolderList.get(position);
 
-        myViewHolderclass.name.setText(String.valueOf(itemPosition.getname()));
-        myViewHolderclass.itemtype.setText(itemPosition.getitemtype());
-        myViewHolderclass.Price.setText(String.valueOf(itemPosition.getPrice()));
-        myViewHolderclass.pickupAddress.setText(String.valueOf(itemPosition.getPickupAddress()));
-        myViewHolderclass.dropAddress.setText(String.valueOf(itemPosition.getdropAddress()));
-        myViewHolderclass.Time.setText(String.valueOf(itemPosition.getTime()));
+        myUserViewHolderclass.name.setText(String.valueOf(UseritemPosition.getname()));
+        myUserViewHolderclass.itemtype.setText(UseritemPosition.getitemtype());
+        myUserViewHolderclass.Price.setText(String.valueOf(UseritemPosition.getPrice()));
+        myUserViewHolderclass.pickupAddress.setText(String.valueOf(UseritemPosition.getPickupAddress()));
+        myUserViewHolderclass.dropAddress.setText(String.valueOf(UseritemPosition.getdropAddress()));
+        myUserViewHolderclass.Time.setText(String.valueOf(UseritemPosition.getTime()));
 
-        myViewHolderclass.cardView.setOnClickListener(v -> {
+        myUserViewHolderclass.UsercardView.setOnClickListener(v -> {
             Intent intent = new Intent(context, userDeliveryInfo.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
-            intent.putExtra("pickupaddress", String.valueOf(itemPosition.getPickupAddress()));
-            intent.putExtra("pLat", String.valueOf(itemPosition.getpLat()));
-            intent.putExtra("pLong", String.valueOf(itemPosition.getpLong()));
-            intent.putExtra("dropaddress", String.valueOf(itemPosition.getdropAddress()));
-            intent.putExtra("dLat", String.valueOf(itemPosition.getdLat()));
-            intent.putExtra("dLong", String.valueOf(itemPosition.getdLong()));
-            intent.putExtra("timings", String.valueOf(itemPosition.getTime()));
-            intent.putExtra("uid", String.valueOf(itemPosition.getUid()));
-            intent.putExtra("itemtype", String.valueOf(itemPosition.getitemtype()));
-            intent.putExtra("name", String.valueOf(itemPosition.getname()));
-            intent.putExtra("price", String.valueOf(itemPosition.getPrice()));
+            intent.putExtra("pickupaddress", String.valueOf(UseritemPosition.getPickupAddress()));
+            intent.putExtra("pLat", String.valueOf(UseritemPosition.getpLat()));
+            intent.putExtra("pLong", String.valueOf(UseritemPosition.getpLong()));
+            intent.putExtra("dropaddress", String.valueOf(UseritemPosition.getdropAddress()));
+            intent.putExtra("dLat", String.valueOf(UseritemPosition.getdLat()));
+            intent.putExtra("dLong", String.valueOf(UseritemPosition.getdLong()));
+            intent.putExtra("timings", String.valueOf(UseritemPosition.getTime()));
+            intent.putExtra("uid", String.valueOf(UseritemPosition.getUid()));
+            intent.putExtra("itemtype", String.valueOf(UseritemPosition.getitemtype()));
+//            intent.putExtra("name", String.valueOf(UseritemPosition.getname()));
+            intent.putExtra("price", String.valueOf(UseritemPosition.getPrice()));
 
             context.startActivity(intent);
         });
@@ -71,24 +70,24 @@ public class userActivityRecyclerAdapter extends RecyclerView.Adapter<userActivi
 
     @Override
     public int getItemCount() {
-        return dataHolderList.size();
+        return userDataHolderList.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public class MyUserViewHolder extends RecyclerView.ViewHolder {
 
         TextView name, pickupAddress, dropAddress, itemtype, Price, Time;
         TextView pLat, pLong, dLat, dLong;
-        CardView cardView;
+        CardView UsercardView;
 
-        public MyViewHolder(@NonNull View itemView) {
+        public MyUserViewHolder(@NonNull View itemView) {
             super(itemView);
-            name = itemView.findViewById(R.id.userName);
-            pickupAddress = itemView.findViewById(R.id.pickupAdds);
-            dropAddress = itemView.findViewById(R.id.dropAdds);
-            itemtype = itemView.findViewById(R.id.cItemType);
-            Price = itemView.findViewById(R.id.cPrice);
-            Time = itemView.findViewById(R.id.ctime);
-            cardView = itemView.findViewById(R.id.userCardview);
+            name = itemView.findViewById(R.id.userNameU);
+            pickupAddress = itemView.findViewById(R.id.pickupAddsU);
+            dropAddress = itemView.findViewById(R.id.dropAddsU);
+            itemtype = itemView.findViewById(R.id.ItemTypeU);
+            Price = itemView.findViewById(R.id.PriceU);
+            Time = itemView.findViewById(R.id.timeU);
+            UsercardView = itemView.findViewById(R.id.userCardview);
 
         }
     }

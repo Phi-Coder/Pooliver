@@ -10,7 +10,6 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -28,25 +27,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
 
-import com.example.poolliver.Adapters.PageAdapter;
 import com.example.poolliver.PriceEstimation;
 import com.example.poolliver.R;
-import com.example.poolliver.database.dataHolder;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.GoogleApi;
-import com.google.android.gms.common.api.GoogleApiActivity;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.common.internal.GmsClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -62,16 +49,15 @@ import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.mapbox.api.geocoding.v5.models.CarmenFeature;
+import com.mapbox.mapboxsdk.plugins.places.autocomplete.PlaceAutocomplete;
+import com.mapbox.mapboxsdk.plugins.places.autocomplete.model.PlaceOptions;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -90,8 +76,10 @@ public class tab2 extends Fragment implements OnMapReadyCallback {
     private final int GPS_REQUEST_CODE = 2;
     private final int AUTOCOMPLETE_FROM_REQUEST_CODE = 3;
     private final int AUTOCOMPLETE_TO_REQUEST_CODE = 4;
+    private final int REQUEST_CODE_AUTOCOMPLETE = 5;
     double lat1 = 0, long1 = 0, lat2 = 0, long2 = 0;
 
+    PlaceOptions placeOptions;
     Marker currentMarker;
     Marker DestMarker;
     Geocoder geocoder;
@@ -101,6 +89,7 @@ public class tab2 extends Fragment implements OnMapReadyCallback {
     Spinner ProductType;
     String Item;
     EditText From, To, timings;
+
 
     @SuppressLint({"VisibleForTests", "ClickableViewAccessibility"})
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -148,7 +137,6 @@ public class tab2 extends Fragment implements OnMapReadyCallback {
         });
 
 
-
         /* PLACE API AUTO COMPLETE ON FROM AND TO EDITTEXT */
         Places.initialize(getContext(), getString(R.string.key));
         PlacesClient placesClient = Places.createClient(getContext());
@@ -156,26 +144,34 @@ public class tab2 extends Fragment implements OnMapReadyCallback {
 
         /* NEED BILLING ACCOUNT TO USE PLACES API */
 
-//        From.setOnTouchListener((v, event) -> {
-//            List<Place.Field> fields = Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME);
-//
-//            Intent placeIntent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
-//                    .build(getContext());
-//            startActivityForResult(placeIntent, AUTOCOMPLETE_FROM_REQUEST_CODE);
+        From.setOnTouchListener((v, event) -> {
+            List<Place.Field> fields = Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME);
+
+            Intent placeIntent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
+                    .build(getContext());
+            startActivityForResult(placeIntent, AUTOCOMPLETE_FROM_REQUEST_CODE);
+            return true;
+        });
+//        To.setOnTouchListener((v, event) -> {
+//            Intent intent = new PlaceAutocomplete.IntentBuilder()
+//                    .accessToken("pk.eyJ1IjoidWpqd2FsMTAxMCIsImEiOiJja25hbTFkdGcwcDhqMm5ueTN2NzZhc2wyIn0.qb9yzgJMF3990l2iyryHjA")
+//                    .placeOptions(placeOptions)
+//                    .build(getActivity());
+//            startActivityForResult(intent, REQUEST_CODE_AUTOCOMPLETE);
 //            return true;
 //        });
 //
-//        To.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                List<Place.Field> fields = Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME);
-//
-//                Intent placeIntent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
-//                        .build(getContext());
-//                startActivityForResult(placeIntent, AUTOCOMPLETE_TO_REQUEST_CODE);
-//                return true;
-//            }
-//        });
+        To.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                List<Place.Field> fields = Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME);
+
+                Intent placeIntent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
+                        .build(getContext());
+                startActivityForResult(placeIntent, AUTOCOMPLETE_TO_REQUEST_CODE);
+                return true;
+            }
+        });
 
 
         /* PRICE ESTIMATION SCREEN */
@@ -188,8 +184,8 @@ public class tab2 extends Fragment implements OnMapReadyCallback {
                 loc1.setLongitude(currentlatLng.longitude);
 
                 Location loc2 = new Location("");
-                loc2.setLatitude(26.896663);
-                loc2.setLongitude(75.842842);
+                loc2.setLatitude(destlatLng.latitude);
+                loc2.setLongitude(destlatLng.longitude);
 
 
                 float distance = loc1.distanceTo(loc2) / 1000;
@@ -205,6 +201,10 @@ public class tab2 extends Fragment implements OnMapReadyCallback {
                     priceEstIntent.putExtra("productType", String.valueOf(Item));
                     priceEstIntent.putExtra("dropAddress", String.valueOf(To.getText()));
                     priceEstIntent.putExtra("time", String.valueOf(timings.getText()));
+                    priceEstIntent.putExtra("pickupLat", String.valueOf(currentlatLng.latitude));
+                    priceEstIntent.putExtra("pickupLong", String.valueOf(currentlatLng.longitude));
+                    priceEstIntent.putExtra("dropLat", String.valueOf(destlatLng.latitude));
+                    priceEstIntent.putExtra("dropLong", String.valueOf(destlatLng.longitude));
                     startActivity(priceEstIntent);
                 }
 
@@ -345,6 +345,12 @@ public class tab2 extends Fragment implements OnMapReadyCallback {
                 Toast.makeText(getContext(), "GPS is not enable", Toast.LENGTH_SHORT).show();
             }
         }
+
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_AUTOCOMPLETE) {
+            CarmenFeature feature = PlaceAutocomplete.getPlace(data);
+            Toast.makeText(getContext(), feature.text(), Toast.LENGTH_LONG).show();
+        }
+
         if (requestCode == AUTOCOMPLETE_FROM_REQUEST_CODE && resultCode == getActivity().RESULT_OK) {
             Place place = Autocomplete.getPlaceFromIntent(data);
             String name = place.getName();
@@ -360,7 +366,6 @@ public class tab2 extends Fragment implements OnMapReadyCallback {
                 currentMarker.setPosition(currentlatLng);
 
             }
-
             From.setText(place.getAddress());
 
         } else if (requestCode == AUTOCOMPLETE_TO_REQUEST_CODE && resultCode == getActivity().RESULT_OK) {

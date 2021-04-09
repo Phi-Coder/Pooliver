@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/userCardview"
     android:layout_width="match_parent"
-    android:onClick="onClick"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     android:backgroundTint="#B3BDA6">
@@ -17,7 +16,7 @@
 
         <!-- Title, secondary and supporting text -->
         <TextView
-            android:id="@+id/userName"
+            android:id="@+id/userNameU"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Yuvraj Dagur"
@@ -37,7 +36,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/pickupAdds"
+                android:id="@+id/pickupAddsU"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2/593 jawahar nagar jaipur"
@@ -59,7 +58,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/dropAdds"
+                android:id="@+id/dropAddsU"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="b12 jagatpura jaipur"
@@ -82,7 +81,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/ctime"
+                android:id="@+id/timeU"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="4-5pm"
@@ -98,7 +97,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/cItemType"
+                android:id="@+id/ItemTypeU"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Medicine"
@@ -122,7 +121,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/cPrice"
+                android:id="@+id/PriceU"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="54"

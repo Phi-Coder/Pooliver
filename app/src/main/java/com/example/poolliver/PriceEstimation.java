@@ -48,6 +48,10 @@ public class PriceEstimation extends AppCompatActivity {
         String dropaddress = getIntent().getStringExtra("dropAddress");
         String itemtype = getIntent().getStringExtra("productType");
         String time = getIntent().getStringExtra("time");
+        String pickupLat = getIntent().getStringExtra("pickupLat");
+        String pickupLong = getIntent().getStringExtra("pickupLong");
+        String dropLat = getIntent().getStringExtra("dropLat");
+        String dropLong = getIntent().getStringExtra("dropLong");
 
         priceFinal = getIntent().getIntExtra("price", 0);
         final int MaxP = priceFinal + 15;
@@ -101,6 +105,10 @@ public class PriceEstimation extends AppCompatActivity {
                 map.put("itemtype", String.valueOf(itemtype));
                 map.put("phoneNumber", phoneNumber);
                 map.put("uid", uid);
+                map.put("pickupLat", pickupLat);
+                map.put("pickupLong", pickupLong);
+                map.put("dropLat", dropLat);
+                map.put("dropLong", dropLong);
                 FirebaseDatabase.getInstance().getReference("user").child(uid).child("post").updateChildren(map);
 
 
