@@ -3,10 +3,12 @@ package com.example.poolliver;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Size;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -117,6 +119,27 @@ public class userDeliveryInfo extends AppCompatActivity {
         });
 
         listView.setAdapter(requestAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                AlertDialog.Builder alert = new AlertDialog.Builder(userDeliveryInfo.this);
+                alert.setTitle("Do you want to assign this person");
+
+                alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        //Your action here
+                    }
+                });
+
+                alert.setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                            }
+                        });
+                alert.show();
+
+            }
+        });
 
         InncomingIntent();
     }

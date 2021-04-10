@@ -57,10 +57,18 @@ public class PriceEstimation extends AppCompatActivity {
         final int MaxP = priceFinal + 15;
         final int MinP = priceFinal - 10;
 
-        Price.setText(String.valueOf(priceFinal));
 
         maxPrice.setText(String.valueOf(MaxP));
-        minPrice.setText(String.valueOf(MinP));
+        if (MinP < 10) {
+            minPrice.setText(String.valueOf(10));
+        } else {
+            minPrice.setText(String.valueOf(MinP));
+        }
+        if (priceFinal <= 10) {
+            Price.setText(String.valueOf(10));
+        } else {
+            Price.setText(String.valueOf(priceFinal));
+        }
 
         addPrice.setOnClickListener(new View.OnClickListener() {
             @Override

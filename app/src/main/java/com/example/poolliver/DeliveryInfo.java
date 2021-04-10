@@ -26,7 +26,7 @@ import timber.log.Timber;
 public class DeliveryInfo extends AppCompatActivity {
 
     TextView pickupAddress, dropAddress, Timings, ItemType, name, phoneNum, Price;
-    Button Accept, PriceBid, getDirections;
+    Button Accept, getDirections;
     public static final String SHARED_PREFS = "sharedPrefs";
     FirebaseUser firebaseUser;
     FirebaseDatabase firebaseDatabase;
@@ -47,8 +47,6 @@ public class DeliveryInfo extends AppCompatActivity {
         name = findViewById(R.id.Name);
         Price = findViewById(R.id.Price);
         Accept = findViewById(R.id.acceptRide);
-        PriceBid = findViewById(R.id.priceBid);
-
 
         InncomingIntent();
         String price = getIntent().getStringExtra("price");
@@ -95,12 +93,6 @@ public class DeliveryInfo extends AppCompatActivity {
 
         });
 
-        PriceBid.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(DeliveryInfo.this, "work under construction", Toast.LENGTH_SHORT).show();
-            }
-        });
 
         getDirections.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -208,7 +208,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/layoutSix"
-                android:layout_centerHorizontal="true">
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp">
 
                 <Button
                     android:id="@+id/acceptRide"
@@ -219,13 +220,6 @@
                     android:textAllCaps="false"
                     android:textSize="16sp" />
 
-                <Button
-                    android:id="@+id/priceBid"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Bid Price"
-                    android:textAllCaps="false"
-                    android:textSize="16sp" />
             </LinearLayout>
         </RelativeLayout>
     </ScrollView>

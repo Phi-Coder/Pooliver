@@ -152,15 +152,8 @@ public class tab2 extends Fragment implements OnMapReadyCallback {
             startActivityForResult(placeIntent, AUTOCOMPLETE_FROM_REQUEST_CODE);
             return true;
         });
-//        To.setOnTouchListener((v, event) -> {
-//            Intent intent = new PlaceAutocomplete.IntentBuilder()
-//                    .accessToken("pk.eyJ1IjoidWpqd2FsMTAxMCIsImEiOiJja25hbTFkdGcwcDhqMm5ueTN2NzZhc2wyIn0.qb9yzgJMF3990l2iyryHjA")
-//                    .placeOptions(placeOptions)
-//                    .build(getActivity());
-//            startActivityForResult(intent, REQUEST_CODE_AUTOCOMPLETE);
-//            return true;
-//        });
-//
+
+
         To.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -189,7 +182,7 @@ public class tab2 extends Fragment implements OnMapReadyCallback {
 
 
                 float distance = loc1.distanceTo(loc2) / 1000;
-                int PriceFinal = (int) (distance * 5);
+                int PriceFinal = (int) (distance * 6);
 //                Toast.makeText(getContext(), String.valueOf(distance), Toast.LENGTH_SHORT).show();
 
                 Intent priceEstIntent = new Intent(getContext(), PriceEstimation.class);

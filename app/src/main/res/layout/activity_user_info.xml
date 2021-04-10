@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".UserInfo">
 
-    <EditText
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -20,7 +20,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="100dp"
         android:hint="enter your name"
-        android:textSize="30dp" />
+        android:textSize="30sp" />
 
     <EditText
         android:id="@+id/phone_num"
@@ -30,7 +30,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="12dp"
         android:hint="enter your number"
-        android:textSize="30dp" />
+        android:textSize="30sp" />
 
     <Button
         android:id="@+id/getStarted"
@@ -40,5 +40,5 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="100dp"
         android:text="Get Started"
-        android:textSize="25dp" />
+        android:textSize="25sp" />
 </RelativeLayout>
