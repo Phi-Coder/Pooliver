@@ -19,7 +19,7 @@
                 android:layout_height="100dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="25dp"
-                android:src="@drawable/common_google_signin_btn_icon_light_normal" />
+                android:src="@drawable/lm" />
 
             <TextView
                 android:id="@+id/usernameA"

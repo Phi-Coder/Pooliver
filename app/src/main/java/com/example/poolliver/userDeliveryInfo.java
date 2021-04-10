@@ -2,11 +2,14 @@ package com.example.poolliver;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.Size;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.poolliver.database.dataHolder;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,9 +29,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+
+import timber.log.Timber;
 
 public class userDeliveryInfo extends AppCompatActivity {
 
@@ -56,7 +64,7 @@ public class userDeliveryInfo extends AppCompatActivity {
 
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         arrayList = new ArrayList<>();
-        arrayAdapter = new ArrayAdapter<>(this, R.layout.row, arrayList);
+        arrayAdapter = new ArrayAdapter<>(this, R.layout.row, R.id.USERNAME, arrayList);
 
         db = FirebaseDatabase.getInstance();
         node = db.getReference("user");
@@ -64,19 +72,23 @@ public class userDeliveryInfo extends AppCompatActivity {
                 .orderByChild("post/uid")
                 .equalTo(uid);
 
+
         query.addChildEventListener(new ChildEventListener() {
+            @SuppressLint("LogNotTimber")
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
-                if (snapshot.child("post").child("accept/1/UserName").getValue(String.class) != null) {
-                    String string = snapshot.child("post").child("accept").getValue(String.class);
-                    arrayList.add(string);
+                for (DataSnapshot item : snapshot.getChildren()) {
+                    for (DataSnapshot d : item.getChildren()) {
+                        if (d.getKey().equals("accept")) {
+                            Log.i("snapshot", String.valueOf(d.getChildrenCount()));
+                            for (int i = 1; i <= d.getChildrenCount(); i++) {
+                                String string = d.child(String.valueOf(i)).getValue(String.class);
+                                arrayList.add(string);
+                            }
+                        }
+                    }
                 }
-//                if (snapshot.child("post").child("accept/2/UserName").getValue(String.class) != null) {
-//                    String string1 = snapshot.child("post").child("accept/2/UserName").getValue(String.class);
-////                    arrayList.add(string1);
-//                }
-
                 arrayAdapter.notifyDataSetChanged();
             }
 
