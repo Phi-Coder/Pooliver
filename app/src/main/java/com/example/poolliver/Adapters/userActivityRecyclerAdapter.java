@@ -53,11 +53,11 @@ public class userActivityRecyclerAdapter extends RecyclerView.Adapter<userActivi
             Intent intent = new Intent(context, userDeliveryInfo.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
             intent.putExtra("pickupaddress", String.valueOf(UseritemPosition.getPickupAddress()));
-            intent.putExtra("pLat", String.valueOf(UseritemPosition.getpLat()));
-            intent.putExtra("pLong", String.valueOf(UseritemPosition.getpLong()));
+//            intent.putExtra("pLat", String.valueOf(UseritemPosition.get()));
+//            intent.putExtra("pLong", String.valueOf(UseritemPosition.getpLong()));
             intent.putExtra("dropaddress", String.valueOf(UseritemPosition.getdropAddress()));
-            intent.putExtra("dLat", String.valueOf(UseritemPosition.getdLat()));
-            intent.putExtra("dLong", String.valueOf(UseritemPosition.getdLong()));
+//            intent.putExtra("dLat", String.valueOf(UseritemPosition.getdLat()));
+//            intent.putExtra("dLong", String.valueOf(UseritemPosition.getdLong()));
             intent.putExtra("timings", String.valueOf(UseritemPosition.getTime()));
             intent.putExtra("uid", String.valueOf(UseritemPosition.getUid()));
             intent.putExtra("itemtype", String.valueOf(UseritemPosition.getitemtype()));

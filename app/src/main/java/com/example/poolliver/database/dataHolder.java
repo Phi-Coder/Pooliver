@@ -10,18 +10,14 @@ public class dataHolder {
     String time;
 
     int price, phoneNum;
-    double pLat, pLong, dLong, dLat;
+    String pickupLat, pickupLong, dropLat, dropLong;
 
-    public dataHolder(String name, String pickupAddress, String dropAddress, String itemtype, int price, double pLat, double pLong, double dLong, double dLat) {
+    public dataHolder(String name, String pickupAddress, String dropAddress, String itemtype, int price) {
         this.name = name;
         this.pickupAddress = pickupAddress;
         this.dropAddress = dropAddress;
         this.itemtype = itemtype;
         this.price = price;
-        this.pLat = pLat;
-        this.pLong = pLong;
-        this.dLong = dLong;
-        this.dLat = dLat;
     }
 
     public dataHolder() {
@@ -94,35 +90,35 @@ public class dataHolder {
         this.price = price;
     }
 
-    public double getpLat() {
-        return pLat;
+    public String getPickupLat() {
+        return pickupLat;
     }
 
-    public void setpLat(double pLat) {
-        this.pLat = pLat;
+    public void setPickupLat(String pickupLat) {
+        this.pickupLat = pickupLat;
     }
 
-    public double getpLong() {
-        return pLong;
+    public String getPickupLong() {
+        return pickupLong;
     }
 
-    public void setpLong(double pLong) {
-        this.pLong = pLong;
+    public void setPickupLong(String pickupLong) {
+        this.pickupLong = pickupLong;
     }
 
-    public double getdLong() {
-        return dLong;
+    public String getDropLat() {
+        return dropLat;
     }
 
-    public void setdLong(double dLong) {
-        this.dLong = dLong;
+    public void setDropLat(String dropLat) {
+        this.dropLat = dropLat;
     }
 
-    public double getdLat() {
-        return dLat;
+    public String getDropLong() {
+        return dropLong;
     }
 
-    public void setdLat(double dLat) {
-        this.dLat = dLat;
+    public void setDropLong(String dropLong) {
+        this.dropLong = dropLong;
     }
 }

@@ -33,8 +33,8 @@ public class userDeliveryInfo extends AppCompatActivity {
 
     private TextView pickupAddress, dropAddress, Timings, ItemType, phoneNum, Price;
     ListView listView;
-//    private ArrayList<String> arrayList;
-//    private ArrayAdapter<String> arrayAdapter;
+    private ArrayList<String> arrayList;
+    private ArrayAdapter<String> arrayAdapter;
     String[] mName = {};
     String[] mPrice = {};
     FirebaseUser firebaseUser;
@@ -55,8 +55,8 @@ public class userDeliveryInfo extends AppCompatActivity {
         listView = findViewById(R.id.listView);
 
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-//        arrayList = new ArrayList<>();
-//        arrayAdapter = new ArrayAdapter<>(this, R.layout.row, R.id.USERNAME, arrayList);
+        arrayList = new ArrayList<>();
+        arrayAdapter = new ArrayAdapter<>(this, R.layout.row, arrayList);
 
         db = FirebaseDatabase.getInstance();
         node = db.getReference("user");
@@ -69,15 +69,15 @@ public class userDeliveryInfo extends AppCompatActivity {
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
                 if (snapshot.child("post").child("accept/1/UserName").getValue(String.class) != null) {
-                    String string = snapshot.child("post").child("accept/1/UserName").getValue(String.class);
-//                    mName
+                    String string = snapshot.child("post").child("accept").getValue(String.class);
+                    arrayList.add(string);
                 }
-                if (snapshot.child("post").child("accept/2/UserName").getValue(String.class) != null) {
-                    String string1 = snapshot.child("post").child("accept/2/UserName").getValue(String.class);
-//                    arrayList.add(string1);
-                }
+//                if (snapshot.child("post").child("accept/2/UserName").getValue(String.class) != null) {
+//                    String string1 = snapshot.child("post").child("accept/2/UserName").getValue(String.class);
+////                    arrayList.add(string1);
+//                }
 
-//                arrayAdapter.notifyDataSetChanged();
+                arrayAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -101,15 +101,7 @@ public class userDeliveryInfo extends AppCompatActivity {
             }
         });
 
-        MyAdapter myAdapter = new MyAdapter(this, R.layout.row, mName, mPrice);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-            }
-        });
-
-//        listView.setAdapter(arrayAdapter);
+        listView.setAdapter(arrayAdapter);
 
         InncomingIntent();
     }
@@ -133,31 +125,31 @@ public class userDeliveryInfo extends AppCompatActivity {
         Price.setText(price);
     }
 
-    class MyAdapter extends ArrayAdapter<String> {
-        Context context;
-        String[] name;
-        String[] price;
-
-        public MyAdapter(@NonNull Context context, int resource, String[] name, String[] price) {
-            super(context, resource);
-            this.context = context;
-            this.name = name;
-            this.price = price;
-        }
-
-        @NonNull
-        @Override
-        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-            LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View row = layoutInflater.inflate(R.layout.row, parent, false);
-            TextView USERNAME = findViewById(R.id.USERNAME);
-            TextView PRICE = findViewById(R.id.PRICE);
-
-            USERNAME.setText(name[position]);
-            PRICE.setText(price[position]);
-            return row;
-        }
-    }
+//    class MyAdapter extends ArrayAdapter<String> {
+//        Context context;
+//        String[] name;
+//        String[] price;
+//
+//        public MyAdapter(@NonNull Context context, int resource, String[] name, String[] price) {
+//            super(context, resource);
+//            this.context = context;
+//            this.name = name;
+//            this.price = price;
+//        }
+//
+//        @NonNull
+//        @Override
+//        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+//            LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//            View row = layoutInflater.inflate(R.layout.row, parent, false);
+//            TextView USERNAME = findViewById(R.id.USERNAME);
+//            TextView PRICE = findViewById(R.id.PRICE);
+//
+//            USERNAME.setText(name[position]);
+//            PRICE.setText(price[position]);
+//            return row;
+//        }
+//    }
 
 
     @Override

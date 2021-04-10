@@ -4,17 +4,24 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import timber.log.Timber;
 
 public class DeliveryInfo extends AppCompatActivity {
 
@@ -25,6 +32,7 @@ public class DeliveryInfo extends AppCompatActivity {
     FirebaseDatabase firebaseDatabase;
     DatabaseReference dbRef;
     int i;
+    long maxID = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,18 +53,32 @@ public class DeliveryInfo extends AppCompatActivity {
         InncomingIntent();
         String uid = getIntent().getStringExtra("uid");
         FirebaseDatabase database = FirebaseDatabase.getInstance();
+        dbRef = FirebaseDatabase.getInstance().getReference("user").child(uid).child("post/accept");
+        dbRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    maxID = snapshot.getChildrenCount();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Timber.e(error.getMessage());
+            }
+        });
 
         Accept.setOnClickListener(v -> {
             FirebaseAuth mAuth = FirebaseAuth.getInstance();
             FirebaseUser user = mAuth.getCurrentUser();
 
-            if (i == 0) {
-                dbRef = database.getReference("user").child(uid).child("post").child("accept").child("1").child("UserName");
-            } else if (i == 1) {
-                dbRef = database.getReference("user").child(uid).child("post").child("accept").child("2").child("UserName");
-            } else if (i >= 2) {
-                Accept.setEnabled(false);
-            }
+//            if (i == 0) {
+//                dbRef = database.getReference("user").child(uid).child("post").child("accept").child("1").child("UserName");
+//            } else if (i == 1) {
+//                dbRef = database.getReference("user").child(uid).child("post").child("accept").child("2").child("UserName");
+//            } else if (i >= 2) {
+//                Accept.setEnabled(false);
+//            }
 
             String userUid = user.getUid();
 
@@ -65,8 +87,7 @@ public class DeliveryInfo extends AppCompatActivity {
 
             } else if (userUid != uid) {
                 Toast.makeText(DeliveryInfo.this, "accept request sent to the owner", Toast.LENGTH_SHORT).show();
-                dbRef.setValue(setName());
-                i++;
+                dbRef.child(String.valueOf(maxID + 1)).setValue(setName());
             }
 
 
@@ -83,7 +104,10 @@ public class DeliveryInfo extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String dropaddress = getIntent().getStringExtra("dropaddress");
-                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q=" + String.valueOf(dropaddress)));
+                String dropLat = getIntent().getStringExtra("dropLat");
+                String dropLong = getIntent().getStringExtra("dropLong");
+
+                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q=" + dropLat + "," + dropLong));
                 i.setPackage("com.google.android.apps.maps");
                 startActivity(i);
             }

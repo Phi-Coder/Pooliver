@@ -15,17 +15,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <FrameLayout
-                android:id="@+id/delMaps"
+            <ImageView
+                android:id="@+id/imageView"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
-                android:layout_margin="10dp" />
+                android:layout_margin="10dp"
+                android:src="@drawable/sgd" />
 
             <Button
                 android:id="@+id/getDirections"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/delMaps"
+                android:layout_below="@id/imageView"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="5dp"
                 android:backgroundTint="#27000000"

@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cardview"
     android:layout_width="match_parent"
-    android:onClick="onClick"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    android:backgroundTint="#B3BDA6">
+    android:onClick="onClick"
+    app:cardCornerRadius="6dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:text="2/593 jawahar nagar jaipur"
                 android:textAppearance="?attr/textAppearanceBody2"
-                android:textColor="?android:attr/textColorSecondary" />
+                android:textColor="@color/black" />
 
         </LinearLayout>
 
@@ -64,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:text="b12 jagatpura jaipur"
                 android:textAppearance="?attr/textAppearanceBody2"
-                android:textColor="?android:attr/textColorSecondary" />
+                android:textColor="@color/black" />
 
         </LinearLayout>
 
@@ -87,7 +87,7 @@
                 android:layout_height="wrap_content"
                 android:text="4-5pm"
                 android:textAppearance="?attr/textAppearanceBody2"
-                android:textColor="?android:attr/textColorSecondary" />
+                android:textColor="@color/black" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -103,7 +103,7 @@
                 android:layout_height="wrap_content"
                 android:text="Medicine"
                 android:textAppearance="?attr/textAppearanceBody2"
-                android:textColor="?android:attr/textColorSecondary" />
+                android:textColor="@color/black" />
 
         </LinearLayout>
 

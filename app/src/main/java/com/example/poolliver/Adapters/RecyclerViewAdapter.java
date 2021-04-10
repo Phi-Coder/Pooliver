@@ -56,11 +56,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             Intent intent = new Intent(context, DeliveryInfo.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
             intent.putExtra("pickupaddress", String.valueOf(itemPosition.getPickupAddress()));
-            intent.putExtra("pLat", String.valueOf(itemPosition.getpLat()));
-            intent.putExtra("pLong", String.valueOf(itemPosition.getpLong()));
+            intent.putExtra("pickupLat", String.valueOf(itemPosition.getPickupLat()));
+            intent.putExtra("pickupLong", String.valueOf(itemPosition.getPickupLong()));
             intent.putExtra("dropaddress", String.valueOf(itemPosition.getdropAddress()));
-            intent.putExtra("dLat", String.valueOf(itemPosition.getdLat()));
-            intent.putExtra("dLong", String.valueOf(itemPosition.getdLong()));
+            intent.putExtra("dropLat", String.valueOf(itemPosition.getDropLat()));
+            intent.putExtra("dropLong", String.valueOf(itemPosition.getDropLong()));
             intent.putExtra("timings", String.valueOf(itemPosition.getTime()));
             intent.putExtra("uid", String.valueOf(itemPosition.getUid()));
             intent.putExtra("itemtype", String.valueOf(itemPosition.getitemtype()));
@@ -79,7 +79,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView name, pickupAddress, dropAddress, itemtype, Price, Time;
-        TextView pLat, pLong, dLat, dLong;
         CardView cardView;
 
         public MyViewHolder(@NonNull View itemView) {
