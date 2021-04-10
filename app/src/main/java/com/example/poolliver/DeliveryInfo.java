@@ -51,6 +51,7 @@ public class DeliveryInfo extends AppCompatActivity {
 
 
         InncomingIntent();
+        String price = getIntent().getStringExtra("price");
         String uid = getIntent().getStringExtra("uid");
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         dbRef = FirebaseDatabase.getInstance().getReference("user").child(uid).child("post/accept");
@@ -87,7 +88,8 @@ public class DeliveryInfo extends AppCompatActivity {
 
             } else if (userUid != uid) {
                 Toast.makeText(DeliveryInfo.this, "accept request sent to the owner", Toast.LENGTH_SHORT).show();
-                dbRef.child(String.valueOf(maxID + 1)).setValue(setName());
+                dbRef.child(String.valueOf(maxID + 1)).child("username").setValue(setName());
+                dbRef.child(String.valueOf(maxID + 1)).child("price").setValue(price);
             }
 
 

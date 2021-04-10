@@ -109,7 +109,7 @@ public class PriceEstimation extends AppCompatActivity {
                 map.put("pickupLong", pickupLong);
                 map.put("dropLat", dropLat);
                 map.put("dropLong", dropLong);
-                FirebaseDatabase.getInstance().getReference("user").child(uid).child("post").updateChildren(map);
+                FirebaseDatabase.getInstance().getReference("user").child(uid).child("post").setValue(map);
 
 
                 Intent intentFinal = new Intent(PriceEstimation.this, MainActivity.class);

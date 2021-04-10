@@ -20,6 +20,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.poolliver.database.Request;
 import com.example.poolliver.database.dataHolder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -41,8 +42,8 @@ public class userDeliveryInfo extends AppCompatActivity {
 
     private TextView pickupAddress, dropAddress, Timings, ItemType, phoneNum, Price;
     ListView listView;
-    private ArrayList<String> arrayList;
-    private ArrayAdapter<String> arrayAdapter;
+    private ArrayList<Request> arrayList;
+    //    private ArrayAdapter<String> arrayAdapter;
     String[] mName = {};
     String[] mPrice = {};
     FirebaseUser firebaseUser;
@@ -64,7 +65,7 @@ public class userDeliveryInfo extends AppCompatActivity {
 
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         arrayList = new ArrayList<>();
-        arrayAdapter = new ArrayAdapter<>(this, R.layout.row, R.id.USERNAME, arrayList);
+        RequestAdapter requestAdapter = new RequestAdapter(this, R.layout.row, arrayList);
 
         db = FirebaseDatabase.getInstance();
         node = db.getReference("user");
@@ -81,15 +82,17 @@ public class userDeliveryInfo extends AppCompatActivity {
                 for (DataSnapshot item : snapshot.getChildren()) {
                     for (DataSnapshot d : item.getChildren()) {
                         if (d.getKey().equals("accept")) {
-                            Log.i("snapshot", String.valueOf(d.getChildrenCount()));
                             for (int i = 1; i <= d.getChildrenCount(); i++) {
-                                String string = d.child(String.valueOf(i)).getValue(String.class);
-                                arrayList.add(string);
+                                Log.i("snapshot", String.valueOf(i));
+                                String username = d.child(String.valueOf(i)).child("username").getValue(String.class);
+                                String price = d.child(String.valueOf(i)).child("price").getValue(String.class);
+                                Request request = new Request(username, price);
+                                arrayList.add(request);
                             }
                         }
                     }
                 }
-                arrayAdapter.notifyDataSetChanged();
+                requestAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -113,7 +116,7 @@ public class userDeliveryInfo extends AppCompatActivity {
             }
         });
 
-        listView.setAdapter(arrayAdapter);
+        listView.setAdapter(requestAdapter);
 
         InncomingIntent();
     }
@@ -137,31 +140,38 @@ public class userDeliveryInfo extends AppCompatActivity {
         Price.setText(price);
     }
 
-//    class MyAdapter extends ArrayAdapter<String> {
-//        Context context;
-//        String[] name;
-//        String[] price;
-//
-//        public MyAdapter(@NonNull Context context, int resource, String[] name, String[] price) {
-//            super(context, resource);
-//            this.context = context;
-//            this.name = name;
-//            this.price = price;
-//        }
-//
-//        @NonNull
-//        @Override
-//        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-//            LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//            View row = layoutInflater.inflate(R.layout.row, parent, false);
-//            TextView USERNAME = findViewById(R.id.USERNAME);
-//            TextView PRICE = findViewById(R.id.PRICE);
-//
-//            USERNAME.setText(name[position]);
-//            PRICE.setText(price[position]);
-//            return row;
-//        }
-//    }
+    class RequestAdapter extends ArrayAdapter<Request> {
+
+        private static final String TAG = "Request Adapter";
+        Context mContext;
+        int mResource;
+
+        public RequestAdapter(@NonNull Context mContext, int resource, @NonNull List<Request> objects) {
+            super(mContext, resource, objects);
+            this.mContext = mContext;
+            this.mResource = resource;
+        }
+
+        @SuppressLint("ViewHolder")
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            String username = getItem(position).getUsername();
+            String price = getItem(position).getPrice();
+
+            Request request = new Request(username, price);
+
+            LayoutInflater layoutInflater = LayoutInflater.from(mContext);
+            convertView = layoutInflater.inflate(mResource, parent, false);
+
+            TextView USERNAME = convertView.findViewById(R.id.USERNAME);
+            TextView PRICE = convertView.findViewById(R.id.PRICE);
+
+            USERNAME.setText(username);
+            PRICE.setText(price);
+            return convertView;
+        }
+    }
 
 
     @Override
