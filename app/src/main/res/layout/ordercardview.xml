@@ -6,13 +6,16 @@
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     android:onClick="onClick"
+    android:elevation="6dp"
+    app:cardBackgroundColor="#FFFFFF"
     app:cardCornerRadius="6dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="4dp"
-        android:orientation="vertical">
+        android:layout_margin="5dp"
+        android:orientation="vertical"
+        android:padding="5dp">
 
 
         <!-- Title, secondary and supporting text -->
@@ -22,6 +25,7 @@
             android:layout_height="wrap_content"
             android:text="Yuvraj Dagur"
             android:textAppearance="?attr/textAppearanceHeadline6"
+            android:textColor="@color/black"
             android:textSize="17sp" />
 
         <LinearLayout
@@ -117,8 +121,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="₹"
-                android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textColor="#1BC900"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -126,8 +130,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="54"
-                android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textColor="#1BC900"
+                android:textSize="20sp"
                 android:textStyle="bold|italic" />
         </LinearLayout>
 

@@ -29,7 +29,8 @@
                 android:layout_below="@id/imageView"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="5dp"
-                android:backgroundTint="#27000000"
+                android:backgroundTint="#B7093657"
+                android:textColor="#DD559CD5"
                 android:text="Get Directions"
                 android:textAllCaps="false" />
 

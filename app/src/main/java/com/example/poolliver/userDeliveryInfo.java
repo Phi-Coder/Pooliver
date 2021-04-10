@@ -123,7 +123,7 @@ public class userDeliveryInfo extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 AlertDialog.Builder alert = new AlertDialog.Builder(userDeliveryInfo.this);
-                alert.setTitle("Do you want to assign this person");
+                alert.setTitle("Assign this user to Take the Delivery");
 
                 alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {

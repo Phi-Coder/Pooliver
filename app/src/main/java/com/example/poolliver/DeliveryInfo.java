@@ -20,6 +20,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.core.Constants;
 
 import timber.log.Timber;
 
@@ -93,16 +94,20 @@ public class DeliveryInfo extends AppCompatActivity {
 
         });
 
-
         getDirections.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String dropaddress = getIntent().getStringExtra("dropaddress");
                 String dropLat = getIntent().getStringExtra("dropLat");
                 String dropLong = getIntent().getStringExtra("dropLong");
-
-                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q=" + dropLat + "," + dropLong));
-                i.setPackage("com.google.android.apps.maps");
+                String pickupLat = getIntent().getStringExtra("pickupLat");
+                String pickupLong = getIntent().getStringExtra("pickupLong");
+                String uri = "http://maps.google.com/maps?hl=en&saddr=" + pickupLat + "," + pickupLong + "&daddr=" + dropLat + ","
+                        + dropLong + "&mode=driving";
+//                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q=" + dropLat + "," + dropLong));
+                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+//                i.setPackage("com.google.android.apps.maps");
+                i.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
                 startActivity(i);
             }
         });
