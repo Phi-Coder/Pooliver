@@ -3,10 +3,29 @@ package com.example.poolliver.database;
 public class Request {
     String username;
     String price;
+    String phoneNum;
+    String uid;
 
-    public Request(String username, String price) {
+    public Request(String username, String price, String phoneNum) {
         this.username = username;
         this.price = price;
+        this.phoneNum = phoneNum;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public String getPhoneNum() {
+        return phoneNum;
+    }
+
+    public void setPhoneNum(String phoneNum) {
+        this.phoneNum = phoneNum;
     }
 
     public String getUsername() {

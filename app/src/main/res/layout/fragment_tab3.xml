@@ -33,23 +33,12 @@
                 android:textColor="@color/black"
                 android:textSize="30sp" />
 
-            <TextView
-                android:id="@+id/a"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/usernameA"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="20dp"
-                android:text="Your Activity:"
-                android:textColor="@color/black"
-                android:textSize="35dp" />
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/userRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/a"
-                android:layout_marginTop="4dp" />
+                android:layout_below="@id/usernameA"
+                android:layout_marginTop="10dp" />
 
 
         </RelativeLayout>
