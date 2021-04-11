@@ -22,7 +22,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.core.Constants;
 
-import timber.log.Timber;
 
 public class DeliveryInfo extends AppCompatActivity {
 
@@ -51,7 +50,9 @@ public class DeliveryInfo extends AppCompatActivity {
 
         InncomingIntent();
         String price = getIntent().getStringExtra("price");
+        // id of user who has created the delivery
         String uid = getIntent().getStringExtra("uid");
+
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         dbRef = FirebaseDatabase.getInstance().getReference("user").child(uid).child("post/accept");
         dbRef.addValueEventListener(new ValueEventListener() {
@@ -64,7 +65,7 @@ public class DeliveryInfo extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Timber.e(error.getMessage());
+                Log.e("error", error.getMessage());
             }
         });
 
@@ -72,23 +73,17 @@ public class DeliveryInfo extends AppCompatActivity {
             FirebaseAuth mAuth = FirebaseAuth.getInstance();
             FirebaseUser user = mAuth.getCurrentUser();
 
-//            if (i == 0) {
-//                dbRef = database.getReference("user").child(uid).child("post").child("accept").child("1").child("UserName");
-//            } else if (i == 1) {
-//                dbRef = database.getReference("user").child(uid).child("post").child("accept").child("2").child("UserName");
-//            } else if (i >= 2) {
-//                Accept.setEnabled(false);
-//            }
-
             String userUid = user.getUid();
 
             if (userUid.equals(uid)) {
                 Toast.makeText(DeliveryInfo.this, "Cannot accept your own delivery", Toast.LENGTH_SHORT).show();
 
-            } else if (userUid != uid) {
+            } else {
                 Toast.makeText(DeliveryInfo.this, "accept request sent to the owner", Toast.LENGTH_SHORT).show();
                 dbRef.child(String.valueOf(maxID + 1)).child("username").setValue(setName());
                 dbRef.child(String.valueOf(maxID + 1)).child("price").setValue(price);
+                dbRef.child(String.valueOf(maxID + 1)).child("userID").setValue(userUid);
+                dbRef.child(String.valueOf(maxID + 1)).child("phoneNum").setValue(String.valueOf(mAuth.getCurrentUser().getPhoneNumber()));
             }
 
 
@@ -104,9 +99,7 @@ public class DeliveryInfo extends AppCompatActivity {
                 String pickupLong = getIntent().getStringExtra("pickupLong");
                 String uri = "http://maps.google.com/maps?hl=en&saddr=" + pickupLat + "," + pickupLong + "&daddr=" + dropLat + ","
                         + dropLong + "&mode=driving";
-//                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q=" + dropLat + "," + dropLong));
                 Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-//                i.setPackage("com.google.android.apps.maps");
                 i.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
                 startActivity(i);
             }

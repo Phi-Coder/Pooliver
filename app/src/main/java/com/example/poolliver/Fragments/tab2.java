@@ -49,9 +49,7 @@ import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.mapbox.api.geocoding.v5.models.CarmenFeature;
-import com.mapbox.mapboxsdk.plugins.places.autocomplete.PlaceAutocomplete;
-import com.mapbox.mapboxsdk.plugins.places.autocomplete.model.PlaceOptions;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -79,7 +77,6 @@ public class tab2 extends Fragment implements OnMapReadyCallback {
     private final int REQUEST_CODE_AUTOCOMPLETE = 5;
     double lat1 = 0, long1 = 0, lat2 = 0, long2 = 0;
 
-    PlaceOptions placeOptions;
     Marker currentMarker;
     Marker DestMarker;
     Geocoder geocoder;
@@ -275,7 +272,7 @@ public class tab2 extends Fragment implements OnMapReadyCallback {
             if (task.isSuccessful()) {
                 Location location = task.getResult();
                 gotoLocation(location.getLatitude(), location.getLongitude());
-                Log.d("getCurrLoc", String.valueOf(location.getLatitude()) + " + " + String.valueOf(location.getLongitude()));
+//                Log.d("getCurrLoc", String.valueOf(location.getLatitude()) + " + " + String.valueOf(location.getLongitude()));
             }
         });
     }
@@ -287,7 +284,7 @@ public class tab2 extends Fragment implements OnMapReadyCallback {
         if (currentMarker == null) {
             MarkerOptions options = new MarkerOptions();
             options.position(currentlatLng);
-            options.title("Your Position");
+            options.title("Pickup Point");
             currentMarker = mMap.addMarker(options);
         } else {
             currentMarker.setPosition(currentlatLng);
@@ -337,11 +334,6 @@ public class tab2 extends Fragment implements OnMapReadyCallback {
             } else {
                 Toast.makeText(getContext(), "GPS is not enable", Toast.LENGTH_SHORT).show();
             }
-        }
-
-        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_AUTOCOMPLETE) {
-            CarmenFeature feature = PlaceAutocomplete.getPlace(data);
-            Toast.makeText(getContext(), feature.text(), Toast.LENGTH_LONG).show();
         }
 
         if (requestCode == AUTOCOMPLETE_FROM_REQUEST_CODE && resultCode == getActivity().RESULT_OK) {

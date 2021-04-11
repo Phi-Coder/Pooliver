@@ -1,29 +1,24 @@
 package com.example.poolliver;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.Size;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.poolliver.database.Request;
-import com.example.poolliver.database.dataHolder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -32,26 +27,19 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
-import timber.log.Timber;
 
 public class userDeliveryInfo extends AppCompatActivity {
 
     private TextView pickupAddress, dropAddress, Timings, ItemType, phoneNum, Price;
     ListView listView;
     private ArrayList<Request> arrayList;
-    //    private ArrayAdapter<String> arrayAdapter;
-    String[] mName = {};
-    String[] mPrice = {};
+    DatabaseReference dbRef;
     FirebaseUser firebaseUser;
     FirebaseDatabase db;
     DatabaseReference node;
-    int i;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +65,6 @@ public class userDeliveryInfo extends AppCompatActivity {
 
 
         query.addChildEventListener(new ChildEventListener() {
-            @SuppressLint("LogNotTimber")
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
@@ -85,10 +72,10 @@ public class userDeliveryInfo extends AppCompatActivity {
                     for (DataSnapshot d : item.getChildren()) {
                         if (d.getKey().equals("accept")) {
                             for (int i = 1; i <= d.getChildrenCount(); i++) {
-                                Log.i("snapshot", String.valueOf(i));
                                 String username = d.child(String.valueOf(i)).child("username").getValue(String.class);
                                 String price = d.child(String.valueOf(i)).child("price").getValue(String.class);
-                                Request request = new Request(username, price);
+                                String phoneNum = d.child(String.valueOf(i)).child("phoneNum").getValue(String.class);
+                                Request request = new Request(username, price, phoneNum);
                                 arrayList.add(request);
                             }
                         }
@@ -122,19 +109,47 @@ public class userDeliveryInfo extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                // getting the information of the person who accepted the delivery
+//                query.addChildEventListener(new ChildEventListener() {
+//                    @Override
+//                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError error) {
+//
+//                    }
+//                });
+                Toast.makeText(userDeliveryInfo.this, String.valueOf(id + 1), Toast.LENGTH_SHORT).show();
                 AlertDialog.Builder alert = new AlertDialog.Builder(userDeliveryInfo.this);
                 alert.setTitle("Assign this user to Take the Delivery");
 
-                alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        //Your action here
-                    }
+                alert.setPositiveButton("Confirm", (dialog, whichButton) -> {
+                    dbRef = FirebaseDatabase.getInstance().getReference("user").child(uid).child("post/accept");
+                    dbRef.child(String.valueOf(id + 1)).child("ifAccepted").setValue(true);
+                    listView.setEnabled(false);
+
                 });
 
-                alert.setNegativeButton("Cancel",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                            }
+                alert.setNegativeButton("No",
+                        (dialog, whichButton) -> {
                         });
                 alert.show();
 
@@ -181,17 +196,20 @@ public class userDeliveryInfo extends AppCompatActivity {
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
             String username = getItem(position).getUsername();
             String price = getItem(position).getPrice();
+            String phoneNum = getItem(position).getPhoneNum();
 
-            Request request = new Request(username, price);
+            Request request = new Request(username, price, phoneNum);
 
             LayoutInflater layoutInflater = LayoutInflater.from(mContext);
             convertView = layoutInflater.inflate(mResource, parent, false);
 
             TextView USERNAME = convertView.findViewById(R.id.USERNAME);
             TextView PRICE = convertView.findViewById(R.id.PRICE);
+            TextView PHONENUM = convertView.findViewById(R.id.PHONENUM);
 
             USERNAME.setText(username);
             PRICE.setText(price);
+            PHONENUM.setText(phoneNum);
             return convertView;
         }
     }

@@ -4,19 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#00BCD4"
+    android:background="#F5F5F5"
     tools:context=".Fragments.tab2">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/maps"
-        android:background="#FFFFFF">
+        android:layout_below="@id/maps">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#FFFFFF">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/textTopic"
@@ -59,16 +57,11 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="28dp"
                 android:layout_marginEnd="30dp"
-                android:background="#FFFFFF"
-                android:backgroundTint="#F4F4F4"
                 android:clickable="true"
                 android:focusable="true"
                 android:hint="@string/from"
                 android:inputType="textAutoComplete"
                 android:padding="8dp"
-                android:singleLine="false"
-                android:textColor="#000000"
-                android:textColorHint="#424242"
                 android:textSize="16sp" />
 
             <EditText
@@ -79,15 +72,11 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="30dp"
-                android:background="#FFFFFF"
-                android:backgroundTint="#F5F5F5"
                 android:clickable="true"
                 android:focusable="true"
                 android:hint="@string/to"
                 android:inputType="text"
                 android:padding="8dp"
-                android:textColor="#000000"
-                android:textColorHint="#424242"
                 android:textSize="16sp" />
 
             <LinearLayout
@@ -110,8 +99,7 @@
                 <Spinner
                     android:id="@+id/productType"
                     android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:background="#ECECEC" />
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
 
@@ -136,11 +124,7 @@
                     android:id="@+id/timings"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#F4F4F4"
-                    android:hint="5-6pm"
-                    android:singleLine="true"
-                    android:textColor="#000000"
-                    android:textColorHint="#424242" />
+                    android:hint="5-6pm" />
 
             </LinearLayout>
 
