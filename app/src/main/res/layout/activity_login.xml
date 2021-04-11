@@ -32,6 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/verifyCode"
         android:layout_centerHorizontal="true"
+        android:rotationY="2"
         android:text="Get verification code"
         android:textSize="16dp" />
 
