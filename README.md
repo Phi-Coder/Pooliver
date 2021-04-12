@@ -20,6 +20,7 @@ A user can create a Delivery on the app, and other users traveling on the same r
 $ git clone https://github.com/Phi-Coder/Pooliver.git && cd Pooliver
 ```
 - Open the Project Folder in [Android Studio](https://developer.android.com/studio) or Visual Studio Code.
+- Mail your SHA-256 and SHA1 key to yuvraj.dagur928@gmail.com or ujjwalmttl1@gmail.com with subject `Add SHA to Firebase Project | Pooliver`
 - Run the App.
 
 ### Google Technologies Used 👩🏻‍💻
