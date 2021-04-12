@@ -15,6 +15,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -22,12 +23,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 public class DeliveryAccepted extends AppCompatActivity {
 
     TextView pickupAddress, dropAddress, Timings, ItemType, name, phoneNum, Price, empty;
     ScrollView scrollView;
     Button getDirections;
+    MaterialButton endDelivery;
     RelativeLayout notificationLayout;
     public static final String SHARED_PREFS = "sharedPrefs";
     DatabaseReference dbRef;
@@ -49,6 +52,7 @@ public class DeliveryAccepted extends AppCompatActivity {
         ItemType = findViewById(R.id.ItemType);
         name = findViewById(R.id.Name);
         Price = findViewById(R.id.Price);
+        endDelivery = findViewById(R.id.endDelivery);
         notificationLayout = findViewById(R.id.notificationLayout);
 
         dbRef = FirebaseDatabase.getInstance().getReference("user").child("post/accept");
@@ -56,7 +60,7 @@ public class DeliveryAccepted extends AppCompatActivity {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         scrollView.setVisibility(View.INVISIBLE);
 
-        for (int i = 1; i <= 3; i++) {
+        for (int i = 1; i <= 6; i++) {
             Query query = db.getReference("user")
                     .orderByChild("post/accept/" + String.valueOf(i) + "/userID")
                     .equalTo(uid);
@@ -76,6 +80,7 @@ public class DeliveryAccepted extends AppCompatActivity {
                     String itemtypeF = snapshot.child("post/itemtype").getValue(String.class);
                     String timeF = snapshot.child("post/time").getValue(String.class);
                     String priceF = snapshot.child("post/price").getValue(String.class);
+                    String ownerID = snapshot.child("post/uid").getValue(String.class);
 
                     name.setText(nameF);
                     pickupAddress.setText(pickupAddressF);
@@ -84,6 +89,9 @@ public class DeliveryAccepted extends AppCompatActivity {
                     ItemType.setText(itemtypeF);
                     Timings.setText(timeF);
                     Price.setText(priceF);
+
+                    empty.setVisibility(View.INVISIBLE);
+                    scrollView.setVisibility(View.VISIBLE);
 
                     getDirections.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -94,16 +102,25 @@ public class DeliveryAccepted extends AppCompatActivity {
                             i.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
                             startActivity(i);
                         }
-
                     });
-                    empty.setVisibility(View.INVISIBLE);
-                    scrollView.setVisibility(View.VISIBLE);
+
+                    endDelivery.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("user").child(ownerID).child("post");
+                            ref.removeValue();
+                            Toast.makeText(DeliveryAccepted.this, "Ride Ended", Toast.LENGTH_SHORT).show();
+                            Intent i = new Intent(DeliveryAccepted.this, MainActivity.class);
+                            startActivity(i);
+                        }
+                    });
 
 
                 }
 
                 @Override
-                public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String
+                        previousChildName) {
 
                 }
 
@@ -113,7 +130,8 @@ public class DeliveryAccepted extends AppCompatActivity {
                 }
 
                 @Override
-                public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String
+                        previousChildName) {
 
                 }
 
