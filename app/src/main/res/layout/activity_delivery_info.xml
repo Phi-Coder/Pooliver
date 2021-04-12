@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     tools:context=".DeliveryInfo">
 
     <ScrollView
@@ -13,7 +14,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF">
 
             <ImageView
                 android:id="@+id/imageView"
@@ -24,15 +26,17 @@
 
             <Button
                 android:id="@+id/getDirections"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="393dp"
+                android:layout_height="49dp"
                 android:layout_below="@id/imageView"
                 android:layout_alignParentEnd="true"
-                android:layout_marginEnd="5dp"
+                android:layout_marginTop="-24dp"
+                android:layout_marginEnd="8dp"
                 android:backgroundTint="#B7093657"
                 android:text="Get Directions"
                 android:textAllCaps="false"
-                android:textColor="#DD559CD5" />
+                android:textColor="#DD92F1FA"
+                app:strokeColor="#FFFFFF" />
 
             <LinearLayout
                 android:id="@+id/layoutOne"
@@ -156,28 +160,19 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Profile of Owner:"
-                    android:textColor="@color/black"
-                    android:textSize="25sp" />
-
-                <TextView
                     android:id="@+id/Name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
 
                     android:text="Username"
                     android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/Address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:text="Owner's Home Address"
+                    android:text="User Address"
 
                     android:textColor="@color/black"
                     android:textSize="18sp" />
@@ -189,15 +184,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/layoutFive"
+
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp">
+                android:layout_margin="5dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
                     android:text="Rs "
-                    android:textColor="#1BC900"
+                    android:textColor="@color/black"
                     android:textSize="25dp"
                     android:textStyle="bold|italic" />
 
@@ -207,7 +203,7 @@
                     android:layout_height="wrap_content"
 
                     android:text="50"
-                    android:textColor="#1BC900"
+                    android:textColor="@color/black"
                     android:textSize="25dp"
                     android:textStyle="bold|italic" />
 
@@ -218,7 +214,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/layoutSix"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="5dp">
 
                 <Button
                     android:id="@+id/acceptRide"
