@@ -49,6 +49,7 @@ import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputEditText;
 
 
 import java.io.IOException;
@@ -85,8 +86,8 @@ public class tab2 extends Fragment implements OnMapReadyCallback {
     Button EstmPrice;
     Spinner ProductType;
     String Item;
-    EditText From, To, timings;
-
+    EditText timings;
+    TextInputEditText From, To;
 
     @SuppressLint({"VisibleForTests", "ClickableViewAccessibility"})
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

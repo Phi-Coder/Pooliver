@@ -3,11 +3,22 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/notificationLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DeliveryInfo">
+    tools:context=".DeliveryAccepted">
+
+    <TextView
+        android:id="@+id/empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="You got no rides, Go to pool to take a delivery"
+        android:textSize="15dp" />
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -19,8 +30,8 @@
                 android:id="@+id/imageView"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
-                android:layout_margin="10dp"
-                android:src="@drawable/sgd" />
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/sgs" />
 
             <Button
                 android:id="@+id/getDirections"
@@ -158,6 +169,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+
                     android:text="Profile of Owner:"
                     android:textColor="@color/black"
                     android:textSize="25sp" />
@@ -173,11 +185,11 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/Address"
+                    android:id="@+id/phonenum"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:text="Owner's Home Address"
+                    android:text="phone number"
 
                     android:textColor="@color/black"
                     android:textSize="18sp" />
@@ -190,7 +202,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/layoutFive"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp">
+                android:layout_marginTop="25dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -198,38 +210,30 @@
 
                     android:text="Rs "
                     android:textColor="#1BC900"
-                    android:textSize="25dp"
+                    android:textSize="26sp"
                     android:textStyle="bold|italic" />
 
                 <TextView
                     android:id="@+id/Price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
                     android:text="50"
                     android:textColor="#1BC900"
-                    android:textSize="25dp"
+                    android:textSize="26sp"
                     android:textStyle="bold|italic" />
 
             </LinearLayout>
 
-            <LinearLayout
+            <com.google.android.material.button.MaterialButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/layoutSix"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="20dp"
+                android:backgroundTint="#F44336"
+                android:text="End Delivery" />
 
-                <Button
-                    android:id="@+id/acceptRide"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="4dp"
-                    android:text="Accept"
-                    android:textAllCaps="false"
-                    android:textSize="16sp" />
 
-            </LinearLayout>
         </RelativeLayout>
     </ScrollView>
 </RelativeLayout>

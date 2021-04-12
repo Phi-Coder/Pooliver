@@ -7,6 +7,10 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.poolliver.Adapters.PageAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -61,6 +65,26 @@ public class MainActivity extends AppCompatActivity {
 
         // listen for scroll  or page change
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater findMenuItems = getMenuInflater();
+        findMenuItems.inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == R.id.notification) {
+//            Toast.makeText(this, "notification Item", Toast.LENGTH_SHORT).show();
+            Intent acceptIntent = new Intent(MainActivity.this, DeliveryAccepted.class);
+            startActivity(acceptIntent);
+        }
+
+
+        return super.onOptionsItemSelected(item);
     }
 
 }

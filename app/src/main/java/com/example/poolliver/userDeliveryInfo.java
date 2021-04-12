@@ -37,7 +37,6 @@ public class userDeliveryInfo extends AppCompatActivity {
     ListView listView;
     private ArrayList<Request> arrayList;
     DatabaseReference dbRef;
-    FirebaseUser firebaseUser;
     FirebaseDatabase db;
     DatabaseReference node;
 
@@ -58,7 +57,7 @@ public class userDeliveryInfo extends AppCompatActivity {
         RequestAdapter requestAdapter = new RequestAdapter(this, R.layout.row, arrayList);
 
         db = FirebaseDatabase.getInstance();
-        node = db.getReference("user");
+//        node = db.getReference("user");
         Query query = db.getReference("user")
                 .orderByChild("post/uid")
                 .equalTo(uid);
@@ -137,7 +136,6 @@ public class userDeliveryInfo extends AppCompatActivity {
 //
 //                    }
 //                });
-                Toast.makeText(userDeliveryInfo.this, String.valueOf(id + 1), Toast.LENGTH_SHORT).show();
                 AlertDialog.Builder alert = new AlertDialog.Builder(userDeliveryInfo.this);
                 alert.setTitle("Assign this user to Take the Delivery");
 

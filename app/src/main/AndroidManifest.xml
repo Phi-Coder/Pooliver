@@ -20,6 +20,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Poolliver">
         <activity
+            android:name=".DeliveryAccepted"
+            android:parentActivityName=".MainActivity" />
+        <activity
             android:name=".userDeliveryInfo"
             android:parentActivityName=".MainActivity" />
         <!--
@@ -30,8 +33,7 @@
              sign the APK for publishing.
              You can define the keys for the debug and release targets in src/debug/ and src/release/.
         -->
-        <activity android:name=".UserInfo" />
-        <activity android:name=".MainActivity" />
+
         <activity
             android:name=".DeliveryInfo"
             android:parentActivityName=".MainActivity" />
@@ -41,13 +43,25 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBIkTPrHapAtWAGp0bIu-J8KFY-_b9ksRM" />
 
-        <activity android:name=".LoginActivity">
+        <activity
+            android:name=".LoginActivity"
+            android:alwaysRetainTaskState="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".UserInfo"
+            android:alwaysRetainTaskState="true"
+            android:autoRemoveFromRecents="false"
+            android:clearTaskOnLaunch="false">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>

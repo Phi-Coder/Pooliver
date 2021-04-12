@@ -53,7 +53,6 @@ public class DeliveryInfo extends AppCompatActivity {
         // id of user who has created the delivery
         String uid = getIntent().getStringExtra("uid");
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
         dbRef = FirebaseDatabase.getInstance().getReference("user").child(uid).child("post/accept");
         dbRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -92,7 +91,6 @@ public class DeliveryInfo extends AppCompatActivity {
         getDirections.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String dropaddress = getIntent().getStringExtra("dropaddress");
                 String dropLat = getIntent().getStringExtra("dropLat");
                 String dropLong = getIntent().getStringExtra("dropLong");
                 String pickupLat = getIntent().getStringExtra("pickupLat");

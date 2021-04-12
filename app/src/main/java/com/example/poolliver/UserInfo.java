@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -21,7 +23,7 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 public class UserInfo extends AppCompatActivity {
 
-    EditText username, phonenum;
+    TextInputEditText username, phonenum;
     Button getStarted;
     public static final String SHARED_PREFS = "sharedPrefs";
 
@@ -46,6 +48,9 @@ public class UserInfo extends AppCompatActivity {
             public void onClick(View v) {
                 if (username.getText().toString().isEmpty()) {
                     username.setError("enter your name");
+                }
+                if (phonenum.getText().toString().isEmpty()) {
+                    phonenum.setError("enter your phone number");
                 } else {
                     editor.putString("name", String.valueOf(username.getText())); // value to store
                     editor.putString("phoneNumber", phone_number); // value to store
@@ -60,6 +65,7 @@ public class UserInfo extends AppCompatActivity {
                 }
             }
         });
+
 
     }
 }

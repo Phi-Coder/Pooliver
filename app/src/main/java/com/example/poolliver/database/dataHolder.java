@@ -9,10 +9,10 @@ public class dataHolder {
     String itemtype, pickupAddress, dropAddress;
     String time;
 
-    int price, phoneNum;
+    String price, phoneNum;
     String pickupLat, pickupLong, dropLat, dropLong;
 
-    public dataHolder(String name, String pickupAddress, String dropAddress, String itemtype, int price) {
+    public dataHolder(String name, String pickupAddress, String dropAddress, String itemtype, String price) {
         this.name = name;
         this.pickupAddress = pickupAddress;
         this.dropAddress = dropAddress;
@@ -24,7 +24,7 @@ public class dataHolder {
 
     }
 
-    public dataHolder(String name, String pickupAddress, String dropAddress, int price, String itemtype, String time) {
+    public dataHolder(String name, String pickupAddress, String dropAddress, String price, String itemtype, String time) {
         this.name = name;
         this.time = time;
         this.pickupAddress = pickupAddress;
@@ -82,11 +82,11 @@ public class dataHolder {
         this.itemtype = itemtype;
     }
 
-    public int getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 

@@ -6,6 +6,15 @@
     android:background="#F5F5F5"
     tools:context=".Fragments.tab3">
 
+    <TextView
+        android:id="@+id/Empty"
+        android:layout_width="329dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:text="You have not created any Delivery, Create a Delivery using New Delivery Tab"
+        android:textAlignment="center"
+        android:textSize="18dp" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">

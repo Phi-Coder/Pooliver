@@ -4,56 +4,85 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F5F5F5"
     tools:context=".LoginActivity">
 
     <TextView
+        android:id="@+id/pooliver"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="Pooliver"
+        android:layout_marginTop="5dp"
+        android:text="@string/appName"
         android:textColor="@color/black"
         android:textSize="40sp" />
 
-    <EditText
-        android:id="@+id/phoneNum"
-        android:layout_width="250dp"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutM"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/getCode"
+        android:layout_below="@id/pooliver"
         android:layout_centerHorizontal="true"
-        android:layout_margin="10dp"
-        android:ems="10"
-        android:inputType="phone"
-        android:textColor="@color/black"
-        android:textSize="15sp" />
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="35dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginRight="35dp"
+        android:hint="@string/hint_number">
+
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/phoneNum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="phone"
+            android:textColor="@color/black" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <Button
         android:id="@+id/getCode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/verifyCode"
+        android:layout_below="@id/layoutM"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
         android:text="Get verification code"
         android:textSize="16dp" />
 
-    <EditText
-        android:id="@+id/verifyCode"
-        android:layout_width="90dp"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutM2"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/signIn"
+        android:layout_below="@id/getCode"
         android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="35dp"
         android:layout_marginTop="30dp"
-        android:layout_marginBottom="10dp"
-        android:inputType="number"
-        android:textColor="@color/black"
-        android:textSize="15sp" />
+        android:layout_marginRight="35dp"
+        android:hint="enter OTP"
+        android:inputType="number">
+
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/verifyCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="phone"
+            android:textColor="@color/black" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <Button
         android:id="@+id/signIn"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_alignParentBottom="true"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layoutM2"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="300dp"
+        android:layout_marginTop="5dp"
         android:background="@color/black"
         android:backgroundTint="@color/black"
         android:text="sign in"

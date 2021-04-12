@@ -36,7 +36,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class tab3 extends Fragment {
 
-    TextView username;
+    TextView username, Empty;
     public static final String SHARED_PREFS = "sharedPrefs";
     Context mContext;
     RecyclerView userRecyclerView;
@@ -53,6 +53,7 @@ public class tab3 extends Fragment {
 
         mContext = view.getContext();
         username = view.findViewById(R.id.usernameA);
+        Empty = view.findViewById(R.id.Empty);
         userRecyclerView = view.findViewById(R.id.userRecyclerView);
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
@@ -68,6 +69,8 @@ public class tab3 extends Fragment {
         Query query = db.getReference("user")
                 .orderByChild("post/uid")
                 .equalTo(uid);
+
+
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -75,6 +78,14 @@ public class tab3 extends Fragment {
 
                 for (DataSnapshot itemSnap : snapshot.getChildren()) {
                     dataHolder data = itemSnap.child("post").getValue(dataHolder.class);
+                    if (data.equals(null)) {
+                        userRecyclerView.setVisibility(View.INVISIBLE);
+                        Empty.setVisibility(View.VISIBLE);
+                    } else {
+                        userRecyclerView.setVisibility(View.VISIBLE);
+                        Empty.setVisibility(View.INVISIBLE);
+                    }
+
                     userItemList.add(data);
                 }
                 userRecyclerAdapter = new userActivityRecyclerAdapter(userItemList, getContext());
