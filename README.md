@@ -4,7 +4,7 @@ This is our solution for the [Google Solution Challenge 2021](https://developers
 See the App Prototype Video [Here](https://youtu.be/qrqHojVxsyo)
 
 ### App Glimpse 📱
-![alt text](http://url/to/img.png)
+![alt text](https://github.com/Phi-Coder/Pooliver/main/images/WhatsApp Image 2021-05-24 at 10.29.31 PM (1).jpeg)
 
 ### The Idea 💡
 **Pooliver** is an android application that allows Small Home Businesses, Local Shops and Localites to deliver thing with the concept of CarPooling.</br>
