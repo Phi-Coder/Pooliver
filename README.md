@@ -3,6 +3,9 @@ Android Application that connects people to deliver things by pooling.</br>
 This is our solution for the [Google Solution Challenge 2021](https://developers.google.com/community/dsc-solution-challenge)</br>
 See the App Prototype Video [Here](https://youtu.be/qrqHojVxsyo)
 
+### App Glimpse 📱
+![alt text](http://url/to/img.png)
+
 ### The Idea 💡
 **Pooliver** is an android application that allows Small Home Businesses, Local Shops and Localites to deliver thing with the concept of CarPooling.</br>
 A user can create a Delivery on the app, and other users traveling on the same route can pick up and drop the items for that person, without having to go an extra mile, all while making easy money, which goes straight into your pockets, NO Commission Needed. 
