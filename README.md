@@ -4,7 +4,14 @@ This is our solution for the [Google Solution Challenge 2021](https://developers
 See the App Prototype Video [Here](https://youtu.be/qrqHojVxsyo)
 
 ### App Glimpse 📱
-![alt text](https://github.com/Phi-Coder/Pooliver/main/images/WhatsApp Image 2021-05-24 at 10.29.31 PM (1).jpeg)
+<p>
+  <img src="https://github.com/Phi-Coder/Pooliver/blob/c4022aeea75c442cf91a664bfb38538ff71d27cd/images/WhatsApp%20Image%202021-05-24%20at%2010.29.31%20PM%20(3).jpeg" width="300" height ="600" title="hover text">
+  <img src="https://github.com/Phi-Coder/Pooliver/blob/c4022aeea75c442cf91a664bfb38538ff71d27cd/images/WhatsApp%20Image%202021-05-24%20at%2010.29.31%20PM%20(2).jpeg" width="300" height ="600" title="hover text">
+  <br>
+  <img src="https://github.com/Phi-Coder/Pooliver/blob/c4022aeea75c442cf91a664bfb38538ff71d27cd/images/WhatsApp%20Image%202021-05-24%20at%2010.29.31%20PM%20(1).jpeg" width="300" height ="600" title="hover text">
+  <img src="https://github.com/Phi-Coder/Pooliver/blob/c4022aeea75c442cf91a664bfb38538ff71d27cd/images/WhatsApp%20Image%202021-05-24%20at%2010.29.31%20PM.jpeg" width="300" height ="600" title="hover text">
+</p>
+<!-- ![alt text](https://github.com/Phi-Coder/Pooliver/blob/c4022aeea75c442cf91a664bfb38538ff71d27cd/images/WhatsApp%20Image%202021-05-24%20at%2010.29.31%20PM%20(1).jpeg) -->
 
 ### The Idea 💡
 **Pooliver** is an android application that allows Small Home Businesses, Local Shops and Localites to deliver thing with the concept of CarPooling.</br>
@@ -39,5 +46,5 @@ As of now, there is no payment gateway withing the app, so the users need to dea
 We're also planning to introduce a little bit of Gamification by awarding users with coupons so that more and more people can stick to the platform, which in turn helps the society as a whole. 
 
 ### Contributors 🤝🏻
-- Yuvraj Dagur - [LinkedIn](https://linkedin.com/in/yuvraj-dagur), [Github](https://github.com/thatfreakcoder)
 - Ujjwal Mittal - [LinkedIn](https://linkedin.com/in/ujjwal-mittal), [Github](https://github.com/Phi-Coder)
+- Yuvraj Dagur - [LinkedIn](https://linkedin.com/in/yuvraj-dagur), [Github](https://github.com/thatfreakcoder)
