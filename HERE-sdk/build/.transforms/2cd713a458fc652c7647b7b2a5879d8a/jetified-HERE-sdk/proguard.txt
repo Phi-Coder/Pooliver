@@ -1,0 +1,63 @@
+#
+# Please see http://proguard.sourceforge.net/#manual/usage.html
+# to understand the proguard options and class template syntax
+#
+
+#
+# HERE SDK specific rules
+#
+
+-keepattributes Signature
+-keepattributes *Annotation*
+
+# Public packages
+-dontwarn com.here.android.**
+-dontwarn com.here.android.**$*
+-keep class com.here.android.** { *; }
+-keep class com.here.android.**$* { *; }
+-keep interface com.here.android.** { *; }
+-keep interface com.here.android.**$* { *; }
+
+-dontwarn com.here.internal.**
+-dontwarn com.here.internal.**$*
+-keep class com.here.internal.** { *; }
+-keep class com.here.internal.**$* { *; }
+-keep interface com.here.internal.** { *; }
+-keep interface com.here.internal.**$* { *; }
+
+# Internal packages
+-dontwarn com.nokia.**
+-dontwarn com.nokia.**$*
+-keep class com.nokia.** { *; }
+-keep class com.nokia.**$* { *; }
+-keep interface com.nokia.** { *; }
+-keep interface com.nokia.**$* { *; }
+
+-keep class com.here.network.** { *; }
+
+-dontwarn com.google.android.gson.**
+-keep class com.google.gson.** { *; }
+
+-keep class com.here.sdk.hacwrapper.** { *; }
+-keep interface com.here.sdk.hacwrapper.** { *; }
+-keep class com.here.sdk.analytics.** { *; }
+-keep interface com.here.sdk.analytics.** { *; }
+
+# Remove HERE Positioning internal APIs
+-assumenosideeffects class com.here.internal.positioning.HerePositioningServices {
+    public com.here.internal.positioning.apis.HighAccuracyLocationApi getHighAccuracyLocationApi(...);
+    public com.here.internal.positioning.apis.NetworkLocationApi getNetworkLocationApi(...);
+    public com.here.internal.positioning.apis.MeasurementPlaybackApi getMeasurementPlaybackApi(...);
+    public com.here.internal.positioning.apis.RadioMapManagerApi getRadiomapManagerApi(...);
+    public com.here.internal.positioning.apis.LocationTestApi getLocationTestApi(...);
+    public com.here.internal.positioning.apis.FingerprintCollectionTestApi getFingerprintCollectionTestApi(...);
+    public void setUsageTrackerListener(...);
+    public static void enableFeatures(...);
+    public static void disableFeatures(...);
+}
+
+# Keep HERE Positioning SDK jars
+-keep class com.here.odnp.** { *; }
+-keep class com.here.posclient.** { *; }
+-keep class com.here.services.** { *; }
+-keep class com.here.android.positioning.** { *; }

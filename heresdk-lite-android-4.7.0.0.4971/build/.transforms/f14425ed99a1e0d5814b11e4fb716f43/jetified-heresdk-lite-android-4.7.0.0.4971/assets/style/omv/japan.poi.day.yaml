@@ -1,0 +1,996 @@
+import: poi.day.yaml
+global:
+  poi:
+    IPC:
+      # Global object for caching feature icons from 'IPC' section.
+      feature:
+        icons: []
+      visible: true
+      rtlLangCodes:
+        - ar
+        - arc
+        - dv
+        - fa
+        - ha
+        - he
+        - khw
+        - ks
+        - ku
+        - ps
+        - ur
+        - yi
+      hasRtlText: |
+        function(ux_language, ux_language_fallback) {
+          const rtlCodes = this.rtlLangCodes;
+          if (ux_language && feature['name:' + ux_language]) {
+            return rtlCodes.indexOf(ux_language) >= 0;
+          } else if (ux_language_fallback && feature['name:' + ux_language_fallback]) {
+            return rtlCodes.indexOf(ux_language_fallback) >= 0;
+          }
+          return false;
+        }
+      getOffsetForText: |
+        function(icons, index) {
+          /**
+           * Initially, all icons in feature.icons are sorted by priorities in ascending order and will be rendered
+           * from left to right. But if the text of the POI is written in RTL language then the rendering
+           * order should be reversed. This function returns correct offset for the given icon index.
+           * @param {Object} properties Feature properties
+           * @param {number} index Index of the icon within properties.icons
+           * @return {Array.<number>} The offset of the given icon that takes language into account.
+           */
+          const hasRtlText = this.hasRtlText(global.ux_language, global.ux_language_fallback);
+          return icons[hasRtlText ? icons.length - 1 - index : index].offset;
+        }
+  omv:
+    extra_data:
+      poi:
+        IPC:
+          100-1000-0003:
+            default:
+              default:
+                icon: null
+          200-2300-0000:
+            default:
+              default:
+                icon: null
+          300-3200-0031:
+            buddhist:
+              default:
+                icon: japan--religious-temple-buddhist-jpn
+                min_zoom: 16
+                priority: 35
+            default:
+              default:
+                icon: japan--religious-temple-buddhist-jpn
+                min_zoom: 17
+                priority: 36
+          300-3200-0035:
+            shinto:
+              default:
+                icon: japan--religious-shinto-jpn
+                min_zoom: 17
+                priority: 37
+          350-3500-0233:
+            default:
+              default:
+                icon: null
+          350-3500-0235:
+            default:
+              default:
+                icon: japan--waterfall
+                min_zoom: 15
+                priority: 94
+          350-3500-0300:
+            default:
+              default:
+                icon: null
+          350-3500-0302:
+            default:
+              default:
+                icon: null
+          350-3500-0304:
+            default:
+              default:
+                icon: null
+          350-3510-0237:
+            default:
+              default:
+                icon: japan--mountain-pass
+                min_zoom: 17
+                priority: 92
+          350-3510-0238:
+            default:
+              default:
+                icon: japan--mountain
+                min_zoom: 9
+                size: 19
+                priority: 0
+          350-3522-0239:
+            default:
+              default:
+                icon: null
+          350-3550-0336:
+            default:
+              default:
+                icon: null
+          400-4000-4581:
+            default:
+              default:
+                icon: japan--airport
+                min_zoom: 9
+                priority: 0
+          400-4000-4582:
+            default:
+              default:
+                icon: japan--airport
+                min_zoom: 15
+                priority: 1
+          400-4100-0035:
+            default:
+              is_multimodal:
+                is_speed_rail:
+                  icon: japan--transport-shinkansen-jpn
+                  min_zoom: 9
+                  priority: 0
+                is_state_rail:
+                  icon: japan--train
+                  min_zoom: 12
+                  priority: 1
+                is_private_rail:
+                  icon: japan--train
+                  min_zoom: 12
+                  priority: 2
+              is_speed_rail:
+                icon: japan--transport-shinkansen-jpn
+                min_zoom: 9
+                priority: 2
+              is_state_rail:
+                icon: japan--train
+                min_zoom: 12
+                priority: 3
+              is_private_rail:
+                icon: japan--train
+                min_zoom: 12
+                priority: 4
+          400-4100-0037:
+            default:
+              is_multimodal:
+                is_subway:
+                  icon: japan--metro
+                  min_zoom: 13
+                  priority: 3
+              default:
+                icon: japan--metro
+                min_zoom: 13
+                priority: 5
+          400-4100-0038:
+            default:
+              is_multimodal:
+                is_suburban:
+                  icon: japan--rail-light
+                  min_zoom: 13
+                  priority: 4
+              default:
+                icon: japan--rail-light
+                min_zoom: 13
+                priority: 6
+          400-4100-0040:
+            default:
+              default:
+                min_zoom: 16
+                priority: 10
+          400-4100-0045:
+            default:
+              default:
+                icon: null
+          400-4100-0226:
+            default:
+              is_entry:
+                icon: japan--road-facilities-ramp-entry-jpn
+                min_zoom: 16
+                size: 16
+                priority: 0
+              is_exit:
+                icon: japan--road-facilities-ramp-exit-jpn
+                min_zoom: 16
+                size: 16
+                priority: 1
+          400-4100-0326:
+            default:
+              default:
+                icon: japan--toll-booth-jpn
+                min_zoom: 15
+                size: 16
+                priority: 45
+          400-4100-0337:
+            default:
+              is_multimodal:
+                is_tram:
+                  icon: japan--rail-light
+                  min_zoom: 13
+                  priority: 5
+              default:
+                icon: japan--rail-light
+                min_zoom: 13
+                priority: 7
+          400-4100-0339:
+            default:
+              is_multimodal:
+                is_monorail:
+                  icon: japan--monorail
+                  min_zoom: 13
+                  priority: 6
+              default:
+                icon: japan--monorail
+                min_zoom: 13
+                priority: 8
+          400-4100-0340:
+            default:
+              is_multimodal:
+                is_aerial:
+                  icon: japan--cable-way
+                  min_zoom: 14
+                  priority: 7
+              default:
+                icon: japan--cable-way
+                min_zoom: 14
+                priority: 9
+          400-4100-0342:
+            default:
+              is_multimodal:
+                is_funicular:
+                  icon: japan--inclined
+                  min_zoom: 14
+                  priority: 8
+              default:
+                icon: japan--inclined
+                min_zoom: 14
+                priority: 10
+          400-4300-0199:
+            default:
+              default:
+                icon: japan--road-facilities-sa-jpn
+                min_zoom: 11
+                size:
+                  - 18
+                  - 14
+                priority: 2
+          400-4300-0200:
+            default:
+              default:
+                icon: japan--road-facilities-pa-jpn
+                min_zoom: 11
+                size:
+                  - 18
+                  - 14
+                priority: 3
+          400-4300-0201:
+            default:
+              default:
+                icon: japan--road-facilities-pa-jpn
+                min_zoom: 11
+                size:
+                  - 18
+                  - 14
+                priority: 4
+          500-5100-0061:
+            default:
+              default:
+                icon: japan--accomodation
+                min_zoom: 17
+                priority: 105
+          700-7200-0259:
+            default:
+              default:
+                icon: japan--facility
+                min_zoom: 17
+                priority: 73
+          700-7200-0271:
+            default:
+              default:
+                icon: japan--business-post-jpn
+                min_zoom: 17
+                priority: 70
+          700-7250-0136:
+            default:
+              default:
+                icon: japan--business
+                min_zoom: 17
+                priority: 76
+          700-7300-0110:
+            default:
+              default:
+                icon: japan--emergency-policebox-jpn
+                min_zoom: 17
+                priority: 69
+          700-7300-0111:
+            default:
+              default:
+                icon: japan--emergency-police-jpn
+                min_zoom: 16
+                priority: 31
+          700-7300-0113:
+            default:
+              default:
+                icon: japan--emergency-firedepartment-jpn
+                min_zoom: 16
+                priority: 32
+          700-7400-0000:
+            default:
+              default:
+                icon: japan--generic-point
+                min_zoom: 17
+                priority: 83
+          700-7400-0141:
+            default:
+              default:
+                icon: japan--facility
+                min_zoom: 17
+                priority: 74
+          700-7400-0142:
+            default:
+              default:
+                icon: japan--cemetry
+                min_zoom: 19
+                priority: 228
+          700-7400-0327:
+            default:
+              default:
+                icon: japan--facility
+                min_zoom: 17
+                priority: 75
+          700-7450-0114:
+            default:
+              default:
+                icon: japan--business-post-jpn
+                min_zoom: 17
+                priority: 71
+          800-8000-0000:
+            default:
+              default:
+                icon: japan--generic-point
+                min_zoom: 15
+                priority: 22
+          800-8000-0159:
+            default:
+              default:
+                icon: japan--emergency-hospital-jpn
+                min_zoom: 15
+                priority: 19
+          800-8100-0163:
+            default:
+              default:
+                icon: japan--facilities-cityhall-jpn
+                min_zoom: 14
+                priority: 1
+          800-8100-0171:
+            prefectural_office:
+              default:
+                icon: japan--facilities-office-prefectural-jpn
+                min_zoom: 12
+                priority: 0
+            town_village_office:
+              default:
+                icon: japan--facilities-office-townvillage-jpn
+                min_zoom: 14
+                priority: 2
+            ward_office:
+              default:
+                icon: japan--facilities-office-ward-jpn
+                min_zoom: 14
+                priority: 3
+          800-8200-0000:
+            default:
+              default:
+                icon: japan--facilities-education-school-jpn
+                min_zoom: 16
+                priority: 34
+          800-8200-0173:
+            default:
+              default:
+                icon: japan--facilities-education-higher-jpn
+                min_zoom: 15
+                priority: 24
+          800-8200-0174:
+            default:
+              default:
+                icon: japan--facilities-education-school-jpn
+                min_zoom: 17
+                priority: 72
+          800-8400-0139:
+            default:
+              default:
+                icon: japan--generic-point
+                min_zoom: 18
+                priority: 150
+          800-8700-0000:
+            default:
+              default:
+                icon: null
+          900-9200-0301:
+            default:
+              default:
+                icon: null
+          900-9400-0402:
+            interchange_toll:
+              default:
+                icon: japan--road-facilities-ic-jpn
+                min_zoom: 10
+                size:
+                  - 18
+                  - 14
+                priority: 0
+            interchange:
+              default:
+                icon: japan--road-facilities-ic-jpn
+                min_zoom: 10
+                size:
+                  - 18
+                  - 14
+                priority: 1
+            junction:
+              default:
+                icon: japan--road-facilities-jct-jpn
+                min_zoom: 10
+                size:
+                  - 21
+                  - 14
+                priority: 5
+            smart_interchange:
+              default:
+                icon: japan--road-facilities-smart-ic-jpn
+                min_zoom: 10
+                size:
+                  - 44
+                  - 14
+                priority: 6
+            default:
+              default:
+                icon: japan--traffic-light
+                min_zoom: 15
+                size: 20
+                priority: 0
+            intersection:
+              default:
+                min_zoom: 10
+                priority: 0
+    transform:
+      pois_japan: |
+        function(data, extraData, tileInfo) {
+          if (data.pois) {
+            for (var i = 0; i < data.pois.features.length; i++) {
+              const feature = data.pois.features[i];
+              const icons = extraData.poi.getIcons(feature.properties, 'IPC');
+              // Override icons only if it's an IPC feature and there is an IPC style for that feature:
+              if (feature.properties.source === 'ipc' && icons.length) {
+                feature.properties.icons = extraData.poi.processIcons(icons, tileInfo.coords.z + 1);
+              }
+            }
+          }
+          return data;
+        }
+textures:
+  jp_pois:
+    url: ./icons/japan_poi-2x.png
+    density: 2
+    sprites:
+      japan--accomodation:
+        - 2
+        - 38
+        - 64
+        - 64
+      japan--airport:
+        - 106
+        - 2
+        - 64
+        - 64
+      japan--business:
+        - 2
+        - 106
+        - 64
+        - 64
+      japan--business-post-jpn:
+        - 70
+        - 106
+        - 64
+        - 64
+      japan--cable-way:
+        - 174
+        - 2
+        - 64
+        - 64
+      japan--cemetry:
+        - 174
+        - 70
+        - 64
+        - 64
+      japan--emergency-firedepartment-jpn:
+        - 2
+        - 174
+        - 64
+        - 64
+      japan--emergency-hospital-jpn:
+        - 70
+        - 174
+        - 64
+        - 64
+      japan--emergency-police-jpn:
+        - 138
+        - 174
+        - 64
+        - 64
+      japan--emergency-policebox-jpn:
+        - 242
+        - 2
+        - 64
+        - 64
+      japan--facilities-cityhall-jpn:
+        - 242
+        - 70
+        - 64
+        - 64
+      japan--facilities-education-higher-jpn:
+        - 242
+        - 138
+        - 64
+        - 64
+      japan--facilities-education-school-jpn:
+        - 2
+        - 242
+        - 64
+        - 64
+      japan--facilities-office-prefectural-jpn:
+        - 70
+        - 242
+        - 64
+        - 64
+      japan--facilities-office-townvillage-jpn:
+        - 138
+        - 242
+        - 64
+        - 64
+      japan--facilities-office-ward-jpn:
+        - 206
+        - 242
+        - 64
+        - 64
+      japan--facility:
+        - 310
+        - 2
+        - 64
+        - 64
+      japan--generic-point:
+        - 310
+        - 70
+        - 64
+        - 64
+      japan--inclined:
+        - 310
+        - 138
+        - 64
+        - 64
+      japan--metro:
+        - 310
+        - 206
+        - 64
+        - 64
+      japan--monorail:
+        - 2
+        - 310
+        - 64
+        - 64
+      japan--mountain:
+        - 378
+        - 292
+        - 44
+        - 44
+      japan--mountain-pass:
+        - 70
+        - 310
+        - 64
+        - 64
+      japan--rail-light:
+        - 138
+        - 310
+        - 64
+        - 64
+      japan--religious-shinto-jpn:
+        - 206
+        - 310
+        - 64
+        - 64
+      japan--religious-temple-buddhist-jpn:
+        - 274
+        - 310
+        - 64
+        - 64
+      japan--road-facilities-ic-jpn:
+        - 378
+        - 340
+        - 40
+        - 32
+      japan--road-facilities-jct-jpn:
+        - 378
+        - 206
+        - 48
+        - 32
+      japan--road-facilities-pa-jpn:
+        - 310
+        - 274
+        - 40
+        - 32
+      japan--road-facilities-ramp-entry-jpn:
+        - 2
+        - 378
+        - 36
+        - 36
+      japan--road-facilities-ramp-exit-jpn:
+        - 42
+        - 378
+        - 36
+        - 36
+      japan--road-facilities-sa-jpn:
+        - 242
+        - 206
+        - 40
+        - 32
+      japan--road-facilities-smart-ic-jpn:
+        - 2
+        - 2
+        - 100
+        - 32
+      japan--toll-booth-jpn:
+        - 82
+        - 378
+        - 36
+        - 36
+      japan--traffic-light:
+        - 378
+        - 242
+        - 46
+        - 46
+      japan--train:
+        - 378
+        - 2
+        - 64
+        - 64
+      japan--transport-shinkansen-jpn:
+        - 378
+        - 70
+        - 64
+        - 64
+      japan--waterfall:
+        - 378
+        - 138
+        - 64
+        - 64
+styles:
+  jp_pois:
+    base: points
+    blend_order: 1
+    draw:
+      texture: jp_pois
+      priority: |
+        function() {
+          return global.label.priorities['poi-labels'] + global.poi.IPC.feature.icons[0].priority;
+        }
+      sprite: |
+        function() {
+          return global.poi.IPC.feature.icons[0].icon;
+        }
+      size: |
+        function() {
+          return global.poi.IPC.feature.icons[0].size;
+        }
+      offset: |
+        function() {
+          return global.poi.IPC.feature.icons[0].offset;
+        }
+layers:
+  pois:
+    IPC:
+      filter:
+        all:
+          - source: ipc
+          - |
+            function() {
+              global.poi.IPC.feature.icons = global.poi.get_feature_icons('IPC');
+              return !!global.poi.IPC.feature.icons.length;
+            }
+      draw:
+        jp_pois:
+          visible: global.poi.IPC.visible
+          priority: |
+            function() {
+              return global.label.priorities['poi-labels'] + global.poi.IPC.feature.icons[0].priority;
+            }
+          sprite: |
+            function() {
+              return global.poi.IPC.feature.icons[0].icon;
+            }
+          size: |
+            function() {
+              return global.poi.IPC.feature.icons[0].size;
+            }
+          text:
+            anchor: top
+            text_source: global.ux_language_text_source
+            font:
+              family: global.text_font_family
+              fill: 'rgb(100, 100, 100)'
+              size: 12px
+              stroke:
+                color: 'rgba(240, 246, 247, 0.59)'
+                width: 1px
+      traffic_lights:
+        filter:
+          all:
+            - pds_category: 900-9400-0402
+            - has_traffic_lights: true
+        draw:
+          jp_pois:
+            priority: |
+              function() {
+                return global.label.priorities['japan-traffic-light-labels'] + global.poi.IPC.feature.icons[0].priority;
+              }
+            size: |
+              function() {
+                return global.poi.IPC.feature.icons[0].size;
+              }
+            text:
+              offset:
+                - 0
+                - 4
+              font:
+                fill: '#ffffff'
+                size: 9.5px
+                stroke:
+                  width: 3
+                  color: rgb(120, 120, 120)
+      road_facility:
+        filter:
+          all:
+            - pds_category:
+                - 900-9400-0402
+                - 400-4300-0199
+                - 400-4300-0200
+                - 400-4300-0201
+            - has_traffic_lights: false
+        draw:
+          jp_pois:
+            priority: |
+              function() {
+                return global.label.priorities['japan-road-facility-labels'] + global.poi.IPC.feature.icons[0].priority;
+              }
+            size: |
+              function() {
+                return global.poi.IPC.feature.icons[0].size;
+              }
+            text:
+              offset:
+                - 0
+                - -1
+              font:
+                fill: '#ffffff'
+                size: 9.5px
+                stroke:
+                  width: 3
+                  color: 'rgba(18,89,82,.6)'
+      public_transport:
+        filter:
+          any:
+            - pds_category:
+                - 400-4000-4581
+                - 400-4000-4582
+                - 400-4100-0038
+                - 400-4100-0339
+                - 400-4100-0340
+                - 400-4100-0342
+                - 400-4100-0037
+                - 400-4100-0337
+            - all:
+                - pds_category: 400-4100-0035
+                - any:
+                    - is_speed_rail: true
+                    - is_state_rail: true
+                    - is_private_rail: true
+        draw:
+          jp_pois:
+            repeat_group: |
+              function() {return feature.root_id}
+            priority: |
+              function() {
+                return global.label.priorities['japan-public-transport-labels'] + global.poi.IPC.feature.icons[0].priority;
+              }
+            offset: |
+              function() {
+                return global.poi.IPC.getOffsetForText(global.poi.IPC.feature.icons, 0);
+              }
+            text:
+              visible: 'function() {return global.poi.IPC.feature.icons.length === 1;}'
+        multimodal_text:
+          filter: |
+            function() {
+              return global.poi.IPC.feature.icons.length > 1;
+            }
+          draw:
+            text:
+              anchor: top
+              offset: |
+                function() {
+                  const icon = global.poi.IPC.feature.icons[0]; // assume that all icons in the group have the same height
+                  const iconHeight = Array.isArray(icon.size) ? icon.size[1] : icon.size;
+                  return [0, -(iconHeight / 2 + 1)];
+                }
+              priority: |
+                function() {
+                  // All icons in the group use the priority of the most important icon,
+                  // that's why it is safe to use the priority of the 1st icon:
+                  return global.poi.IPC.feature.icons[0].priority;
+                }
+              text_source: global.ux_language_text_source
+              font:
+                family: global.text_font_family
+                fill: 'rgb(100, 100, 100)'
+                size: 12px
+                stroke:
+                  color: 'rgba(240, 246, 247, 0.59)'
+                  width: 1px
+        jp_pois_1:
+          filter: |
+            function() {
+              return global.poi.IPC.feature.icons.length > 1;
+            }
+          draw:
+            jp_pois1:
+              style: jp_pois
+              priority: |
+                function() {
+                  return global.label.priorities['japan-public-transport-labels'] + global.poi.IPC.feature.icons[1].priority;
+                }
+              size: |
+                function() {
+                  return global.poi.IPC.feature.icons[1].size;
+                }
+              sprite: |
+                function() {
+                  return global.poi.IPC.feature.icons[1].icon;
+                }
+              offset: |
+                function() {
+                  return global.poi.IPC.getOffsetForText(global.poi.IPC.feature.icons, 1);
+                }
+        jp_pois_2:
+          filter: |
+            function() {
+              return global.poi.IPC.feature.icons.length > 2;
+            }
+          draw:
+            jp_pois_2:
+              style: jp_pois
+              priority: |
+                function() {
+                  return global.label.priorities['japan-public-transport-labels'] + global.poi.IPC.feature.icons[2].priority;
+                }
+              size: |
+                function() {
+                  return global.poi.IPC.feature.icons[2].size;
+                }
+              sprite: |
+                function() {
+                  return global.poi.IPC.feature.icons[2].icon;
+                }
+              offset: |
+                function() {
+                  return global.poi.IPC.getOffsetForText(global.poi.IPC.feature.icons, 2);
+                }
+      governmental_office:
+        filter:
+          any:
+            - pds_category: 800-8100-0163
+            - all:
+                - pds_category: 800-8100-0171
+                - kind_detail:
+                    - prefectural_office
+                    - town_village_office
+                    - ward_office
+        draw:
+          jp_pois:
+            priority: |
+              function() {
+                return global.label.priorities['japan-governmental-office-labels'] +
+                    global.poi.IPC.feature.icons[0].priority;
+              }
+            size:
+              - - 13
+                - 14px
+              - - 15
+                - 18px
+              - - 16
+                - 21px
+              - - 18
+                - 22px
+              - - 20
+                - 23px
+              - - 24
+                - 25px
+            text:
+              font:
+                fill:
+                  - - 14.5
+                    - '#646464'
+                  - - 15.5
+                    - '#0c548c'
+                size:
+                  - - 13
+                    - 12px
+                  - - 16
+                    - 13.5px
+                  - - 18
+                    - 16px
+                  - - 20
+                    - 19px
+                  - - 24
+                    - 23px
+                stroke:
+                  width:
+                    - - 13
+                      - 1px
+                    - - 16
+                      - 1.5px
+                  color:
+                    - - 14.5
+                      - 'rgba(255, 255, 255, 0.59)'
+                    - - 15.5
+                      - 'rgba(241, 246, 247, 0.39)'
+      only_label:
+        filter: |
+          function() {
+            return !!global.poi.IPC.feature.icons && !global.poi.IPC.feature.icons[0].icon;
+          }
+        draw:
+          text-blend-order:
+            priority: |
+              function() {
+                return global.label.priorities['poi-labels'] + global.poi.IPC.feature.icons[0].priority;
+              }
+            visible: global.poi.IPC.visible
+            anchor: center
+            text_source: global.ux_language_text_source
+            font:
+              family: global.text_font_family
+              fill: 'rgb(100, 100, 100)'
+              size: 12px
+              stroke:
+                color: 'rgba(240, 246, 247, 0.59)'
+                width: 1px
+        public_transit_access:
+          filter:
+            pds_category: 400-4100-0040
+          draw:
+            text-blend-order:
+              font:
+                fill: '#ffffff'
+                size: 9px
+                stroke:
+                  width: 3
+                  color: 'rgba(212, 63, 85, 0.6)'
+        intersection:
+          filter:
+            all:
+              - pds_category: 900-9400-0402
+              - kind_detail: intersection
+          draw:
+            text-blend-order:
+              priority: |
+                function() {
+                  return global.label.priorities['japan-traffic-light-labels'] +
+                      global.poi.IPC.feature.icons[0].priority;
+                }
+              font:
+                fill: '#ffffff'
+                size: 9px
+                stroke:
+                  width: 3
+                  color: rgb(120, 120, 120)

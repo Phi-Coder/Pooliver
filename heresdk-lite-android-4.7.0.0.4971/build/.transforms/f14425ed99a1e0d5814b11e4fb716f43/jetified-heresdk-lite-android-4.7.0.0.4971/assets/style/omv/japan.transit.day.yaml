@@ -1,0 +1,970 @@
+global:
+  transit:
+    IPC:
+      # A whitelist array of Transit Lines - a missing property or an empty array means hide all transit lines
+      # Possible values:
+      #   - 'all': render all transit lines
+      #   - 'train': render all transit lines with kind:train
+      #   - 'train:state_rail': render all transit lines with kind:train AND kind_detail:state_rail
+      #   - 'train:speed_rail': render all transit lines with kind:train AND kind_detail:speed_rail
+      #   - 'train:private_rail': render all transit lines with kind:train AND kind_detail:private_rail
+      #   - 'subway': render all transit lines with kind:subway
+      #   - 'light_rail': render all transit lines with kind:light_rail
+      #   - 'monorail': render all transit lines with kind:monorail
+      #   - 'funicular': render all transit lines with kind:funicular
+      #   - 'aerial': render all transit lines with kind:aerial
+      filter: ['subway']
+      getStyleByKind: |
+        function(feature, global) {
+          return feature.kind === 'train' ?
+              global.transit.IPC.style_by_kind[feature.kind][feature.kind_detail] :
+              global.transit.IPC.style_by_kind[feature.kind];
+        }
+      # Custom styling per transit type can be defined here
+      style_by_kind:
+        ########################################### DEFAULT ############################################################
+        default:
+          line:
+            fallback_color: 'rgba(100, 100, 100, 1)'
+            line1:
+              color: |
+                function() {
+                  if (feature.all_colour) {
+                    return feature.all_colour.split(';')[0];
+                  }
+                  const style = global.transit.IPC.getStyleByKind(feature, global);
+                  return style && style.line.fallback_color;
+                }
+              offset: 0
+            line2:
+              color: |
+                function() {
+                  if (feature.all_colour) {
+                    return feature.all_colour.split(';')[1];
+                  }
+                  const style = global.transit.IPC.getStyleByKind(feature, global);
+                  return style && style.line.fallback_color;
+                }
+              offset: [
+                [11, 3.5px],
+                [12, 3.5px],
+                [13, 3.5px],
+                [14, 3.58px],
+                [15, 3.66px],
+                [16, 3.75px],
+                [17, 3.95px],
+                [18, 4.15px],
+                [19, 4.35px],
+                [20, 4.55px],
+                [22, 5px]
+              ]
+            line3:
+              color: |
+                function() {
+                  if (feature.all_colour) {
+                    return feature.all_colour.split(';')[2];
+                  }
+                  const style = global.transit.IPC.getStyleByKind(feature, global);
+                  return style && style.line.fallback_color;
+                }
+              offset: [
+                [11, 7px],
+                [12, 7px],
+                [13, 7px],
+                [14, 7.16px],
+                [15, 7.32px],
+                [16, 7.5px],
+                [17, 7.9px],
+                [18, 8.3px],
+                [19, 8.7px],
+                [20, 9.1px],
+                [22, 10px],
+              ]
+            width: [[11, 1.5px], [13, 1.5px], [16, 1.75px], [20, 2.25px], [22, 2.5px]]
+            outline:
+              width: [[11, 1px], [13, 1px], [16, 1px], [20, 1.15px], [22, 1.25px]]
+              color: rgba(255, 255, 255, 1)
+          label:
+            font:
+              fallback_fill: 'rgba(100, 100, 100, 1)'
+              size: [[12, 0px], [12, 9.25px], [14, 10px], [18, 13.5px], [20, 17px]]
+              stroke:
+                color: rgba(255, 255, 255, 1)
+                width: [[12, 0px], [12, 2.75px], [16, 2.25px], [20, 2px]]
+            line1:
+              offset: 0
+              text_source: |
+                function() {
+                  var labels = (global.ux_language && feature['all_ref:' + global.ux_language]) ||
+                    (global.ux_language_fallback && feature['all_ref:'+global.ux_language_fallback]) ||
+                    feature['all_ref'];
+                  return labels && labels.split(';')[0];
+                }
+              font:
+                fill: |
+                  function() {
+                    if (feature.all_colour) {
+                      return feature.all_colour.split(';')[0];
+                    }
+                    const style = global.transit.IPC.getStyleByKind(feature, global);
+                    return style && style.label.font.fallback_fill;
+                  }
+            line2:
+              offset: [
+                [11, [0, 3.5px]],
+                [12, [0, 3.5px]],
+                [13, [0, 3.5px]],
+                [14, [0, 3.58px]],
+                [15, [0, 3.66px]],
+                [16, [0, 3.75px]],
+                [17, [0, 3.95px]],
+                [18, [0, 4.15px]],
+                [19, [0, 4.35px]],
+                [20, [0, 4.55px]],
+                [22, [0, 5px]]
+              ]
+              text_source: |
+                function() {
+                  var labels = (global.ux_language && feature['all_ref:' + global.ux_language]) ||
+                    (global.ux_language_fallback && feature['all_ref:'+global.ux_language_fallback]) ||
+                    feature['all_ref'];
+                  return labels && labels.split(';')[1];
+                }
+              font:
+                fill: |
+                  function() {
+                    if (feature.all_colour) {
+                      return feature.all_colour.split(';')[1];
+                    }
+                    const style = global.transit.IPC.getStyleByKind(feature, global);
+                    return style && style.label.font.fallback_fill;
+                  }
+            line3:
+              offset: [
+                [11, [0, 7px]],
+                [12, [0, 7px]],
+                [13, [0, 7px]],
+                [14, [0, 7.16px]],
+                [15, [0, 7.32px]],
+                [16, [0, 7.5px]],
+                [17, [0, 7.9px]],
+                [18, [0, 8.3px]],
+                [19, [0, 8.7px]],
+                [20, [0, 9.1px]],
+                [22, [0, 10px]],
+              ]
+              text_source: |
+                function() {
+                  var labels = (global.ux_language && feature['all_ref:' + global.ux_language]) ||
+                    (global.ux_language_fallback && feature['all_ref:'+global.ux_language_fallback]) ||
+                    feature['all_ref'];
+                  return labels && labels.split(';')[2];
+                }
+              font:
+                fill: |
+                  function() {
+                    if (feature.all_colour) {
+                      return feature.all_colour.split(';')[2];
+                    }
+                    const style = global.transit.IPC.getStyleByKind(feature, global);
+                    return style && style.label.font.fallback_fill;
+                  }
+        ########################################### TRAIN ##############################################################
+        train:
+          ########################################### STATE RAIL #######################################################
+          state_rail:
+            line:
+              fallback_color: global.transit.IPC.style_by_kind.default.line.fallback_color
+              line2:
+                offset: global.transit.IPC.style_by_kind.default.line.line2.offset
+              line3:
+                offset: global.transit.IPC.style_by_kind.default.line.line3.offset
+              width: global.transit.IPC.style_by_kind.default.line.width
+              outline:
+                width: global.transit.IPC.style_by_kind.default.line.outline.width
+                color: global.transit.IPC.style_by_kind.default.line.outline.color
+            label:
+              font:
+                fallback_fill: global.transit.IPC.style_by_kind.default.label.font.fallback_fill
+                size: global.transit.IPC.style_by_kind.default.label.font.size
+                stroke:
+                  color: global.transit.IPC.style_by_kind.default.label.font.stroke.color
+                  width: global.transit.IPC.style_by_kind.default.label.font.stroke.width
+              line2:
+                offset: global.transit.IPC.style_by_kind.default.label.line2.offset
+              line3:
+                offset: global.transit.IPC.style_by_kind.default.label.line3.offset
+          ########################################### SPEED RAIL #######################################################
+          speed_rail:
+            line:
+              fallback_color: global.transit.IPC.style_by_kind.default.line.fallback_color
+              line2:
+                offset: global.transit.IPC.style_by_kind.default.line.line2.offset
+              line3:
+                offset: global.transit.IPC.style_by_kind.default.line.line3.offset
+              width: global.transit.IPC.style_by_kind.default.line.width
+              outline:
+                width: global.transit.IPC.style_by_kind.default.line.outline.width
+                color: global.transit.IPC.style_by_kind.default.line.outline.color
+            label:
+              font:
+                fallback_fill: global.transit.IPC.style_by_kind.default.label.font.fallback_fill
+                size: global.transit.IPC.style_by_kind.default.label.font.size
+                stroke:
+                  color: global.transit.IPC.style_by_kind.default.label.font.stroke.color
+                  width: global.transit.IPC.style_by_kind.default.label.font.stroke.width
+              line2:
+                offset: global.transit.IPC.style_by_kind.default.label.line2.offset
+              line3:
+                offset: global.transit.IPC.style_by_kind.default.label.line3.offset
+          ########################################### PRIVATE RAIL #####################################################
+          private_rail:
+            line:
+              fallback_color: global.transit.IPC.style_by_kind.default.line.fallback_color
+              line2:
+                offset: global.transit.IPC.style_by_kind.default.line.line2.offset
+              line3:
+                offset: global.transit.IPC.style_by_kind.default.line.line3.offset
+              width: global.transit.IPC.style_by_kind.default.line.width
+              outline:
+                width: global.transit.IPC.style_by_kind.default.line.outline.width
+                color: global.transit.IPC.style_by_kind.default.line.outline.color
+            label:
+              font:
+                fallback_fill: global.transit.IPC.style_by_kind.default.label.font.fallback_fill
+                size: global.transit.IPC.style_by_kind.default.label.font.size
+                stroke:
+                  color: global.transit.IPC.style_by_kind.default.label.font.stroke.color
+                  width: global.transit.IPC.style_by_kind.default.label.font.stroke.width
+              line2:
+                offset: global.transit.IPC.style_by_kind.default.label.line2.offset
+              line3:
+                offset: global.transit.IPC.style_by_kind.default.label.line3.offset
+        ########################################### SUBWAY #############################################################
+        subway:
+          line:
+            fallback_color: global.transit.IPC.style_by_kind.default.line.fallback_color
+            line2:
+              offset: global.transit.IPC.style_by_kind.default.line.line2.offset
+            line3:
+              offset: global.transit.IPC.style_by_kind.default.line.line3.offset
+            width: global.transit.IPC.style_by_kind.default.line.width
+            outline:
+              width: global.transit.IPC.style_by_kind.default.line.outline.width
+              color: global.transit.IPC.style_by_kind.default.line.outline.color
+          label:
+            font:
+              fallback_fill: global.transit.IPC.style_by_kind.default.label.font.fallback_fill
+              size: global.transit.IPC.style_by_kind.default.label.font.size
+              stroke:
+                color: global.transit.IPC.style_by_kind.default.label.font.stroke.color
+                width: global.transit.IPC.style_by_kind.default.label.font.stroke.width
+            line2:
+              offset: global.transit.IPC.style_by_kind.default.label.line2.offset
+            line3:
+              offset: global.transit.IPC.style_by_kind.default.label.line3.offset
+        ########################################### LIGHT RAIL #########################################################
+        light_rail:
+          line:
+            fallback_color: global.transit.IPC.style_by_kind.default.line.fallback_color
+            line2:
+              offset: global.transit.IPC.style_by_kind.default.line.line2.offset
+            line3:
+              offset: global.transit.IPC.style_by_kind.default.line.line3.offset
+            width: global.transit.IPC.style_by_kind.default.line.width
+            outline:
+              width: global.transit.IPC.style_by_kind.default.line.outline.width
+              color: global.transit.IPC.style_by_kind.default.line.outline.color
+          label:
+            font:
+              fallback_fill: global.transit.IPC.style_by_kind.default.label.font.fallback_fill
+              size: global.transit.IPC.style_by_kind.default.label.font.size
+              stroke:
+                color: global.transit.IPC.style_by_kind.default.label.font.stroke.color
+                width: global.transit.IPC.style_by_kind.default.label.font.stroke.width
+            line2:
+              offset: global.transit.IPC.style_by_kind.default.label.line2.offset
+            line3:
+              offset: global.transit.IPC.style_by_kind.default.label.line3.offset
+        ########################################### MONORAIL ###########################################################
+        monorail:
+          line:
+            fallback_color: global.transit.IPC.style_by_kind.default.line.fallback_color
+            line2:
+              offset: global.transit.IPC.style_by_kind.default.line.line2.offset
+            line3:
+              offset: global.transit.IPC.style_by_kind.default.line.line3.offset
+            width: global.transit.IPC.style_by_kind.default.line.width
+            outline:
+              width: global.transit.IPC.style_by_kind.default.line.outline.width
+              color: global.transit.IPC.style_by_kind.default.line.outline.color
+          label:
+            font:
+              fallback_fill: global.transit.IPC.style_by_kind.default.label.font.fallback_fill
+              size: global.transit.IPC.style_by_kind.default.label.font.size
+              stroke:
+                color: global.transit.IPC.style_by_kind.default.label.font.stroke.color
+                width: global.transit.IPC.style_by_kind.default.label.font.stroke.width
+            line2:
+              offset: global.transit.IPC.style_by_kind.default.label.line2.offset
+            line3:
+              offset: global.transit.IPC.style_by_kind.default.label.line3.offset
+        ########################################### FUNICULAR ##########################################################
+        funicular:
+          line:
+            fallback_color: global.transit.IPC.style_by_kind.default.line.fallback_color
+            line2:
+              offset: global.transit.IPC.style_by_kind.default.line.line2.offset
+            line3:
+              offset: global.transit.IPC.style_by_kind.default.line.line3.offset
+            width: global.transit.IPC.style_by_kind.default.line.width
+            outline:
+              width: global.transit.IPC.style_by_kind.default.line.outline.width
+              color: global.transit.IPC.style_by_kind.default.line.outline.color
+          label:
+            font:
+              fallback_fill: global.transit.IPC.style_by_kind.default.label.font.fallback_fill
+              size: global.transit.IPC.style_by_kind.default.label.font.size
+              stroke:
+                color: global.transit.IPC.style_by_kind.default.label.font.stroke.color
+                width: global.transit.IPC.style_by_kind.default.label.font.stroke.width
+            line2:
+              offset: global.transit.IPC.style_by_kind.default.label.line2.offset
+            line3:
+              offset: global.transit.IPC.style_by_kind.default.label.line3.offset
+        ########################################### AERIAL #############################################################
+        aerial:
+          line:
+            fallback_color: global.transit.IPC.style_by_kind.default.line.fallback_color
+            line2:
+              offset: global.transit.IPC.style_by_kind.default.line.line2.offset
+            line3:
+              offset: global.transit.IPC.style_by_kind.default.line.line3.offset
+            width: global.transit.IPC.style_by_kind.default.line.width
+            outline:
+              width: global.transit.IPC.style_by_kind.default.line.outline.width
+              color: global.transit.IPC.style_by_kind.default.line.outline.color
+          label:
+            font:
+              fallback_fill: global.transit.IPC.style_by_kind.default.label.font.fallback_fill
+              size: global.transit.IPC.style_by_kind.default.label.font.size
+              stroke:
+                color: global.transit.IPC.style_by_kind.default.label.font.stroke.color
+                width: global.transit.IPC.style_by_kind.default.label.font.stroke.width
+            line2:
+              offset: global.transit.IPC.style_by_kind.default.label.line2.offset
+            line3:
+              offset: global.transit.IPC.style_by_kind.default.label.line3.offset
+
+styles:
+  jp_transit_lines_line:
+    base: translucent-lines
+    draw:
+      order: 997
+      width: global.transit.IPC.style_by_kind.default.line.width
+      outline:
+        width: global.transit.IPC.style_by_kind.default.line.outline.width
+        color: |
+          function() {
+            const style = global.transit.IPC.getStyleByKind(feature, global);
+            return style && style.line.outline.color;
+          }
+  jp_transit_lines_label:
+    base: text-blend-order
+    draw:
+      priority: 0
+      font:
+        size: global.transit.IPC.style_by_kind.default.label.font.size
+        stroke:
+          color: |
+            function() {
+              const style = global.transit.IPC.getStyleByKind(feature, global);
+              return style && style.label.font.stroke.color;
+            }
+          width: global.transit.IPC.style_by_kind.default.label.font.stroke.width
+
+layers:
+  # Feature in the 'roads' layer is set to hidden when the corresponding feature in 'transit' layer is visible
+  roads:
+    rail:
+      IPC:
+        state:
+          transit:
+            filter: |
+              function() {
+                return global.transit.IPC.filter &&
+                  (global.transit.IPC.filter.includes('train:state_rail')||
+                  global.transit.IPC.filter.includes('train') ||
+                  global.transit.IPC.filter.includes('all'));
+              }
+            draw:
+              lines:
+                visible: false
+              text-blend-order:
+                visible: false
+        speed:
+          transit:
+            filter: |
+              function() {
+                return global.transit.IPC.filter &&
+                  (global.transit.IPC.filter.includes('train:speed_rail') ||
+                  global.transit.IPC.filter.includes('train') ||
+                  global.transit.IPC.filter.includes('all'));
+              }
+            draw:
+              lines:
+                visible: false
+              text-blend-order:
+                visible: false
+        private:
+          transit:
+            filter: |
+              function() {
+                return global.transit.IPC.filter &&
+                  (global.transit.IPC.filter.includes('train:private_rail') ||
+                  global.transit.IPC.filter.includes('train') ||
+                  global.transit.IPC.filter.includes('all'));
+              }
+            draw:
+              lines:
+                visible: false
+              text-blend-order:
+                visible: false
+        subway:
+          transit:
+            filter: |
+              function() {
+                return global.transit.IPC.filter &&
+                  (global.transit.IPC.filter.includes('subway') ||
+                  global.transit.IPC.filter.includes('all'));
+              }
+            draw:
+              lines:
+                visible: false
+              text-blend-order:
+                visible: false
+        light:
+          transit:
+            filter: |
+              function() {
+                return global.transit.IPC.filter &&
+                  (global.transit.IPC.filter.includes('light_rail') ||
+                  global.transit.IPC.filter.includes('all'));
+              }
+            draw:
+              lines:
+                visible: false
+              text-blend-order:
+                visible: false
+        monorail:
+          transit:
+            filter: |
+              function() {
+                return global.transit.IPC.filter &&
+                  (global.transit.IPC.filter.includes('monorail') ||
+                  global.transit.IPC.filter.includes('all'));
+              }
+            draw:
+              lines:
+                visible: false
+              text-blend-order:
+                visible: false
+  transit:
+    data:
+      layer: transit
+      source: omv
+    IPC:
+      # Custom sub-sections for each Transit type are necessary to enable customization per type.
+      # Style properties such as 'width', 'font.size' and 'offset' cannot be defined using function and return stops.
+      # Stops are useful because allow values interpolation over zoom levels.
+      # For this reason it's necessary to add explicit overrides pointing to their respective definitions in global.
+      line:
+        filter:
+          all:
+            - $geometry: line
+            - source: ipc
+            - global.feature_min_zoom_filter
+            - |
+              function() {
+                return global.transit.IPC.getStyleByKind(feature, global) &&
+                  global.transit.IPC.filter && global.transit.IPC.filter.length > 0 &&
+                  (global.transit.IPC.filter.includes('all') ||
+                    global.transit.IPC.filter.includes(feature.kind) ||
+                    global.transit.IPC.filter.includes(feature.kind + ":" + feature.kind_detail));
+              }
+        line1:
+          filter: |
+            function() {
+              return feature.all_ref && feature.all_ref.split(';').length > 0;
+            }
+          draw:
+            line1_line:
+              style: jp_transit_lines_line
+              color: global.transit.IPC.style_by_kind.default.line.line1.color
+              offset: global.transit.IPC.style_by_kind.default.line.line1.offset
+            line1_label:
+              style: jp_transit_lines_label
+              text_source: global.transit.IPC.style_by_kind.default.label.line1.text_source
+              offset: global.transit.IPC.style_by_kind.default.label.line1.offset
+              font:
+                fill: global.transit.IPC.style_by_kind.default.label.line1.font.fill
+          ########################################### TRAIN ############################################################
+          train:
+            filter:
+              kind: train
+            ########################################### STATE RAIL #####################################################
+            state_rail:
+              filter:
+                kind_detail: state_rail
+              draw:
+                line1_line:
+                  style: jp_transit_lines_line
+                  width: global.transit.IPC.style_by_kind.train.state_rail.line.width
+                  outline:
+                    width: global.transit.IPC.style_by_kind.train.state_rail.line.outline.width
+                line1_label:
+                  style: jp_transit_lines_label
+                  font:
+                    size: global.transit.IPC.style_by_kind.train.state_rail.label.font.size
+                    stroke:
+                      width: global.transit.IPC.style_by_kind.train.state_rail.label.font.stroke.width
+            ########################################### SPEED RAIL #####################################################
+            speed_rail:
+              filter:
+                kind_detail: speed_rail
+              draw:
+                line1_line:
+                  style: jp_transit_lines_line
+                  width: global.transit.IPC.style_by_kind.train.speed_rail.line.width
+                  outline:
+                    width: global.transit.IPC.style_by_kind.train.speed_rail.line.outline.width
+                line1_label:
+                  style: jp_transit_lines_label
+                  font:
+                    size: global.transit.IPC.style_by_kind.train.speed_rail.label.font.size
+                    stroke:
+                      width: global.transit.IPC.style_by_kind.train.speed_rail.label.font.stroke.width
+            ########################################### PRIVATE RAIL ###################################################
+            private_rail:
+              filter:
+                kind_detail: private_rail
+              draw:
+                line1_line:
+                  style: jp_transit_lines_line
+                  width: global.transit.IPC.style_by_kind.train.private_rail.line.width
+                  outline:
+                    width: global.transit.IPC.style_by_kind.train.private_rail.line.outline.width
+                line1_label:
+                  style: jp_transit_lines_label
+                  font:
+                    size: global.transit.IPC.style_by_kind.train.private_rail.label.font.size
+                    stroke:
+                      width: global.transit.IPC.style_by_kind.train.private_rail.label.font.stroke.width
+          ########################################### SUBWAY ###########################################################
+          subway:
+            filter:
+              kind: subway
+            draw:
+              line1_line:
+                style: jp_transit_lines_line
+                width: global.transit.IPC.style_by_kind.subway.line.width
+                outline:
+                  width: global.transit.IPC.style_by_kind.subway.line.outline.width
+              line1_label:
+                style: jp_transit_lines_label
+                font:
+                  size: global.transit.IPC.style_by_kind.subway.label.font.size
+                  stroke:
+                    width: global.transit.IPC.style_by_kind.subway.label.font.stroke.width
+          ########################################### LIGHT RAIL #######################################################
+          light_rail:
+            filter:
+              kind: light_rail
+            draw:
+              line1_line:
+                style: jp_transit_lines_line
+                width: global.transit.IPC.style_by_kind.light_rail.line.width
+                outline:
+                  width: global.transit.IPC.style_by_kind.light_rail.line.outline.width
+              line1_label:
+                style: jp_transit_lines_label
+                font:
+                  size: global.transit.IPC.style_by_kind.light_rail.label.font.size
+                  stroke:
+                    width: global.transit.IPC.style_by_kind.light_rail.label.font.stroke.width
+          ########################################### MONORAIL #########################################################
+          monorail:
+            filter:
+              kind: monorail
+            draw:
+              line1_line:
+                style: jp_transit_lines_line
+                width: global.transit.IPC.style_by_kind.monorail.line.width
+                outline:
+                  width: global.transit.IPC.style_by_kind.monorail.line.outline.width
+              line1_label:
+                style: jp_transit_lines_label
+                font:
+                  size: global.transit.IPC.style_by_kind.monorail.label.font.size
+                  stroke:
+                    width: global.transit.IPC.style_by_kind.monorail.label.font.stroke.width
+          ########################################### FUNICULAR ########################################################
+          funicular:
+            filter:
+              kind: funicular
+            draw:
+              line1_line:
+                style: jp_transit_lines_line
+                width: global.transit.IPC.style_by_kind.funicular.line.width
+                outline:
+                  width: global.transit.IPC.style_by_kind.funicular.line.outline.width
+              line1_label:
+                style: jp_transit_lines_label
+                font:
+                  size: global.transit.IPC.style_by_kind.funicular.label.font.size
+                  stroke:
+                    width: global.transit.IPC.style_by_kind.funicular.label.font.stroke.width
+          ########################################### AERIAL ###########################################################
+          aerial:
+            filter:
+              kind: aerial
+            draw:
+              line1_line:
+                style: jp_transit_lines_line
+                width: global.transit.IPC.style_by_kind.aerial.line.width
+                outline:
+                  width: global.transit.IPC.style_by_kind.aerial.line.outline.width
+              line1_label:
+                style: jp_transit_lines_label
+                font:
+                  size: global.transit.IPC.style_by_kind.aerial.label.font.size
+                  stroke:
+                    width: global.transit.IPC.style_by_kind.aerial.label.font.stroke.width
+        line2:
+          filter: |
+            function() {
+              return feature.all_ref && feature.all_ref.split(';').length > 1;
+            }
+          draw:
+            line2_line:
+              style: jp_transit_lines_line
+              color: global.transit.IPC.style_by_kind.default.line.line2.color
+              offset: global.transit.IPC.style_by_kind.default.line.line2.offset
+            line2_label:
+              style: jp_transit_lines_label
+              text_source: global.transit.IPC.style_by_kind.default.label.line2.text_source
+              offset: global.transit.IPC.style_by_kind.default.label.line2.offset
+              font:
+                fill: global.transit.IPC.style_by_kind.default.label.line2.font.fill
+          ########################################### TRAIN ############################################################
+          train:
+            filter:
+              kind: train
+            ######################################### STATE RAIL #######################################################
+            state_rail:
+              filter:
+                kind_detail: state_rail
+              draw:
+                line2_line:
+                  style: jp_transit_lines_line
+                  width: global.transit.IPC.style_by_kind.train.state_rail.line.width
+                  offset: global.transit.IPC.style_by_kind.train.state_rail.line.line2.offset
+                  outline:
+                    width: global.transit.IPC.style_by_kind.train.state_rail.line.outline.width
+                line2_label:
+                  style: jp_transit_lines_label
+                  offset: global.transit.IPC.style_by_kind.train.state_rail.label.line2.offset
+                  font:
+                    size: global.transit.IPC.style_by_kind.train.state_rail.label.font.size
+                    stroke:
+                      width: global.transit.IPC.style_by_kind.train.state_rail.label.font.stroke.width
+            ######################################### SPEED RAIL #######################################################
+            speed_rail:
+              filter:
+                kind_detail: speed_rail
+              draw:
+                line2_line:
+                  style: jp_transit_lines_line
+                  width: global.transit.IPC.style_by_kind.train.speed_rail.line.width
+                  offset: global.transit.IPC.style_by_kind.train.speed_rail.line.line2.offset
+                  outline:
+                    width: global.transit.IPC.style_by_kind.train.speed_rail.line.outline.width
+                line2_label:
+                  style: jp_transit_lines_label
+                  offset: global.transit.IPC.style_by_kind.train.speed_rail.label.line2.offset
+                  font:
+                    size: global.transit.IPC.style_by_kind.train.speed_rail.label.font.size
+                    stroke:
+                    width: global.transit.IPC.style_by_kind.train.speed_rail.label.font.stroke.width
+            ######################################### PRIVATE RAIL #####################################################
+            private_rail:
+              filter:
+                kind_detail: private_rail
+              draw:
+                line2_line:
+                  style: jp_transit_lines_line
+                  width: global.transit.IPC.style_by_kind.train.private_rail.line.width
+                  offset: global.transit.IPC.style_by_kind.train.private_rail.line.line2.offset
+                  outline:
+                    width: global.transit.IPC.style_by_kind.train.private_rail.line.outline.width
+                line2_label:
+                  style: jp_transit_lines_label
+                  offset: global.transit.IPC.style_by_kind.train.private_rail.label.line2.offset
+                  font:
+                    size: global.transit.IPC.style_by_kind.train.private_rail.label.font.size
+                    stroke:
+                      width: global.transit.IPC.style_by_kind.train.private_rail.label.font.stroke.width
+          ########################################### SUBWAY ###########################################################
+          subway:
+            filter:
+              kind: subway
+            draw:
+              line2_line:
+                style: jp_transit_lines_line
+                width: global.transit.IPC.style_by_kind.subway.line.width
+                offset: global.transit.IPC.style_by_kind.subway.line.line2.offset
+                outline:
+                  width: global.transit.IPC.style_by_kind.subway.line.outline.width
+              line2_label:
+                style: jp_transit_lines_label
+                offset: global.transit.IPC.style_by_kind.subway.label.line2.offset
+                font:
+                  size: global.transit.IPC.style_by_kind.subway.label.font.size
+                  stroke:
+                    width: global.transit.IPC.style_by_kind.subway.label.font.stroke.width
+          ########################################### LIGHT RAIL #######################################################
+          light_rail:
+            filter:
+              kind: light_rail
+            draw:
+              line2_line:
+                style: jp_transit_lines_line
+                width: global.transit.IPC.style_by_kind.light_rail.line.width
+                offset: global.transit.IPC.style_by_kind.light_rail.line.line2.offset
+                outline:
+                  width: global.transit.IPC.style_by_kind.light_rail.line.outline.width
+              line2_label:
+                style: jp_transit_lines_label
+                offset: global.transit.IPC.style_by_kind.light_rail.label.line2.offset
+                font:
+                  size: global.transit.IPC.style_by_kind.light_rail.label.font.size
+                  stroke:
+                    width: global.transit.IPC.style_by_kind.light_rail.label.font.stroke.width
+          ########################################### MONORAIL #########################################################
+          monorail:
+            filter:
+              kind: monorail
+            draw:
+              line2_line:
+                style: jp_transit_lines_line
+                width: global.transit.IPC.style_by_kind.monorail.line.width
+                offset: global.transit.IPC.style_by_kind.monorail.line.line2.offset
+                outline:
+                  width: global.transit.IPC.style_by_kind.monorail.line.outline.width
+              line2_label:
+                style: jp_transit_lines_label
+                offset: global.transit.IPC.style_by_kind.monorail.label.line2.offset
+                font:
+                  size: global.transit.IPC.style_by_kind.monorail.label.font.size
+                  stroke:
+                    width: global.transit.IPC.style_by_kind.monorail.label.font.stroke.width
+          ########################################### FUNICULAR ########################################################
+          funicular:
+            filter:
+              kind: funicular
+            draw:
+              line2_line:
+                style: jp_transit_lines_line
+                width: global.transit.IPC.style_by_kind.funicular.line.width
+                offset: global.transit.IPC.style_by_kind.funicular.line.line2.offset
+                outline:
+                  width: global.transit.IPC.style_by_kind.funicular.line.outline.width
+              line2_label:
+                style: jp_transit_lines_label
+                offset: global.transit.IPC.style_by_kind.funicular.label.line2.offset
+                font:
+                  size: global.transit.IPC.style_by_kind.funicular.label.font.size
+                  stroke:
+                    width: global.transit.IPC.style_by_kind.funicular.label.font.stroke.width
+          ########################################### AERIAL ###########################################################
+          aerial:
+            filter:
+              kind: aerial
+            draw:
+              line2_line:
+                style: jp_transit_lines_line
+                width: global.transit.IPC.style_by_kind.aerial.line.width
+                offset: global.transit.IPC.style_by_kind.aerial.line.line2.offset
+                outline:
+                  width: global.transit.IPC.style_by_kind.aerial.line.outline.width
+              line2_label:
+                style: jp_transit_lines_label
+                offset: global.transit.IPC.style_by_kind.aerial.label.line2.offset
+                font:
+                  size: global.transit.IPC.style_by_kind.aerial.label.font.size
+                  stroke:
+                    width: global.transit.IPC.style_by_kind.aerial.label.font.stroke.width
+        line3:
+          filter: |
+            function() {
+              return feature.all_ref && feature.all_ref.split(';').length > 2;
+            }
+          draw:
+            line3_line:
+              style: jp_transit_lines_line
+              color: global.transit.IPC.style_by_kind.default.line.line3.color
+              offset: global.transit.IPC.style_by_kind.default.line.line3.offset
+            line3_label:
+              style: jp_transit_lines_label
+              text_source: global.transit.IPC.style_by_kind.default.label.line3.text_source
+              offset: global.transit.IPC.style_by_kind.default.label.line3.offset
+              font:
+                fill: global.transit.IPC.style_by_kind.default.label.line3.font.fill
+          ########################################### TRAIN ############################################################
+          train:
+            filter:
+              kind: train
+            ######################################### STATE RAIL #######################################################
+            state_rail:
+              filter:
+                kind_detail: state_rail
+              draw:
+                line3_line:
+                  style: jp_transit_lines_line
+                  width: global.transit.IPC.style_by_kind.train.state_rail.line.width
+                  offset: global.transit.IPC.style_by_kind.train.state_rail.line.line3.offset
+                  outline:
+                    width: global.transit.IPC.style_by_kind.train.state_rail.line.outline.width
+                line3_label:
+                  style: jp_transit_lines_label
+                  offset: global.transit.IPC.style_by_kind.train.state_rail.label.line3.offset
+                  font:
+                    size: global.transit.IPC.style_by_kind.train.state_rail.label.font.size
+                    stroke:
+                      width: global.transit.IPC.style_by_kind.train.state_rail.label.font.stroke.width
+            ########################################### SPEED RAIL #####################################################
+            speed_rail:
+              filter:
+                kind_detail: speed_rail
+              draw:
+                line3_line:
+                  style: jp_transit_lines_line
+                  width: global.transit.IPC.style_by_kind.train.speed_rail.line.width
+                  offset: global.transit.IPC.style_by_kind.train.speed_rail.line.line3.offset
+                  outline:
+                    width: global.transit.IPC.style_by_kind.train.speed_rail.line.outline.width
+                line3_label:
+                  style: jp_transit_lines_label
+                  offset: global.transit.IPC.style_by_kind.train.speed_rail.label.line3.offset
+                  font:
+                    size: global.transit.IPC.style_by_kind.train.speed_rail.label.font.size
+                    stroke:
+                      width: global.transit.IPC.style_by_kind.train.speed_rail.label.font.stroke.width
+            ########################################### PRIVATE RAIL ###################################################
+            private_rail:
+              filter:
+                kind_detail: private_rail
+              draw:
+                line3_line:
+                  style: jp_transit_lines_line
+                  width: global.transit.IPC.style_by_kind.train.private_rail.line.width
+                  offset: global.transit.IPC.style_by_kind.train.private_rail.line.line3.offset
+                  outline:
+                    width: global.transit.IPC.style_by_kind.train.private_rail.line.outline.width
+                line3_label:
+                  style: jp_transit_lines_label
+                  offset: global.transit.IPC.style_by_kind.train.private_rail.label.line3.offset
+                  font:
+                    size: global.transit.IPC.style_by_kind.train.private_rail.label.font.size
+                    stroke:
+                      width: global.transit.IPC.style_by_kind.train.private_rail.label.font.stroke.width
+          ########################################### SUBWAY ###########################################################
+          subway:
+            filter:
+              kind: subway
+            draw:
+              line3_line:
+                style: jp_transit_lines_line
+                width: global.transit.IPC.style_by_kind.subway.line.width
+                offset: global.transit.IPC.style_by_kind.subway.line.line3.offset
+                outline:
+                  width: global.transit.IPC.style_by_kind.subway.line.outline.width
+              line3_label:
+                style: jp_transit_lines_label
+                offset: global.transit.IPC.style_by_kind.subway.label.line3.offset
+                font:
+                  size: global.transit.IPC.style_by_kind.subway.label.font.size
+                  stroke:
+                    width: global.transit.IPC.style_by_kind.subway.label.font.stroke.width
+          ########################################### LIGHT RAIL #######################################################
+          light_rail:
+            filter:
+              kind: light_rail
+            draw:
+              line3_line:
+                style: jp_transit_lines_line
+                width: global.transit.IPC.style_by_kind.light_rail.line.width
+                offset: global.transit.IPC.style_by_kind.light_rail.line.line3.offset
+                outline:
+                  width: global.transit.IPC.style_by_kind.light_rail.line.outline.width
+              line3_label:
+                style: jp_transit_lines_label
+                offset: global.transit.IPC.style_by_kind.light_rail.label.line3.offset
+                font:
+                  size: global.transit.IPC.style_by_kind.light_rail.label.font.size
+                  stroke:
+                    width: global.transit.IPC.style_by_kind.light_rail.label.font.stroke.width
+          ########################################### MONORAIL #########################################################
+          monorail:
+            filter:
+              kind: monorail
+            draw:
+              line3_line:
+                style: jp_transit_lines_line
+                width: global.transit.IPC.style_by_kind.monorail.line.width
+                offset: global.transit.IPC.style_by_kind.monorail.line.line3.offset
+                outline:
+                  width: global.transit.IPC.style_by_kind.monorail.line.outline.width
+              line3_label:
+                style: jp_transit_lines_label
+                offset: global.transit.IPC.style_by_kind.monorail.label.line3.offset
+                font:
+                  size: global.transit.IPC.style_by_kind.monorail.label.font.size
+                  stroke:
+                    width: global.transit.IPC.style_by_kind.monorail.label.font.stroke.width
+          ########################################### FUNICULAR #######################################################
+          funicular:
+            filter:
+              kind: funicular
+            draw:
+              line3_line:
+                style: jp_transit_lines_line
+                width: global.transit.IPC.style_by_kind.funicular.line.width
+                offset: global.transit.IPC.style_by_kind.funicular.line.line3.offset
+                outline:
+                  width: global.transit.IPC.style_by_kind.funicular.line.outline.width
+              line3_label:
+                style: jp_transit_lines_label
+                offset: global.transit.IPC.style_by_kind.funicular.label.line3.offset
+                font:
+                  size: global.transit.IPC.style_by_kind.funicular.label.font.size
+                  stroke:
+                    width: global.transit.IPC.style_by_kind.funicular.label.font.stroke.width
+          ########################################### AERIAL #######################################################
+          aerial:
+            filter:
+              kind: aerial
+            draw:
+              line3_line:
+                style: jp_transit_lines_line
+                width: global.transit.IPC.style_by_kind.aerial.line.width
+                offset: global.transit.IPC.style_by_kind.aerial.line.line3.offset
+                outline:
+                  width: global.transit.IPC.style_by_kind.aerial.line.outline.width
+              line3_label:
+                style: jp_transit_lines_label
+                offset: global.transit.IPC.style_by_kind.aerial.label.line3.offset
+                font:
+                  size: global.transit.IPC.style_by_kind.aerial.label.font.size
+                  stroke:
+                    width: global.transit.IPC.style_by_kind.aerial.label.font.stroke.width

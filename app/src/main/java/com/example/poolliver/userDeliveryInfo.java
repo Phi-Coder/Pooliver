@@ -11,7 +11,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,7 +19,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.poolliver.database.Request;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,6 +28,7 @@ import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class userDeliveryInfo extends AppCompatActivity {
 
@@ -52,7 +51,7 @@ public class userDeliveryInfo extends AppCompatActivity {
         Price = findViewById(R.id.UPrice);
         listView = findViewById(R.id.listView);
 
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         arrayList = new ArrayList<>();
         RequestAdapter requestAdapter = new RequestAdapter(this, R.layout.row, arrayList);
 

@@ -1,0 +1,37 @@
+-keep public class com.here.NativeBase { *; }
+-keep class com.here.NativeBase$* { *; }
+-keep interface com.here.NativeBase$* { *; }
+
+-keep class com.here.sdk.** { *; }
+-keep class com.here.services.** { *; }
+-keep class com.here.odnp.** { *; }
+-keep class com.here.posclient.** { *; }
+-keep class com.here.network.** { *; }
+-keep class com.here.olp.** { *; }
+-keep class com.here.annotations.** { *; }
+
+-keep public class com.here.sdk.** { *; }
+-keep public class com.here.services.** { *; }
+-keep public class com.here.odnp.** { *; }
+-keep public class com.here.posclient.** { *; }
+-keep public class com.here.network.** { *; }
+-keep public class com.here.olp.** { *; }
+-keep public class com.here.annotations.** { *; }
+
+-keep public enum com.here.sdk.** { *; }
+-keep public enum com.here.services.** { *; }
+-keep public enum com.here.odnp.** { *; }
+-keep public enum com.here.posclient.** { *; }
+-keep public enum com.here.network.** { *; }
+-keep public enum com.here.olp.** { *; }
+-keep public enum com.here.annotations.** { *; }
+
+-keep public interface com.here.sdk.** { *; }
+-keep public interface com.here.services.** { *; }
+-keep public interface com.here.odnp.** { *; }
+-keep public interface com.here.posclient.** { *; }
+-keep public interface com.here.network.** { *; }
+-keep public interface com.here.olp.** { *; }
+-keep public interface com.here.annotations.** { *; }
+
+-keepattributes Exceptions

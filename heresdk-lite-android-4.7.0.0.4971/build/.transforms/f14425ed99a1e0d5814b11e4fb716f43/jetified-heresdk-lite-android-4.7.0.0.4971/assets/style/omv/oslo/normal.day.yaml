@@ -1,0 +1,1835 @@
+import: ../skeleton.yaml
+
+global:
+  ######################################################  SCENE  #######################################################
+  # Land.Color - scene.background.color doesn't seem to support stops
+  scene_background_color: rgb(249, 253, 255)
+  # Sky.ColorTop
+  scene_sky_zenith_color: rgb(52, 123, 192)
+  # Sky.ColorIntermediate
+  scene_sky_horizon_color: rgb(176, 205, 236)
+  # Sky.ColorBottom
+  scene_sky_fog_color: rgb(237, 242, 249)
+
+  ##################################################  TEXT / LABELS  ###################################################
+  # Uses DroidSansFallback for CJK glyphs
+  text_font_family: FiraGO, DroidSansFallback
+  # CityCenter.Class5.FontStyle.Color
+  text_fill: rgb(40, 40, 40)
+  # CityCenter.Class5.FontStyle.OutlineColor
+  text_outline: rgba(255, 255, 253, 0.7)
+  # BuildingAddress.FontStyle.Color
+  text_fill_address: rgb(122, 147, 153)
+
+  ####################################################  VISIBILITY  ####################################################
+  text_visible_admin: true
+  icon_visible_populated_places: true
+  text_visible_populated_places: true
+  text_visible_neighbourhoods: true
+  text_visible_water_labels: true
+  text_visible_building: true
+  text_visible_address: true
+  text_visible_roads: true
+  text_visible_ferry: true
+  shields_visible: true
+
+  ######################################################  ICONS  #######################################################
+  icon_size: [
+    [11, '11px'],
+    [20, '24px']
+  ]
+  icon:
+    text:
+      font:
+        weight: normal
+        size: [
+          [13, 10px],
+          [14, 11px],
+          [17, 12px],
+          [19, 12px],
+          [20, 14px]
+        ]
+        stroke:
+          color: global.text_outline
+          width: [
+            [12, 3px],
+            [16, 4px]
+          ]
+
+
+  #####################################################  PLACES  #######################################################
+  places:
+    # MajorCountryLabel.FontStyle
+    country:
+      large:
+        label:
+          font:
+            size: 0px
+      label:
+        font:
+          transform: uppercase
+          # MajorCountryLabel.FontStyle.Size
+          size: [[2, 14px], [4, 14px], [5, 15px], [6, 20px], [7, 26px], [8, 28px], [20, 28px]]
+          fill: [
+            [3, 'rgba(100, 82, 79, 0.79)'],
+            [8, 'rgba(100, 82, 79, 0.59)']
+          ]
+          stroke:
+            color: [
+              [5, 'rgba(250, 253, 255, 0.2)'],
+              [6, 'rgba(250, 253, 255, 0.47)']
+            ]
+            # MajorCountryLabel.FontStyle.OutlineWidth
+            width: [
+              [0, 1px],
+              [4, 1px],
+              [5, 1.5px],
+              [6, 1.5px],
+              [7, 2px],
+              [20, 2px]
+            ]
+    # StateLabel.FontStyle
+    region:
+      label:
+        font:
+          transform: uppercase
+          # StateLabel.FontStyle.Size
+          size: [[4, 11px], [5, 12px], [6, 15px], [7, 16px], [20, 16px]]
+          # StateLabel.FontStyle.Color
+          fill: rgba(136, 118, 115, 0.69)
+          stroke:
+            # StateLabel.FontStyle.OutlineColor
+            color: rgba(250, 253, 255, 0.2)
+            # StateLabel.FontStyle.OutlineWidth
+            width: [
+              [0, 1px],
+              [3, 1px],
+              [4, 1px],
+              [5, 1.25px],
+              [6, 1.25px],
+              [7, 1.5px],
+              [20, 1.5px]
+            ]
+
+    populated:
+      default:
+        zoom: {min: 4}
+        icon:
+          size: [[9, 4px], [10, 0px]]
+          buffer: -8px
+        label:
+          buffer: 0px
+          font:
+            size: [[5, 9px], [8, 10px], [12, 11px]]
+      1m-up:
+        label:
+          font:
+            size: global.place_class1_font_size
+            stroke:
+              width: global.place_class1_font_stroke_width
+        capital:
+          zoom: {max: 14}
+          icon:
+            size: [[9, 8px], [10, 0px]]
+        region_capital:
+          zoom: {max: 13}
+          icon:
+            size: [[9, 8px], [10, 0px]]
+        county_capital:
+          zoom: {max: 14}
+          icon:
+            size: [[9, 8px], [10, 0px]]
+      250k-1m:
+        label:
+          font:
+            size: global.place_class2_font_size
+            stroke:
+              width: global.place_class2_font_stroke_width
+        capital:
+          zoom: {max: 13}
+          icon:
+            size: [[9, 6px], [10, 0px]]
+        region_capital:
+          zoom: {max: 13}
+          icon:
+            size: [[9, 6px], [10, 0px]]
+        county_capital:
+          zoom: {max: 14}
+          icon:
+            size: [[9, 6px], [10, 0px]]
+      100k-250k:
+        label:
+          font:
+            size: global.place_class3_font_size
+            stroke:
+              width: global.place_class3_font_stroke_width
+        capital:
+          zoom: {max: 13}
+          icon:
+            size: [[9, 5px], [10, 0px]]
+        region_capital:
+          zoom: {max: 13}
+          icon:
+            size: [[9, 5px], [10, 0px]]
+        county_capital:
+          zoom: {max: 14}
+          icon:
+            size: [[9, 5px], [10, 0px]]
+      30k-100k:
+        label:
+          font:
+            size: global.place_class4_font_size
+            stroke:
+              width: global.place_class4_font_stroke_width
+        capital:
+          zoom:  {max: 14}
+          icon:
+            size: [[9, 4px], [10, 0px]]
+        region_capital:
+          zoom: {max: 13}
+          icon:
+            size: [[9, 4px], [10, 0px]]
+        county_capital:
+          zoom: {max: 14}
+          icon:
+            size: [[9, 4px], [10, 0px]]
+      until-30k:
+        label:
+          font:
+            size: global.place_class5_font_size
+            stroke:
+              width: global.place_class5_font_stroke_width
+        capital:
+          zoom:  {max: 14}
+          icon:
+            size: [[9, 4px], [10, 0px]]
+        region_capital:
+          zoom: {max: 13}
+          icon:
+            size: [[9, 4px], [10, 0px]]
+        county_capital:
+          zoom: {max: 14}
+          icon:
+            size: [[9, 4px], [10, 0px]]
+        town:
+          icon:
+            size: [[9, 4px], [10, 0px]]
+        village:
+          label:
+            font:
+              stroke:
+                width: global.place_class5_font_stroke_width
+      hamlet:
+        zoom: {max: 15}
+        label:
+          font:
+            transform: uppercase
+            # CityCenter.Hamlet.FontStyle.Size
+            size: [
+              [5, 8px],
+              [6, 8px],
+              [7, 9px],
+              [9, 9px],
+              [10, 10px],
+              [11, 10px],
+              [12, 11px],
+              [13, 12px]
+            ]
+            stroke:
+              # CityCenter.Hamlet.FontStyle.OutlineWidth
+              width: 1px
+    # Boroughs have no specific style in Oslo. They use CityCenter.Class5 style
+    borough:
+      zoom: {max: 15}
+      label:
+        font:
+          # CityCenter.Class5.FontStyle
+          size: global.place_class5_font_size
+          fill: global.place_class5_color
+          stroke:
+            color: global.place_class5_outline_color
+            width: global.place_class5_font_stroke_width
+    # NeighborhoodInfo.FontStyle
+    neighbourhood:
+      label:
+        font:
+          # NeighborhoodInfo.FontStyle.0.Size
+          size: [[0, 11px], [13, 11px], [14, 12px], [15, 13px], [20, 13px]]
+          # NeighborhoodInfo.FontStyle.0.Color
+          fill: '#3c3c3c'
+          stroke:
+            # NeighborhoodInfo.FontStyle.0.OutlineColor
+            color: rgba(255,255,253,.7)
+            # NeighborhoodInfo.FontStyle.0.OutlineWidth
+            width: 1px
+  ####################################################  LANDUSE  #######################################################
+  landuse:
+    park:
+      # Park.Color
+      color: rgb(205,243,226)
+      label:
+        font:
+          # ParkInfo.FontStyle.Color
+          fill: rgb(91, 140, 124)
+          # ParkInfo.FontStyle.Size
+          size: [
+                [0, 0px],
+                [12, 10px],
+                [13, 11px],
+                [15, 11px],
+                [16, 12px],
+                [20, 12px]
+          ]
+          stroke:
+            # ParkInfo.FontStyle.OutlineColor
+            color: [
+              [11, 'rgba(224, 245, 217, .6)'],
+              [12, 'rgba(219, 242, 209, .6)']
+            ]
+            # ParkInfo.FontStyle.OutlineWidth
+            width: 1px
+
+  # CityCenter.Class1.FontStyle.Color
+  place_class1_color: rgb(0, 0, 0)
+  # CityCenter.Class1.FontStyle.OutlineColor
+  place_class1_outline_color: rgba(255, 255, 253, 0.71)
+  # CityCenter.Class1.FontStyle.Size
+  place_class1_font_size: [
+    [3, 15px],
+    [7, 15px],
+    [8, 17px],
+    [9, 18px],
+    [10, 20px],
+    [11, 22px],
+    [12, 24px],
+    [13, 26px]
+  ]
+  # CityCenter.Class1.FontStyle.OutlineWidth
+  place_class1_font_stroke_width: [
+    [0, 1px],
+    [6, 1px],
+    [7, 1.25px],
+    [8, 1.5px],
+    [10, 1.5px],
+    [11, 2px],
+    [12, 2px],
+    [13, 2.25px],
+    [14, 1px],
+    [20, 1px],
+  ]
+
+  # CityCenter.Class2.FontStyle.Color
+  place_class2_color: rgb(10, 10, 10)
+  # CityCenter.Class2.FontStyle.OutlineColor
+  place_class2_outline_color: rgba(255, 255, 253, 0.71)
+  # CityCenter.Class2.FontStyle.Size
+  place_class2_font_size: [
+    [4, 13px],
+    [7, 13px],
+    [8, 14px],
+    [9, 15px],
+    [10, 17px],
+    [11, 19px],
+    [12, 20px],
+    [13, 22px],
+    [14, 24px]
+  ]
+  # CityCenter.Class2.FontStyle.OutlineWidth
+  place_class2_font_stroke_width: [
+    [0, 1px],
+    [6, 1px],
+    [7, 1.25px],
+    [8, 1.5px],
+    [11, 1.5px],
+    [12, 1.75px],
+    [13, 1.75px],
+    [14, 2px],
+    [15, 1px],
+    [20, 1px]
+  ]
+
+  # CityCenter.Class3.FontStyle.Color
+  place_class3_color: rgb(20, 20, 20)
+  # CityCenter.Class3.FontStyle.OutlineColor
+  place_class3_outline_color: rgba(255, 255, 253, 0.71)
+  # CityCenter.Class3.FontStyle.Size
+  place_class3_font_size: [
+    [5, 11px],
+    [6, 11px],
+    [7, 12px],
+    [8, 12px],
+    [9, 13px],
+    [10, 14px],
+    [11, 15px],
+    [12, 17px],
+    [13, 19px],
+    [14, 21px]
+  ]
+  # CityCenter.Class3.FontStyle.OutlineWidth
+  place_class3_font_stroke_width: [
+    [0, 1px],
+    [9, 1px],
+    [10, 1.5px],
+    [11, 1.5px],
+    [12, 1.75px],
+    [13, 2px],
+    [14, 2.25px]
+  ]
+
+  # CityCenter.Class4.FontStyle.Color
+  place_class4_color: rgb(30, 30, 30)
+  # CityCenter.Class4.FontStyle.OutlineColor
+  place_class4_outline_color: rgba(255, 255, 253, 0.71)
+  # CityCenter.Class4.FontStyle.Size
+  place_class4_font_size: [
+    [5, 10px],
+    [6, 10px],
+    [7, 11px],
+    [9, 11px],
+    [10, 12px],
+    [11, 13px],
+    [12, 15px],
+    [13, 17px],
+    [14, 18px]
+  ]
+  # CityCenter.Class4.FontStyle.OutlineWidth
+  place_class4_font_stroke_width: 1px
+
+
+  # CityCenter.Class5.FontStyle.Color
+  place_class5_color: rgb(40, 40, 40)
+  # CityCenter.Class5.FontStyle.OutlineColor
+  place_class5_outline_color: rgba(255, 255, 253, 0.71)
+  # CityCenter.Class5.FontStyle.Size
+  place_class5_font_size: [
+    [5, 9px],
+    [6, 9px],
+    [7, 10px],
+    [9, 10px],
+    [10, 11px],
+    [11, 11px],
+    [12, 12px],
+    [13, 14px],
+    [14, 15px]
+  ]
+  # CityCenter.Class5.FontStyle.OutlineWidth
+  place_class5_font_stroke_width: 1px
+
+
+  # CityCenter.Hamlet.FontStyle.Color
+  place_hamlet_color: rgb(50, 50, 50)
+  # CityCenter.Hamlet.FontStyle.OutlineColor
+  place_hamlet_outline_color: rgba(255, 255, 253, 0.71)
+  # Oslo has no specific style for villages - use CityCenter.Class5.FontStyle.Size
+  place_village_font_size: global.place_class5_font_size
+
+  # Capital labels have no specific style in Oslo
+  place_capital_outline_width: 0
+  place_capital_outline_color: rgb(255, 255, 255)
+  ##################################################  WATER  ###########################################################
+
+  # Water.Color.0m
+  water_color: rgb(145,208,250)
+  # Water.Color.3000m
+  water_deep_color: rgb(137, 196, 250)
+  # Sea.FontStyle.Color
+  water_label_sea_color: rgb(77, 147, 221)
+  # Lake.FontStyle.Color
+  water_label_lake_color: rgb(45,125,178)
+  # Lake.FontStyle.OutlineColor
+  water_label_lake_outline_color: rgba(215, 237, 252, 0.5)
+  # Uses Lake.FontStyle.Color
+  water_label_ocean_color: global.water_label_lake_color
+  # Use Lake.FontStyle.Color
+  water_label_bay_color: global.water_label_lake_color
+  # Use Lake.FontStyle.OutlineColor
+  water_label_bay_outline_color: global.water_label_lake_outline_color
+  # River.Width
+  water_river_line_width: [
+    [6, 1px],
+    [13, 1px],
+    [14, 3px],
+    [15, 4.5px],
+    [16, 7.5px],
+    [17, 13.5px],
+    [18, 21px],
+    [19, 33px],
+    [20, 60px]
+  ]
+
+  water:
+    default:
+      label:
+        font:
+          weight: normal
+          # Sea.FontStyle.Size
+          size: [
+            [1, 8px],
+            [5, 12px],
+            [6, 12px],
+            [7, 13px],
+            [8, 14px],
+            [20, 14px]
+          ]
+          style: italic
+    ocean:
+      label:
+        font:
+          # Ocean.FontStyle.Size uses Sea.FontStyle.Size
+          size: [
+            [1, 8px],
+            [5, 12px],
+            [6, 12px],
+            [7, 13px],
+            [8, 14px],
+            [20, 14px]
+          ]
+          style: italic
+    bay:
+      label:
+        font:
+          # BayHarbour.FontStyle.Size uses Sea.FontStyle.Size
+          size: [
+            [1, 8px],
+            [5, 12px],
+            [6, 12px],
+            [7, 13px],
+            [8, 14px],
+            [20, 14px]
+          ]
+          stroke:
+            # Sea.FontStyle.OutlineWidth
+            width: 1px
+    lake:
+      label:
+        font:
+          style: regular
+          stroke:
+            # Lake.FontStyle.OutlineWidth
+            width: 1px
+
+  ################################################  LANDUSE AND AREAS  #################################################
+  # Land.Color
+  land_color: [
+  	[0, 'rgb(251, 251, 251)'],
+    [10, 'rgb(251, 253, 255)'],
+    [16, 'rgb(249, 253, 255)']
+  ]
+
+  # Beach.Color
+  beach_color: [
+    [15, 'rgb(250,245,215)'],
+    [16, 'rgb(250,245,215)']
+  ]
+
+  # LandCover.Glacier.Color
+  glacier_color: [
+  	[6, 'rgb(235, 243, 255)'],
+    [8, 'rgb(235, 243, 253)'],
+    [13, 'rgb(235, 243, 253)']
+  ]
+
+  # Woodland.Color
+  woodland_color: 'rgb(215,247,234)'
+
+  # Uses Woodland.Color
+  forest_color: global.woodland_color
+
+  # No default label color for landuse in Oslo
+  landuse_default_label_color: [
+    [15, 'rgb(95,100,110)'],
+    [16, 'rgb(105,110,120)']
+  ]
+
+  # No default label color for landuse in Oslo
+  landuse_default_label_font_stroke_color: rgba(237,245,238,.58)
+  # TODO: to port size from Oslo - or keep this for time being
+  landuse_default_label_font_stroke_width: 1.5px # placeholder
+  # TODO: to port size from Oslo - or keep this for time being
+  landuse_default_label_font_size: [[12, 10px], [13, 11px], [15, 11px], [16, 12px]]
+
+  # ParkInfo.FontStyle.Color
+  landuse_park_label_color: global.landuse.park.label.font.fill
+
+  # ParkInfo.FontStyle.OutlineColor
+  landuse_park_label_outline_color: global.landuse.park.label.font.stroke.color
+
+  # WoodlandInfo.FontStyle.Color
+  landuse_forest_label_color: rgb(86, 144, 133)
+
+  # WoodlandInfo.FontStyle.OutlineColor
+  landuse_forest_label_outline_color: rgba(243, 251, 242, .56)
+
+  # PointOfInterest.FontStyle.Color - used for: industrial, railway, parking, commercial, zoo, aerodrome, etc.:
+  landuse_gray_label_color: rgb(100, 100, 100)
+
+  # PointOfInterest.FontStyle.OutlineColor
+  landuse_gray_label_outline_color: rgba(255, 255, 255, 150)
+
+  # Uses IndustrialComplexInfo.FontStyle.Color
+  landuse_pedestrian_label_color: global.landuse_industrial_label_color
+
+  # Uses IndustrialComplexInfo.FontStyle.OutlineColor
+  landuse_pedestrian_label_outline_color: global.landuse_industrial_outline_color
+
+  # HospitalCampusInfo.FontStyle.Color
+  landuse_hospital_label_color: [
+    [0, 'rgb(150, 135, 145)'],
+    [15, 'rgb(150, 135, 145)'],
+    [16, 'rgb(157, 138, 148)'],
+    [20, 'rgb(157, 138, 148)']
+  ]
+
+  # HospitalCampusInfo.FontStyle.OutlineColor
+  landuse_hospital_label_outline_color: rgba(247, 241, 243, 0.6)
+
+  # IndustrialComplexInfo.FontStyle.Color
+  landuse_industrial_label_color: rgb(106, 126, 146)
+
+  # IndustrialComplexInfo.FontStyle.OutlineColor
+  landuse_industrial_outline_color: [
+    [0, 'rgba(239, 245, 251, 0.6)'],
+    [13, 'rgba(239, 245, 251, 0.6)'],
+    [14, 'rgba(232, 238, 243, 0.6)'],
+    [20, 'rgba(232, 238, 243, 0.6)']
+  ]
+  # GolfCourseInfo.FontStyle.Color
+  landuse_golf_course_label_color: rgb(98, 153, 144)
+
+  # GolfCourseInfo.FontStyle.OutlineColor
+  landuse_golf_course_label_outline_color: [
+    [0, 'rgba(224, 245, 217, 0.6)'],
+    [11, 'rgba(224, 245, 217, 0.6)'],
+    [12, 'rgba(208, 241, 210, 0.6)'],
+    [20, 'rgba(208, 241, 210, 0.6)']
+  ]
+  # BeachInfo.FontStyle.Color
+  landuse_beach_label_color: rgb(150, 149, 129)
+
+  # GolfCourseInfo.FontStyle.OutlineColor
+  landuse_beach_label_outline_color: rgba(251, 243, 190, 0.6)
+
+  # UniversityCampusInfo.FontStyle.Color
+  landuse_university_label_color: [
+    [0, 'rgb(131, 136, 146)'],
+    [15, 'rgb(131, 136, 146)'],
+    [16, 'rgb(139, 144, 153)'],
+    [20, 'rgb(139, 144, 153)']
+  ]
+
+  # UniversityCampusInfo.FontStyle.OutlineColor
+  landuse_university_label_outline_color: [
+    [0, 'rgba(243, 241, 237, 0.6)'],
+    [15, 'rgba(243, 241, 237, 0.6)'],
+    [16, 'rgba(247, 245, 241, 0.6)'],
+    [20, 'rgba(247, 245, 241, 0.6)']
+  ]
+
+  # ParkingArea.Color uses IndustrialComplex.Color
+  landuse_parking_label_color: global.industrial_color
+
+  # MilitaryBaseInfo.FontStyle.Color
+  landuse_military_label_color: rgb(159, 157, 180)
+
+  # MilitaryBaseInfo.FontStyle.OutlineColor
+  landuse_military_label_outline_color: rgba(245, 247, 252, 0.6)
+
+  # BuiltupArea.Color
+  builtup_area_color: 'rgb(240,244,250)'
+
+  # Oslo doesn't use outline for builtup areas
+  builtup_area_outline_color: global.builtup_area_color
+  builtup_area_outline_width: 0
+
+  # GolfCourse.Color
+  golf_course_color: rgb(188, 240, 224)
+
+  # HospitalCampus.Color
+  hospital_color: 'rgb(250,235,239)'
+
+  # IndustrialComplex.Color
+  industrial_color: 'rgb(235,239,247)'
+
+  # NationalPark.Color
+  national_park_color: 'rgba(186,240,215,0.4)'
+
+  ###################################################  EARTH  ##########################################################
+  # IslandInfo.FontStyle.Color
+  island_color: rgb(81, 87, 4)
+
+  # IslandInfo.FontStyle.OutlineColor
+  island_outline_color: rgba(250, 253, 255, 0.39)
+
+  island:
+    zoom: {min: 0, max: 15}
+    label:
+      font:
+        weight: normal
+        # IslandInfo.FontStyle.Size
+        size: [
+          [0, 10px],
+          [11, 10px],
+          [12, 11px],
+          [13, 11px],
+          [14, 12px],
+          [15, 12px],
+          [16, 13px],
+          [17, 13px],
+          [20, 13px]
+          ]
+        stroke:
+          # IslandInfo.FontStyle.OutlineWidth
+          width: 1px
+
+  # NativeReservation.Color
+  native_reservation_color: [
+    [7, 'rgba(245, 231, 218, 0.3)'],
+    [13, 'rgba(245, 223, 203, 0.25)'],
+    [16, 'rgba(253, 225, 201, 0.2)'],
+  ]
+
+  # MilitaryBase.Color
+  military_color: 'rgba(229,229,246,0.35)'
+
+  # Park.Color
+  park_color: global.landuse.park.color
+
+  # Cemetery.Color
+  green_area_color: 'rgb(225,242,242)'
+
+  # Uses IndustrialComplex.Color
+  pedestrian_area_color: global.industrial_color
+
+  # Uses IndustrialComplex.Color
+  aerodrome_color: global.industrial_color
+
+  # Runway.Color
+  runway_color: 'rgb(225,231,242)'
+
+  # UniversityCampus.color
+  university_campus_color:  'rgb(245,240,230)'
+
+  #####################################################  BORDERS  ######################################################
+  boundary:
+    # Oslo doesn't have a style for country/state borders labels. Let's keep this and ask for review
+    labels:
+      zoom:
+        min: 8
+      offset: [0px, 5px]
+      font:
+        size: 9px
+        transform: uppercase
+        stroke:
+          color: global.land_color
+          width: 3px
+      single_text:
+        offset: [0px, 0px]
+    country:
+      line:
+        width: 1px
+      outline:
+        width: [[3, '0px'], [4, '2px'], [7, '3px']]
+    other: # Used for other boundary kinds like "disputed" etc.:
+      line:
+        dash: [5, 4]
+        width: [[0, '1px'], [9, '2px']]
+      outline:
+        width: [[3, '0px'], [4, '1px'], [5, '2px'], [7, '3px']]
+    state:
+      line:
+        width: 1px
+      outline:
+        width: [[0, '0px'], [9, '3px']]
+
+  # Uses CountryBoundary.Color
+  state_boundary_text_color: global.country_boundary_color
+
+  # CountryBoundary.Color
+  country_boundary_color: [
+    [4, 'rgb(184, 171, 169)'],
+    [6, 'rgb(155, 125, 121)'],
+    [11, 'rgb(155, 125, 121)'],
+    [13, 'rgb(149, 106, 101)'],
+  ]
+  # CountryBoundary.BackGroundColor
+  country_boundary_outline_color: [
+    [0, 'rgba(191, 131, 124, 0)'],
+    [4, 'rgba(191, 131, 124, 0.03)'],
+    [6, 'rgba(166, 99, 91, 0.1)'],
+  ]
+
+  # Uses CountryBoundary.Color
+  country_disputed_boundary_color: global.country_boundary_color
+
+  # Uses CountryBoundary.BackGroundColor
+  country_disputed_boundary_background_color: global.country_boundary_outline_color
+
+  # StateBoundary.Color
+  region_boundary_color: [ # applies to states and regions
+    [6, 'rgb(217, 203, 202)'],
+    [11, 'rgb(201, 181, 178)'],
+    [13, 'rgb(201, 181, 178)']
+  ]
+
+  # StateBoundary.BackgroundColor
+  region_boundary_outline_color: rgba(242, 198, 194, 0.1) # applies to states and regions
+
+  ####################################################  BUILDINGS  #####################################################
+  building:
+    zoom: {min: 15}
+    outline:
+      # BuildingOutline.Width
+      width: .5px
+    extrusion:
+      zoom: {min: 16}
+      outline:
+        # ExtrudedBuilding.Line.Width
+        width: .5px
+    label:
+      zoom: {min: 17}
+      point:
+        size: 0px
+      font:
+        # BuildingInfo.FontStyle.Size
+        size: [
+          [0, 11px],
+          [15, 11px],
+          [16, 12px],
+          [20, 12px]
+        ]
+        stroke:
+          # BuildingInfo.FontStyle.OutlineWidth
+          width: 1px
+    address:
+      label:
+        zoom: {min: 18}
+        font:
+          # BuildingAddress.FontStyle.Size
+          size: 10px
+
+  # Building.Color
+  building_color: rgba(255,255,255, .7)
+  # BuildingOutline.Color
+  building_outline_color: rgb(197, 204, 219)
+  # ExtrudedBuilding.Wall.Color
+  building_extrude_color: rgba(240, 245, 247, .7)
+  # Uses BuildingAddress.FontStyle.Color
+  building_label_color: global.text_fill_address
+  # Uses BuildingAddress.FontStyle.OutlineColor
+  building_label_outline_color: global.text_outline
+
+  ######################################################  ROADS  #######################################################
+  road:
+    default:
+      line:
+        width: 1px
+      # TODO: to port from Oslo if available - couldn't find a style for it
+      direction:
+        size: [[15, 15px], [20, 26px]]
+        spacing: [[16, 150px], [18, 250px]]
+      label:
+        font:
+          stroke:
+            # Using Street.Category4.FontStyle.OutlineWidth as fallback
+            width: [
+              [0, 1.25px],
+              [12, 1.25px],
+              [14, 1.5px],
+              [16, 2px],
+              [18, 2.25px]
+            ]
+    rail:
+      zoom: {min: 10}
+      line:
+        # Rail.PolylineStyles.Width
+        width: [
+          [0, 1px],
+          [13, 1px],
+          [14, 1.5px],
+          [16, 1.5px],
+          [18, 3px]
+        ]
+        # TODO: to port from Oslo - RailPolylineStyles.DashArray[1-2]? How to read the values?
+        dash: [7, 4]
+      outline:
+        # Rail.PolylineStyles.OutlineWidth
+        width: 0px
+    # TODO: to port from Oslo - Street.Category{0-4}.Construction[Dash|Gap]? How to read the values?
+    under_construction:
+      line:
+        dash: [2, 2]
+    highway:
+      zoom: {min: 5}
+      label:
+        font:
+          # Street.Category0.FontStyle.Size
+          size: [
+            [0, 10px],
+            [10, 10px],
+            [11, 11px],
+            [12, 13px],
+            [13, 14px],
+            [14, 15px],
+            [15, 17px],
+            [16, 20px],
+            [17, 24px],
+            [18, 26px],
+            [20, 26px],
+          ]
+      outline:
+        # Street.Category0.Outline.Width
+        width: [
+          [0, 0px],
+          [7, 0px],
+          [8, 0.5px],
+          [14, 0.75px],
+          [16, 1.25px],
+          [18, 1.5px]
+        ]
+      centerline:
+        # Street.Category0.CenterLine.Width
+        width: [[10, 0px], [11, 1px]]
+      trunk:
+        label:
+          # Street.Category1.FontStyle.Size
+          font:
+            size: [
+              [0, 10px],
+              [11, 10px],
+              [12, 11px],
+              [13, 12px],
+              [14, 13px],
+              [15, 15px],
+              [16, 17px],
+              [17, 22px],
+              [18, 24px],
+              [20, 24px]
+            ]
+        outline:
+          # Street.Category1.Outline.Width
+          width: function() { return ($zoom >= 10 && '.5px') || '0px'; }
+      link:
+        label:
+          font:
+            # Street.Category1.FontStyle.Size
+            size: [
+              [0, 10px],
+              [11, 10px],
+              [12, 11px],
+              [13, 12px],
+              [14, 13px],
+              [15, 15px],
+              [16, 17px],
+              [17, 22px],
+              [18, 24px],
+              [20, 24px]
+            ]
+      bridge:
+        outline:
+          # Street.Category0.BridgeColor (alpha were adjusted)
+          color: [
+            [0, 'rgba(135, 135, 149, .65)'],
+            [16, 'rgba(135, 135, 149, .65)'],
+            [17, 'rgba(135, 135, 149, .45)']
+          ]
+    major:
+      label:
+        offset: [[16, [0px, -1px]], [18, [0px, -2px]]]
+        font:
+          stroke:
+            # Street.Category1.FontStyle.OutlineWidth
+            width: [
+              [0, 1.25px],
+              [11, 1.25px],
+              [14, 1.5px],
+              [16, 2px],
+              [18, 2.25px]
+            ]
+          # Street.Category1.FontStyle.Size
+          size: [
+            [0, 10px],
+            [11, 10px],
+            [12, 11px],
+            [13, 12px],
+            [14, 13px],
+            [15, 15px],
+            [16, 17px],
+            [17, 22px],
+            [18, 24px],
+            [20, 24px]
+          ]
+      outline:
+        # Street.Category1.Outline.Width
+        width: function() { return ($zoom >= 10 && '.5px') || '0px'; }
+      bridge:
+        outline:
+          # Street.Category1.BridgeColor (alpha were adjusted)
+          color: [
+            [0, 'rgba(135, 135, 149, .65)'],
+            [16, 'rgba(135, 135, 149, .65)'],
+            [17, 'rgba(135, 135, 149, .45)']
+          ]
+      secondary:
+        outline:
+          # Street.Category2.Outline.Width
+          width: function() { return ($zoom >= 13 && '.5px') || '0px'; }
+        label:
+          offset: [[16, [0px, -1px]], [17, [0px, -3px]]]
+          font:
+            # Street.Category2.FontStyle.Size
+            size: [
+              [0, 10px],
+              [12, 10px],
+              [13, 11px],
+              [14, 12px],
+              [15, 14px],
+              [16, 16px],
+              [17, 20px],
+              [18, 21px],
+              [20, 21px]
+            ]
+            stroke:
+              # Street.Category2.FontStyle.OutlineWidth
+              width: [
+                [0, 1.25px],
+                [12, 1.25px],
+                [14, 1.5px],
+                [16, 2px],
+                [18, 2.25px]
+              ]
+        bridge:
+          outline:
+            # Street.Category2.BridgeColor (alpha were adjusted)
+            color: [
+              [0, 'rgba(135, 135, 149, .65)'],
+              [16, 'rgba(135, 135, 149, .65)'],
+              [17, 'rgba(135, 135, 149, .45)']
+            ]
+      tertiary:
+        outline:
+          # Street.Category3.Outline.Width (adjusted to align rendering results with HARP)
+          width: function() { return ($zoom >= 15 && '.5px') || '0px'; }
+        label:
+          font:
+            stroke:
+              # Street.Category3.FontStyle.OutlineWidth
+              width: [
+                [0, 1.25px],
+                [12, 1.25px],
+                [14, 1.5px],
+                [16, 2px],
+                [18, 2.25px]
+              ]
+            # Street.Category3.FontStyle.Size
+            size: [
+              [0, 10px],
+              [13, 10px],
+              [14, 11px],
+              [15, 13px],
+              [16, 13px],
+              [17, 17px],
+              [18, 18px],
+              [20, 18px]
+            ]
+        bridge:
+          outline:
+            # Street.Category3.BridgeColor (alpha were adjusted)
+            color: [
+              [0, 'rgba(153, 171, 191, .57)'],
+              [16, 'rgba(153, 171, 191, .57)'],
+              [17, 'rgba(153, 171, 191, .37)']
+            ]
+        link:
+          line:
+            # Street.Category3.RampWidth
+            width: [
+              [0, 3px],
+              [14, 3px],
+              [15, 4px],
+              [16, 5px],
+              [17, 6px],
+              [18, 12px],
+              [19, 20px],
+              [20, 32px]
+            ]
+    minor:
+      direction:
+        zoom: {max: 18}
+      label:
+        offset: [[16, [0px, -1px]], [18, [0px, -2px]]]
+        font:
+          stroke:
+            # Street.Category4.FontStyle.OutlineWidth
+            width: [
+              [0, 1.25px],
+              [12, 1.25px],
+              [14, 1.5px],
+              [16, 2px],
+              [18, 2.25px]
+            ]
+          # Street.Category4.FontStyle.Size
+          size: [
+            [0, 10px],
+            [14, 10px],
+            [15, 12px],
+            [16, 12px],
+            [17, 14px],
+            [18, 15px],
+            [20, 15px]
+          ]
+      residential:
+        outline:
+          # Street.Category4.Outline.Width (adjusted to align rendering results with HARP)
+          width: function() { return ($zoom >= 16 && '.5px') || '0px'; }
+      service:
+        outline:
+          # Street.Category4.Outline.Width (adjusted to align rendering results with HARP)
+          width: function() { return ($zoom >= 16 && '.5px') || '0px'; }
+        label:
+          font:
+            # Street.Category4.FontStyle.Size
+            size: [
+              [0, 10px],
+              [14, 10px],
+              [15, 12px],
+              [16, 12px],
+              [17, 14px],
+              [18, 15px],
+              [20, 15px]
+            ]
+            stroke:
+              # Street.Category4.FontStyle.OutlineWidth
+              width: [
+                [0, 1.25px],
+                [12, 1.25px],
+                [14, 1.5px],
+                [16, 2px],
+                [18, 2.25px]
+              ]
+      bridge:
+        outline:
+          # Street.Category4.BridgeColor (alpha were adjusted)
+            color: [
+              [0, 'rgba(153, 171, 191, .57)'],
+              [16, 'rgba(153, 171, 191, .57)'],
+              [17, 'rgba(153, 171, 191, .37)']
+            ]
+    path:
+      label:
+        offset: [0px, -2px]
+        font:
+          # Street.Walkway.FontStyle.Color
+          fill: rgb(70, 78, 88)
+          # Street.Walkway.FontStyle.Size
+          size: [
+            [0, 10px],
+            [15, 10px],
+            [16, 12px],
+            [17, 13px],
+            [20, 13px]
+          ]
+          stroke:
+            # Street.Walkway.FontStyle.OutlineColor
+            color: rgba(240, 248, 255, 0.65)
+            # Street.Walkway.FontStyle.OutlineWidth
+            width: [
+              [0, 1.25px],
+              [15, 1.25px],
+              [16, 1.5px],
+              [17, 1.625px],
+              [20, 1.625px]
+            ]
+      unpaved:
+        label:
+          font:
+            # Street.Walkway.FontStyle.Color
+            fill: rgb(70, 78, 88)
+            stroke:
+              # Street.Walkway.FontStyle.OutlineColor
+              color: rgba(240, 248, 255, 0.65)
+      pedestrian:
+        line:
+          # Street.Pedestrian.Width
+          width: [
+            [0, 0px],
+            [14, 0px],
+            [14, 1px],
+            [15, 1px],
+            [16, 3px],
+            [17, 4px],
+            [18, 5px],
+            [19, 7px],
+            [20, 8px]
+          ]
+          dash: [1, 1]
+      footway:
+        label:
+          zoom: {min: 14, max: 20}
+          offset: [0px, -5px]
+          font:
+            # Street.Walkway.FontStyle.Color
+            fill: rgb(70, 78, 88)
+            # Street.Walkway.FontStyle.Size
+            size: [
+              [0, 10px],
+              [15, 10px],
+              [16, 12px],
+              [17, 13px],
+              [20, 13px]
+            ]
+        line:
+          # Street.Walkway.Width
+          width: [[0, 0px], [14, 1px]]
+        bridge:
+          line:
+            # No specific style in Oslo, probably using the widths from the parent style.
+            width: [[0, 0px], [14, 1px]]
+          outline:
+            # Street.Walkway.BridgeOutlineWidth
+            width: [
+              [0, 1px],
+              [16, 1px],
+              [17, 1.5px],
+              [20, 1.5px]
+            ]
+    ferry:
+      label:
+        offset: [0px, -12px]
+        font:
+          # Ferry.FontStyle.Size
+          size: [
+            [0, 10px],
+            [12, 10px],
+            [14, 11px],
+            [15, 12px],
+            [16, 12px],
+            [17, 13px]
+          ]
+          stroke:
+            # Ferry.FontStyle.OutlineWidth
+            width: 1px
+      line:
+        # Ferry.PolylineStyles.Width
+        width: [
+          [8, 1px],
+          [12, 1.5px]
+        ]
+        # TODO: to port from Oslo - Ferry.PolylineStyles.DashArray{1-2}? How to read the values?
+        dash: [5, 3]
+      # Found no matching style in Oslo
+      tunnel:
+        label:
+          font:
+            stroke:
+              color: white
+        line:
+          color: rgb(153,153,153)
+          dash: [10, 10]
+    aerialway:
+      cable_car:
+        line:
+          color: rgb(170, 170, 170)
+          width: 0.5px
+  ###################################################  ROAD SHIELDS  ###################################################
+  # TODO: to check if Oslo specifies specific sizes for shields
+  shield:
+    size: [[6, 110%], [15, 120%]]
+    repeat_distance: [[10, 150px], [13, 200px], [20, 70px]]
+    text:
+      font:
+        fill: black
+        weight: normal
+        size: [[6, 8px], [15, 10px], [20, 13px]]
+  #####################################################  TUNNELS  ######################################################
+  tunnel_order: 305
+
+  #####################################################  BRIDGES  ######################################################
+  bridge_outline: rgb(160,160,160)
+
+  #####################################################  HIGHWAYS  #####################################################
+  # Street.Category0.Color
+  highway_fill: [
+    [5, 'rgb(170, 183, 201)'],
+    [6, 'rgb(175, 188, 206)'],
+    [8, 'rgb(195, 208, 226)'],
+    [10, 'rgb(191, 204, 222)'],
+    [13, 'rgb(184, 199, 215)'],
+    [16, 'rgb(182, 197, 213)']
+  ]
+
+  # Street.Category0.TunnelColor uses Street.Category0.Color
+  highway_tunnel_fill: global.highway_fill
+
+  # Street.Category0.CenterLine.TunnelColor uses Street.Category0.CenterLine.Color
+  highway_tunnel_center_line: global.highway_centerline_fill
+
+  # Street.Category0.OutlineColor
+  highway_outline: [
+    [6, 'rgb(115, 128, 146)'],
+    [8, 'rgb(110, 123, 141)'],
+    [10, 'rgb(103, 118, 134)'],
+    [13, 'rgb(87, 103, 124)'],
+    [16, 'rgb(87, 103, 124)']
+  ]
+
+  # Street.Category0.CenterLine.Color
+  highway_centerline_fill: [
+    [6, 'rgb(115, 128, 146)'],
+    [8, 'rgb(108, 121, 138)'],
+    [11, 'rgb(165, 180, 196)'],
+    [13, 'rgb(141,158,176)'],
+    [16, 'rgb(139,154,173)'],
+  ]
+
+  # Street.Category0.Width
+  highway_width: [
+    [0, 1.75px],
+    [5, 1.75px],
+    [6, 2.25px],
+    [7, 2.5px],
+    [8, 2px],
+    [9, 2.5px],
+    [10, 3.75px],
+    [11, 4px],
+    [12, 5px],
+    [13, 5.5px],
+    [14, 8px],
+    [15, 12px],
+    [16, 16px],
+    [17, 20px],
+    [18, 35px],
+    [19, 45px],
+    [20, 70px]
+  ]
+
+  # Street.Category0.RampWidth
+  highway_link_width: [
+    [0, 3px],
+    [13, 3px],
+    [14, 4px],
+    [15, 5px],
+    [16, 6px],
+    [17, 8px],
+    [18, 18px],
+    [19, 23px],
+    [20, 35px]
+  ]
+
+  # Street.Category1.Width
+  highway_trunk_width: [
+    [0, 1.25px],
+    [5, 1.25px],
+    [8, 2px],
+    [9, 2.5px],
+    [10, 2px],
+    [11, 2.75px],
+    [12, 3px],
+    [13, 3.5px],
+    [14, 5px],
+    [15, 7px],
+    [16, 11px],
+    [17, 15px],
+    [18, 30px],
+    [19, 34px],
+    [20, 54px]
+  ]
+
+  ######################################################  ROADS  #######################################################
+  # Street.Category1.Color
+  major_road_fill: [
+    [5, 'rgb(190, 203, 221)'],
+    [6, 'rgb(195, 208, 226)'],
+    [7, 'rgb(210, 223, 235)'],
+    [8, 'rgb(195, 208, 226)'],
+    [10, 'rgb(215, 228, 246)'],
+    [13, 'rgb(194, 209, 225)'],
+    [16, 'rgb(192, 207, 223)']
+  ]
+  # Street.Category1.TunnelColor uses Street.Category1.Color
+  major_road_tunnel_fill: global.major_road_fill
+
+  # Street.Category1.RampWidth
+  major_road_link_width: [
+    [0, 3px],
+    [13, 3px],
+    [14, 4px],
+    [15, 5px],
+    [16, 6px],
+    [17, 8px],
+    [18, 18px],
+    [19, 23px],
+    [20, 35px]
+  ]
+
+  # Street.Category1.OutlineColor
+  major_road_outline: [
+    [6, 'rgb(115, 128, 146)'],
+    [8, 'rgb(108, 121, 138)'],
+    [10, 'rgb(148, 163, 179)'],
+    [13, 'rgb(92, 108, 129)'],
+    [16, 'rgb(102, 118, 139)']
+  ]
+
+  # Street.Category1.Width
+  major_road_width: [
+    [0, 1.25px],
+    [5, 1.25px],
+    [8, 2px],
+    [9, 2.5px],
+    [10, 2px],
+    [11, 2.75px],
+    [12, 3px],
+    [13, 3.5px],
+    [14, 5px],
+    [15, 7px],
+    [16, 11px],
+    [17, 15px],
+    [18, 30px],
+    [19, 34px],
+    [20, 54px]
+  ]
+
+  # Street.Category2.Color
+  major_road_secondary_fill: [
+    [10, 'rgb(208, 221, 235)'],
+    [12, 'rgb(210, 221, 236)'],
+    [13, 'rgb(212, 225, 245)'],
+    [16, 'rgb(211, 224, 240)'],
+  ]
+
+  # Street.Category2.TunnelColor uses Street.Category2.Color
+  major_road_secondary_tunnel_fill: global.major_road_secondary_fill
+
+  # Street.Category2.OutlineColor
+  major_road_secondary_outline: [
+    [12, 'rgb(160, 173, 207)'],
+    [13, 'rgb(140, 153, 161)'],
+    [16, 'rgb(140, 153, 161)'],
+  ]
+
+
+  # Street.Category2.Width
+  major_road_secondary_width: [
+    [0, 1px],
+    [8, 1.25px],
+    [10, 1.5px],
+    [11, 2px],
+    [12, 2.5px],
+    [13, 2.5px],
+    [14, 3.5px],
+    [15, 5.75px],
+    [16, 9px],
+    [17, 13px],
+    [18, 27px],
+    [19, 30px],
+    [20, 50px]
+  ]
+  # Street.Category2.RampWidth
+  major_road_secondary_link_width: [
+    [0, 3px],
+    [14, 3px],
+    [15, 4px],
+    [16, 5px],
+    [17, 6px],
+    [18, 12px],
+    [19, 20px],
+    [20, 32px]
+  ]
+
+  # Street.Category3.Color
+  major_road_tertiary_fill: [
+    [10, 'rgb(208,221,235)'],
+    [11, 'rgb(208,221,235)'],
+    [12, 'rgb(222, 231, 241)'],
+    [13, 'rgb(213, 220, 230)'],
+    [14, 'rgb(220, 227, 237)'],
+    [16, 'rgb(227, 234, 244)'],
+  ]
+
+  # Street.Category3.TunnelColor uses Street.Category3.Color
+  major_road_tertiary_tunnel_fill: global.major_road_tertiary_fill
+
+  # Street.Category3.OutlineColor
+  major_road_tertiary_outline: [
+    [13, 'rgb(190,198,209)'],
+    [14, 'rgb(119,137,158)'],
+    [17, 'rgb(110, 127, 147)'],
+    [18, 'rgb(100, 117, 137)'],
+  ]
+
+  # Street.Category3.Width
+  major_road_tertiary_width: [
+    [0, 1px],
+    [10, 1.25px],
+    [13, 1.65px],
+    [14, 3.5px],
+    [15, 4.25px],
+    [16, 8.75px],
+    [17, 12px],
+    [18, 25px],
+    [19, 28px],
+    [20, 47px]
+  ]
+
+  # Street.Category4.Color
+  minor_road_residential_fill: [
+    [10, 'rgb(220, 227, 237)'],
+    [12, 'rgb(226, 234, 243)'],
+    [13, 'rgb(225, 232, 242)'],
+    [14, 'rgb(227, 234, 244)']
+  ]
+
+  # Street.Category4.TunnelColor uses Street.Category4.Color
+  minor_road_residential_tunnel_fill: global.minor_road_residential_fill
+
+  # Street.Category4.OutlineColor
+  minor_road_residential_outline: [
+    [13, 'rgb(180,194,212)'],
+    [14, 'rgb(165,177,193)'],
+    [16, 'rgb(165,177,193)'],
+    [18, 'rgb(100, 117, 137)']
+  ]
+
+  # All minor roads uses Street.Category4
+  # Street.Category4.Width
+  minor_road_width: [
+    [0, 1px],
+    [13, 1px],
+    [14, 2.25px],
+    [15, 2.5px],
+    [16, 5.5px],
+    [17, 7px],
+    [18, 17px],
+    [19, 21px],
+    [20, 37px]
+  ]
+  minor_road_service_fill: global.minor_road_residential_fill
+  minor_road_service_tunnel_fill: global.minor_road_residential_tunnel_fill
+  minor_road_service_outline: global.minor_road_residential_outline
+  minor_road_unpaved_fill: global.minor_road_residential_fill
+
+
+  ######################################################  PATHS  #######################################################
+  # Street.Pedestrian.Color
+  path_pedestrian: rgb(202, 210, 223)
+  # Street.Walkway.Color
+  path_footway: [
+    [15, 'rgb(197,219,215)'],
+    [17, 'rgb(184,204,199)']
+  ]
+  # Street.Walkway.TunnelColor uses Street.Pedestrian.Color
+  path_footway_tunnel_fill: global.path_footway
+  # Not styled in Oslo - use default Street.Walkway.Color
+  path_footway_cemetery: global.path_footway
+  path_footway_forest: global.path_footway
+  path_footway_park: global.path_footway
+
+
+  #####################################################  FERRIES  ######################################################
+  # Ferry.PolylineStyles.Color
+  ferry_line_color: rgb(202, 231, 252)
+  # Ferry.FontStyle.Color
+  ferry_label_color: rgb(240, 247, 252)
+  # Ferry.TunnelColor
+  ferry_tunnel_color: rgb(30, 48, 65)
+  # Ferry.FontStyle.OutlineColor
+  ferry_label_outline_color: rgb(120, 187, 235)
+
+
+  #####################################################  RAILWAYS  #####################################################
+  # Rail.PolylineStyles.SecondaryColor
+  rail_dash_background_color: rgb(184,189,194)
+  # Railways have outline width set to 0 in Oslo
+  rail_outline_color: global.rail_dash_color
+  # Rail.PolylineStyles.Color
+  rail_dash_color: [
+    [12, 'rgb(210,215,220)'],
+    [13, 'rgb(210,215,220)'],
+  ]
+
+  ####################################################  CONTINENTS  ####################################################
+  # ContinentLabel.FontStyle
+  continent:
+    label:
+      font:
+        transform: uppercase
+        # ContinentLabel.FontStyle.Color
+        fill: rgba(255, 118, 120, 0.71)
+        weight: normal
+        # ContinentLabel.FontStyle.Size
+        size: [
+          [0, 16px],
+          [1, 19px],
+          [2, 28px],
+          [3, 28px],
+          [4, 30px],
+          [20, 30px]
+        ]
+        stroke:
+          # ContinentLabel.FontStyle.OutlineColor
+          color: rgba(255, 255, 255, 0.12)
+          # ContinentLabel.FontStyle.OutlineWidth
+          width: 2.25px
+
+########################################################################################################################
+#######################################################  LAYERS  #######################################################
+########################################################################################################################
+styles:
+  tunnel-outline:
+    base: lines
+    # TODO: Dash values to be fixed - where are defined in Oslo?
+    dash: [1, 1]
+
+########################################################################################################################
+#######################################################  LAYERS  #######################################################
+########################################################################################################################
+layers:
+  ####################################################  BUILDINGS  #####################################################
+  buildings:
+    extrude:
+      draw:
+        translucent-lines:
+          # ExtrudedBuildings.Line.Color
+          color: rgb(220, 228, 245)
+  ######################################################  WATER  #######################################################
+  water:
+    water-labels:
+      draw:
+        text-blend-order:
+          font:
+            stroke:
+              color: global.water_label_lake_outline_color
+              width: 1px
+  ######################################################  ROADS  #######################################################
+  roads:
+    highway:
+      bridge:
+        draw:
+          bridge:
+            outline:
+              color: global.road.highway.bridge.outline.color
+      # Tunnel has dashed outline in Oslo
+      tunnel:
+        draw:
+          lines:
+            outline:
+              style: tunnel-outline
+      trunk:
+        bridge:
+          draw:
+            bridge:
+              outline:
+                color: global.road.major.bridge.outline.color
+        # Tunnel has dashed outline in Oslo
+        tunnel:
+          draw:
+            lines:
+              outline:
+                style: tunnel-outline
+      link:
+        draw:
+          lines:
+            outline:
+              # Street.Category0.RampOutlineWidth
+              width: [
+                [0, 0px],
+                [7, 0px],
+                [8, 0.25px],
+                [14, 0.3px],
+                [16, 0.6px],
+                [18, 0.75px]
+              ]
+    major_road:
+      bridge:
+        draw:
+          bridge:
+            outline:
+              color: global.road.major.bridge.outline.color
+      # Tunnel has dashed outline in Oslo
+      tunnel:
+        draw:
+          lines:
+            outline:
+              style: tunnel-outline
+      secondary:
+        bridge:
+          draw:
+            bridge:
+              outline:
+                color: global.road.major.secondary.bridge.outline.color
+        # Tunnel has dashed outline in Oslo
+        tunnel:
+          draw:
+            lines:
+              outline:
+                style: tunnel-outline
+      tertiary:
+        bridge:
+          draw:
+            bridge:
+              outline:
+                color: global.road.major.tertiary.bridge.outline.color
+        # Tunnel has dashed outline in Oslo
+        tunnel:
+          draw:
+            lines:
+              outline:
+                style: tunnel-outline
+    minor_road:
+      residential:
+        bridge:
+          draw:
+            bridge:
+              outline:
+                color: global.road.minor.bridge.outline.color
+        # Tunnel has dashed outline in Oslo
+        tunnel:
+          draw:
+            lines:
+              outline:
+                style: tunnel-outline
+      service:
+        bridge:
+          draw:
+            bridge:
+              outline:
+                color: global.road.minor.bridge.outline.color
+        # Tunnel has dashed outline in Oslo
+        tunnel:
+          draw:
+            lines:
+              outline:
+                style: tunnel-outline
+    path:
+      footway:
+        # Tunnel has dashed outline in Oslo
+        tunnel:
+          draw:
+            lines:
+              outline:
+                style: tunnel-outline
+  ######################################################  LANDUSE  ######################################################
+  landuse:
+    # All landuse labels should be visible from ZL:12 except for national_park, military, nature_reserve.
+    label:
+      filter:
+        all:
+          - $geometry: point
+          - any:
+            - $zoom: {min: 12}
+            - all:
+              - $zoom: {min: 5}
+              - kind: national_park
+            - all:
+              - $zoom: {min: 6}
+              - kind: [military, nature_reserve]
+    builtup:
+      draw:
+        # Oslo doesn't have a style for builtup polygons outline
+        lines:
+          visible: false
+  ######################################################  PLACES  ######################################################
+  places:
+    region:
+      filter:
+        all:
+          - kind: region
+          - $zoom: {min: 4}
+    country:
+      filter:
+        all:
+          - kind: country
+          - $zoom: {min: 2}
+      # All countries have the same style in Oslo
+      large_country_label:
+        visible: false
+    populated-places:
+      draw:
+        icon_library:
+          font:
+            fill: global.place_class5_color
+        text-blend-order:
+          font:
+            fill: global.place_class5_color
+      population-1m-up:
+        filter:
+          $zoom: {min: 3, max: 14}
+        capital:
+          draw:
+            icon_library:
+              text:
+                # oslo has no style for capitals labels
+                font:
+                  fill: global.place_class1_color
+                  stroke:
+                    width: global.place_capital_outline_width
+      population-250k-1m:
+        filter:
+          $zoom: {min: 3, max: 15}
+        capital:
+          draw:
+            icon_library:
+              text:
+                # oslo has no style for capitals labels
+                font:
+                  fill: global.place_class2_color
+                  stroke:
+                    width: global.place_capital_outline_width
+      population-100k-250k:
+        filter:
+          $zoom: {min: 5, max: 15}
+        capital:
+          draw:
+            icon_library:
+              text:
+                # oslo has no style for capitals labels
+                font:
+                  fill: global.place_class3_color
+                  stroke:
+                    width: global.place_capital_outline_width
+      population-30k-100k:
+        filter:
+          $zoom: {min: 5, max: 15}
+        capital:
+          draw:
+            icon_library:
+              text:
+                # oslo has no style for capitals labels
+                font:
+                  fill: global.place_class4_color
+                  stroke:
+                    width: global.place_capital_outline_width
+      population-until-30k:
+        filter:
+          $zoom: {min: 5, max: 15}
+        capital:
+          draw:
+            icon_library:
+              text:
+                # oslo has no style for capitals labels
+                font:
+                  fill: global.place_class5_color
+                  stroke:
+                    width: global.place_capital_outline_width
+        # oslo don't have specific style town and village.
+        # visible: false to force use of the parent style as a fallback
+        town:
+          visible: false
+        village:
+          visible: false
+    neighbourhood:
+      filter:
+        kind: neighbourhood
+      draw:
+        text-blend-order:
+          visible: true
+          text_source: global.ux_language_text_source
+          anchor: center
+          priority: global.label.priorities.city-center-neighbourhood
+          font:
+            fill: global.places.neighbourhood.label.font.fill
+            family: global.text_font_family
+            size: global.places.neighbourhood.label.font.size
+            stroke:
+              color: global.places.neighbourhood.label.font.stroke.color
+              width: global.places.neighbourhood.label.font.stroke.width

@@ -1,0 +1,3 @@
+int attr setZOrderOnTop 0x0
+int[] styleable MapViewLite { 0x0 }
+int styleable MapViewLite_setZOrderOnTop 0

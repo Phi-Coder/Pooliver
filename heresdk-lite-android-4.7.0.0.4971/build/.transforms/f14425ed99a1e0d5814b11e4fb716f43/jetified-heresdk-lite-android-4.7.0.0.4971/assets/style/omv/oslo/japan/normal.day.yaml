@@ -1,0 +1,2882 @@
+import:
+  - ../normal.day.yaml
+  - ../../japan.poi.day.yaml
+# Turning off transit rendering for the following reasons:
+# 1. Consistency: our other styles Miami and Hybrid don't have transit data.
+# 2. Performance: this style should smoothly render on low-end devices.
+#  - ../../japan.transit.day.yaml
+
+
+########################################################################################################################
+######################################################  TEXTURES  ######################################################
+########################################################################################################################
+textures:
+  jp_shields:
+    url: ../../icons/japan_shields-2x.png
+    density: 2
+    sprites:
+      japan_shields--japan_ew_a: [50, 88, 44, 36]
+      japan_shields--japan_ew_b: [2, 2, 60, 36]
+      japan_shields--japan_mr_a: [126, 2, 48, 44]
+      japan_shields--japan_mr_b: [66, 2, 56, 44]
+      japan_shields--japan_nr_a: [178, 2, 44, 42]
+      japan_shields--japan_nr_b: [2, 42, 60, 42]
+      japan_shields--japan_ue_a: [2, 88, 44, 46]
+
+########################################################################################################################
+#######################################################  STYLES  #######################################################
+########################################################################################################################
+styles:
+  jp_shields:
+    base: points
+    blend_order: 1
+    draw:
+      visible: global.shields_visible
+      texture: jp_shields
+      sprite: |
+        function() {
+          const type = feature.all_route_types;
+          const text = feature.shield_text;
+          if (type === 1) {
+            return text.length < 3 ? 'japan_shields--japan_ew_a' : 'japan_shields--japan_ew_b';
+          } else if (type === 2) {
+            return 'japan_shields--japan_ue_a';
+          } else if (type === 3) {
+            return text.length < 3 ? 'japan_shields--japan_nr_a' : 'japan_shields--japan_nr_b';
+          } else if (type === 4 || type === 5) {
+            return text.length < 3 ? 'japan_shields--japan_mr_a' : 'japan_shields--japan_mr_b';
+          }
+        }
+      size: global.jp_shield.size
+      repeat_group: jp_shields
+      repeat_distance: global.jp_shield.repeat_distance
+      placement: midpoint
+      placement_min_length_ratio: 0.1
+      text:
+        anchor: center
+        text_source: shield_text
+        font:
+          fill: global.jp_shield.text.font.fill
+          family: global.text_font_family
+          weight: global.jp_shield.text.font.weight
+          size: global.jp_shield.text.font.size
+
+  ######################################  GRASSLAND PATTERN SHADER BLOCK ###############################################
+  polygons-dots-pattern:
+    base: polygons
+    mix: [space-tile, cellular-noise]
+    shaders:
+      defines:
+        DOTS_SPACING: 0.85
+        DOTS_SIZE: 0.4
+        DOTS_SMOOTHING: 1.8
+        DOTS_SCALE: 30.
+        DOTS_R: 0.1
+        DOTS_G: 0.1
+        DOTS_B: 0.1
+        DOTS_BG_R: 0.79
+        DOTS_BG_G: 0.95
+        DOTS_BG_B: 0.85
+      blocks:
+        color: |
+          // Avoid undefined values by avoiding division by 0
+          float dots_spacing = DOTS_SPACING == 0. ? 1e-8 : DOTS_SPACING;
+          vec2 st = (getTileCoords()*(DOTS_SCALE / dots_spacing)) * 4.;
+          vec2 F = cellular2x2x2(vec3(st, 3.));
+          // smoothstep output is undefined when edge0 >= edge1
+          // https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/smoothstep.xhtml
+          float dots_smoothing = DOTS_SMOOTHING == 0. ? 1e-8 : DOTS_SMOOTHING;
+          float edge1 = DOTS_SIZE / dots_spacing;
+          float edge0 = edge1 - DOTS_SMOOTHING;
+          float n = smoothstep(edge0, edge1, F.x);
+          vec3 c1 = vec3(DOTS_R, DOTS_G, DOTS_B) * vec3(1. - n, 1. - n, 1. - n);
+          vec3 c2 = vec3(DOTS_BG_R, DOTS_BG_G, DOTS_BG_B) * vec3(n, n, n);
+          color.rgb = max(c1, c2);
+
+  space-tile:
+    doc:
+      author:
+        name: Patricio Gonzalez Vivo
+        twitter: patriciogv
+      version: 0.0.1
+      tangram-version: 0.0.7
+      licence: MIT
+      description: |
+        Get the position on the tile
+    shaders:
+      blocks:
+        global: |
+          // Variant to be add to both vertex and fragments shaders
+          #ifndef v_pos
+          varying vec3 v_pos;
+          #endif
+
+          //
+          // Get the coordinates in tile space
+          // ================================
+          vec2 getTileCoords() {
+              return fract(v_pos.xy);
+          }
+
+        position: |
+          // Normalize the attribute position of a vertex
+          v_pos = modelPosition().xyz;
+
+  cellular-noise:
+    shaders:
+      blocks:
+        global: |
+          // Cellular noise ("Worley noise") in 3D in GLSL.
+          // Copyright (c) Stefan Gustavson 2011-04-19. All rights reserved.
+          // This code is released under the conditions of the MIT license.
+          // Permutation polynomial: (34x^2 + x) mod 289
+          vec4 permute(vec4 x) {
+            return mod((34.0 * x + 1.0) * x, 289.0);
+          }
+          vec3 permute(vec3 x) {
+            return mod((34.0 * x + 1.0) * x, 289.0);
+          }
+          // Cellular noise, returning F1 and F2 in a vec2.
+          // Speeded up by using 2x2x2 search window instead of 3x3x3,
+          // at the expense of some pattern artifacts.
+          // F2 is often wrong and has sharp discontinuities.
+          // If you need a good F2, use the slower 3x3x3 version.
+          vec2 cellular2x2x2(vec3 P) {
+              #define K 0.142857142857 // 1/7
+              #define Ko 0.428571428571 // 1/2-K/2
+              #define K2 0.020408163265306 // 1/(7*7)
+              #define Kz 0.166666666667 // 1/6
+              #define Kzo 0.416666666667 // 1/2-1/6*2
+              #define jitter 0.8 // smaller jitter gives less errors in F2
+              vec3 Pi = mod(floor(P), 289.0);
+              vec3 Pf = fract(P);
+              vec4 Pfx = Pf.x + vec4(0.0, -1.0, 0.0, -1.0);
+              vec4 Pfy = Pf.y + vec4(0.0, 0.0, -1.0, -1.0);
+              vec4 p = permute(Pi.x + vec4(0.0, 1.0, 0.0, 1.0));
+              p = permute(p + Pi.y + vec4(0.0, 0.0, 1.0, 1.0));
+              vec4 p1 = permute(p + Pi.z); // z+0
+              vec4 p2 = permute(p + Pi.z + vec4(1.0)); // z+1
+              vec4 ox1 = fract(p1*K) - Ko;
+              vec4 oy1 = mod(floor(p1*K), 7.0)*K - Ko;
+              vec4 oz1 = floor(p1*K2)*Kz - Kzo; // p1 < 289 guaranteed
+              vec4 ox2 = fract(p2*K) - Ko;
+              vec4 oy2 = mod(floor(p2*K), 7.0)*K - Ko;
+              vec4 oz2 = floor(p2*K2)*Kz - Kzo;
+              vec4 dx1 = Pfx + jitter*ox1;
+              vec4 dy1 = Pfy + jitter*oy1;
+              vec4 dz1 = Pf.z + jitter*oz1;
+              vec4 dx2 = Pfx + jitter*ox2;
+              vec4 dy2 = Pfy + jitter*oy2;
+              vec4 dz2 = Pf.z - 1.0 + jitter*oz2;
+              vec4 d1 = dx1 * dx1 + dy1 * dy1 + dz1 * dz1; // z+0
+              vec4 d2 = dx2 * dx2 + dy2 * dy2 + dz2 * dz2; // z+1
+
+              // Sort out the two smallest distances (F1, F2)
+          #if 0
+              // Cheat and sort out only F1
+              d1 = min(d1, d2);
+              d1.xy = min(d1.xy, d1.wz);
+              d1.x = min(d1.x, d1.y);
+              return sqrt(d1.xx);
+          #else
+              // Do it right and sort out both F1 and F2
+              vec4 d = min(d1,d2); // F1 is now in d
+              d2 = max(d1,d2); // Make sure we keep all candidates for F2
+              d.xy = (d.x < d.y) ? d.xy : d.yx; // Swap smallest to d.x
+              d.xz = (d.x < d.z) ? d.xz : d.zx;
+              d.xw = (d.x < d.w) ? d.xw : d.wx; // F1 is now in d.x
+              d.yzw = min(d.yzw, d2.yzw); // F2 now not in d2.yzw
+              d.y = min(d.y, d.z); // nor in d.z
+              d.y = min(d.y, d.w); // nor in d.w
+              d.y = min(d.y, d2.x); // F2 is now in d.y
+              return sqrt(d.xy); // F1 and F2
+          #endif
+          }
+
+  ######################################################  DASHES  ######################################################
+  tunnel:
+    base: lines
+    draw:
+      order: global.feature_order
+      color: global.landuse.IPC.tunnel.color
+      width: global.landuse.IPC.tunnel.width
+  tunnel-z14:
+    mix: tunnel
+    dash: global.landuse.IPC.tunnel.z14.dash
+  tunnel-z15:
+    mix: tunnel
+    dash: global.landuse.IPC.tunnel.z15.dash
+  tunnel-z16:
+    mix: tunnel
+    dash: global.landuse.IPC.tunnel.z16.dash
+  tunnel-z17:
+    mix: tunnel
+    dash: global.landuse.IPC.tunnel.z17.dash
+  tunnel-z18:
+    mix: tunnel
+    dash: global.landuse.IPC.tunnel.z18.dash
+  tunnel-z19:
+    mix: tunnel
+    dash: global.landuse.IPC.tunnel.z19.dash
+  tunnel-z20:
+    mix: tunnel
+    dash: global.landuse.IPC.tunnel.z20.dash
+
+  toll_gate:
+    base: lines
+    dash: global.landuse.IPC.decorative_lines.toll_gate.dash
+  decorative_ferry_route:
+    mix: translucent-lines
+    dash: global.landuse.IPC.decorative_lines.decorative_ferry_route.dash
+    dash_background_color: global.landuse.IPC.decorative_lines.decorative_ferry_route.dash_background_color
+
+  municipality:
+    mix: translucent-lines
+    dash: global.boundary.municipality.line.dash
+    dash_background_color: global.boundary.municipality.line.dash_background_color
+  district:
+    mix: translucent-lines
+    dash: global.boundary.district.line.dash
+    dash_background_color: global.boundary.district.line.dash_background_color
+  neighbourhood:
+    mix: translucent-lines
+    dash: global.boundary.neighbourhood.line.dash
+    dash_background_color: global.boundary.neighbourhood.line.dash_background_color
+  microhood:
+    mix: translucent-lines
+    dash: global.boundary.microhood.line.dash
+    dash_background_color: global.boundary.microhood.line.dash_background_color
+
+  speed:
+    base: lines
+    dash: global.road.IPC.rail.speed.line.dash
+    dash_background_color: global.road.IPC.rail.speed.line.dashBgColor
+  state:
+    base: lines
+    dash: global.road.IPC.rail.state.line.dash
+    dash_background_color: global.road.IPC.rail.state.line.dashBgColor
+
+########################################################################################################################
+########################################################  GLOBAL  ######################################################
+########################################################################################################################
+global:
+  # A special min zoom filter for Japan (IPC) features. It turned out that (some, if not all) IPC features delivered
+  # with zoom level 14 tiles have min zoom property set to 15. It essentially makes them invisible on zoom level 14.
+  # This problem can't be met in the Web version, because they use zoom level increased by 1 for some reason
+  # (for example, our zoom level 14 is their 15).
+  jp_feature_min_zoom_filter: |
+    function() {
+      return feature.min_zoom === undefined || ($zoom + 1) >= feature.min_zoom;
+    }
+  # Show/Hide road lines filter in favour of polygonal road
+  road_lines_visibility_filter: |
+    function() {
+      // is_present_in_landuse attribute is provided one zoom level too soon compared to polygonal road
+      // This zoom filter is to be removed once this issue is fixed.
+      if (
+        !feature.is_present_in_landuse ||
+        (feature.is_present_in_landuse && $zoom < 15 && feature.source === 'ipc')) {
+          return true;
+        }
+      return false;
+    }
+
+  #######################################################  WATER  ######################################################
+  water:
+    IPC:
+      river:
+        line:
+          # River.Width
+          width: [
+            [6, 0px],
+            [6, 0.75px],
+            [15, 1px],
+            [17, 2px],
+            [18, 3px],
+            [19, 8px],
+            [20, 15px]
+          ]
+  ###################################################  ROAD SHIELDS  ###################################################
+  jp_shield:
+    size: [[7, 85%], [10, 100%], [15, 105%]]
+    repeat_distance: [[7, 25px], [8, 90px], [10, 100px]]
+    text:
+      font:
+        fill: white
+        weight: normal
+        size: [[7, 7px], [10, 9px], [15, 10px]]
+  ####################################################  LANDUSE  #######################################################
+  landuse:
+    IPC:
+      hospital:
+        # HospitalCampus.Color
+        color: [
+          [13, "#fcf0f2"],
+          [16, "#f7ebed"]
+        ]
+      pedestrian:
+        # PedestrianArea.Color -> PavedArea.Color
+        color: global.landuse.IPC.paved_area.color
+      beach:
+        # Beach.Color
+        color: "#fcf7cf"
+      zoo:
+        # AnimalPark.Color -> Cemetery.Color
+        color: global.landuse.IPC.cemetery.color
+        label:
+          font:
+            # CemeteryInfo.FontStyle.Color
+            fill: global.landuse.IPC.cemetery.label.font.fill
+            # CemeteryInfo.FontStyle.Size
+            size: global.landuse.IPC.cemetery.label.font.size
+            stroke:
+              # CemeteryInfo.FontStyle.OutlineColor
+              color: global.landuse.IPC.cemetery.label.font.stroke.color
+              # CemeteryInfo.FontStyle.OutlineWidth
+              width: global.landuse.IPC.cemetery.label.font.stroke.width
+      cemetery:
+        # Cemetery.Color
+        color: "#dff0f0"
+        label:
+          font:
+            # CemeteryInfo.FontStyle.Color
+            fill: [
+              [0, "#838892"],
+              [15, "#838892"],
+              [16, "#8b9099"],
+              [20, "#8b9099"]
+            ]
+            # CemeteryInfo.FontStyle.Size
+            size: [
+              [12, 10px],
+              [13, 11px],
+              [15, 11px],
+              [16, 12px],
+              [20, 12px]
+            ]
+            stroke:
+              # CemeteryInfo.FontStyle.OutlineColor
+              color: rgba(241, 247, 242, .6)
+              # CemeteryInfo.FontStyle.OutlineWidth
+              width: 1px
+      industrial:
+        # IndustrialComplex.Color
+        color: global.industrial_color
+        label:
+          font:
+            # IndustrialComplexInfo.FontStyle.Color
+            fill: global.landuse_industrial_label_color
+            # IndustrialComplexInfo.FontStyle.Size
+            size: [
+              [0, 0px],
+              [12, 10px],
+              [13, 11px],
+              [15, 11px],
+              [16, 12px],
+              [20, 12px]
+            ]
+            stroke:
+              # IndustrialComplexInfo.FontStyle.OutlineColor
+              color: global.landuse_industrial_outline_color
+              # IndustrialComplexInfo.FontStyle.OutlineWidth
+              width: 1px
+      university:
+        # UniversityCampus.Color
+        color: [
+          [13, "#fcf9f0"],
+          [16, "#f7f4eb"]
+        ]
+        label:
+          font:
+            # UniversityCampusInfo.FontStyle.Color
+            fill: global.landuse_university_label_color
+            # UniversityCampusInfo.FontStyle.Size
+            size: [
+              [0, 0px],
+              [14, 11px],
+              [15, 11px],
+              [16, 12px],
+              [20, 12px]
+            ]
+            stroke:
+              # UniversityCampusInfo.FontStyle.OutlineColor
+              color: global.landuse_university_label_outline_color
+              # UniversityCampusInfo.FontStyle.OutlineWidth
+              width: 1px
+      accomodation_facility:
+        # AccomodationFacility.Color -> Cemetery.Color
+        color: global.landuse.IPC.cemetery.color
+        label:
+          font:
+            # CemeteryInfo.FontStyle.Color
+            fill: global.landuse.IPC.cemetery.label.font.fill
+            # CemeteryInfo.FontStyle.Size
+            size: global.landuse.IPC.cemetery.label.font.size
+            stroke:
+              # CemeteryInfo.FontStyle.OutlineColor
+              color: global.landuse.IPC.cemetery.label.font.stroke.color
+              # CemeteryInfo.FontStyle.OutlineWidth
+              width: global.landuse.IPC.cemetery.label.font.stroke.width
+      attraction:
+        # Attraction.Color -> Park.Color
+        color: global.landuse.park.color
+        label:
+          font:
+            fill: global.landuse.park.label.font.fill
+            size: global.landuse.park.label.font.size
+            stroke:
+              color: global.landuse.park.label.font.stroke.color
+              width: global.landuse.park.label.font.stroke.width
+      dam:
+        # Dam.Color -> WaterBreak.Color
+        color: global.landuse.IPC.breakwater.color
+        label:
+          font:
+            # DamInfo.FontStyle.Color
+            fill: "#5d7280"
+            # DamInfo.FontStyle.Size -> IndustrialComplexInfo.FontStyle.Size
+            size: global.landuse.IPC.industrial.label.font.size
+            stroke:
+              # DamInfo.FontStyle.OutlineColor
+              color: rgba(230, 237, 242, .6)
+              # DamInfo.FontStyle.OutlineWidth -> IndustrialComplexInfo.FontStyle.OutlineWidth
+              width: global.landuse.IPC.industrial.label.font.stroke.width
+      imperial_facility:
+        # ImperialFacility.Color -> Park.Color
+        color: global.landuse.park.color
+        label:
+          font:
+            fill: global.landuse.park.label.font.fill
+            size: global.landuse.park.label.font.size
+            stroke:
+              color: global.landuse.park.label.font.stroke.color
+              width: global.landuse.park.label.font.stroke.width
+      institutional_office:
+        # InstitutionalOffice.Color -> IndustrialComplex.Color
+        color: global.landuse.IPC.industrial.color
+        label:
+          font:
+            # InstitutionalOfficeInfo.FontStyle.Color -> BuildingInfo.Government.FontStyle.Color
+            fill: global.building.IPC.by_kind_detail.government.label.font.fill
+            # InstitutionalOfficeInfo.FontStyle.Size -> IndustrialComplexInfo.FontStyle.Size
+            size: global.landuse.IPC.industrial.label.font.size
+            stroke:
+              # InstitutionalOfficeInfo.FontStyle.OutlineColor -> BuildingInfo.FontStyle.OutlineColor
+              color: global.building.IPC.label.font.stroke.color
+              # InstitutionalOfficeInfo.FontStyle.OutlineWidth
+              width: global.landuse.IPC.industrial.label.font.stroke.width
+      outdoor_facility:
+        # OutdoorFacility.Color -> Cemetery.Color
+        color: global.landuse.IPC.cemetery.color
+        label:
+          font:
+            # CemeteryInfo.FontStyle.Color
+            fill: global.landuse.IPC.cemetery.label.font.fill
+            # CemeteryInfo.FontStyle.Size
+            size: global.landuse.IPC.cemetery.label.font.size
+            stroke:
+              # CemeteryInfo.FontStyle.OutlineColor
+              color: global.landuse.IPC.cemetery.label.font.stroke.color
+              # CemeteryInfo.FontStyle.OutlineWidth
+              width: global.landuse.IPC.cemetery.label.font.stroke.width
+      retail:
+        # Retail.Color -> IndustrialComplex.Color
+        color: global.landuse.IPC.industrial.color
+        label:
+          font:
+            # IndustrialComplexInfo.FontStyle.Color
+            fill: global.landuse.IPC.industrial.label.font.fill
+            # IndustrialComplexInfo.FontStyle.Size
+            size: global.landuse.IPC.industrial.label.font.size
+            stroke:
+              # IndustrialComplexInfo.FontStyle.OutlineColor
+              color: global.landuse.IPC.industrial.label.font.stroke.color
+              # IndustrialComplexInfo.FontStyle.OutlineWidth
+              width: global.landuse.IPC.industrial.label.font.stroke.width
+      service_area:
+        # ServiceArea.Color -> IndustrialComplex.Color
+        color: global.landuse.IPC.industrial.color
+        label:
+          font:
+            # IndustrialComplexInfo.FontStyle.Color
+            fill: global.landuse.IPC.industrial.label.font.fill
+            # IndustrialComplexInfo.FontStyle.Size
+            size: global.landuse.IPC.industrial.label.font.size
+            stroke:
+              # IndustrialComplexInfo.FontStyle.OutlineColor
+              color: global.landuse.IPC.industrial.label.font.stroke.color
+              # IndustrialComplexInfo.FontStyle.OutlineWidth
+              width: global.landuse.IPC.industrial.label.font.stroke.width
+      transportation:
+        # Transportation.Color -> IndustrialComplex.Color
+        color: global.landuse.IPC.industrial.color
+        label:
+          font:
+            # IndustrialComplexInfo.FontStyle.Color
+            fill: global.landuse.IPC.industrial.label.font.fill
+            # IndustrialComplexInfo.FontStyle.Size
+            size: global.landuse.IPC.industrial.label.font.size
+            stroke:
+              # IndustrialComplexInfo.FontStyle.OutlineColor
+              color: global.landuse.IPC.industrial.label.font.stroke.color
+              # IndustrialComplexInfo.FontStyle.OutlineWidth
+              width: global.landuse.IPC.industrial.label.font.stroke.width
+      place_of_worship:
+        # WorshipPlace.Color -> Park.Color
+        color: global.landuse.park.color
+        label:
+          font:
+            fill: global.landuse.park.label.font.fill
+            size: global.landuse.park.label.font.size
+            stroke:
+              color: global.landuse.park.label.font.stroke.color
+              width: global.landuse.park.label.font.stroke.width
+      block:
+        # Block.Color -> BuiltupArea.Color
+        color: global.builtup_area_color
+      breakwater:
+        # WaterBreak.Color
+        color: "#a9c1d1"
+      sand:
+        # Sand.Color -> Beach.Color
+        color: global.landuse.IPC.beach.color
+      pool:
+        # Pool.Color -> Lake.Color
+        color: "#99ceff"
+      tunnel_entrance:
+        # TunnelEntrance.Color -> WaterBreak.Color
+        color: global.landuse.IPC.breakwater.color
+      divider:
+        # Divider.Color
+        color: rgb(206,216,220)
+      grassland:
+        # Grassland.Color use Park.Color
+        color: global.landuse.park.color
+      flood_prone_area:
+        # FloodProneArea.Color
+        color: rgb(195, 226, 227)
+      wetland:
+        # Wetland.Color -> FloodProneArea.Color
+        color: rgb(195, 226, 227)
+        label:
+          font:
+            # WetlandInfo.FontStyle.Color
+            fill: rgb(102, 127, 128)
+            # WetlandInfo.FontStyle.Size -> IndustrialComplexInfo.FontStyle.Size
+            size: global.landuse.IPC.industrial.label.font.size
+            stroke:
+              # WetlandInfo.FontStyle.OutlineColor
+              color: rgba(222, 249, 250, .6)
+              # WetlandInfo.FontStyle.OutlineWidth -> IndustrialComplexInfo.FontStyle.OutlineWidth
+              width: global.landuse.IPC.industrial.label.font.stroke.width
+      underground_city:
+        # UndergroundArea.Color
+        color: rgba(147, 72, 78, 0.2)
+      steps:
+        # Steps.Color -> PedestrianArea.Color -> PavedArea.Color
+        color: global.landuse.IPC.paved_area.color
+      paved_area:
+        # PavedArea.Color
+        color: '#edf3fa'
+      road_in_restricted_area:
+        # RestrictedRoad.Color
+        color: '#FAFCFF'
+      railway_station:
+        # RailwayStation.Color
+        color: [
+          [13, 'rgba(255, 155, 168, 0.823)'],
+          [14, 'rgba(255, 170, 182, 0.823)'],
+          [15, 'rgba(255, 170, 182, 0.705)']
+        ]
+      commuter_station:
+        # CommuterStation.Color
+        color: [
+          [14, 'rgba(255, 170, 182, 0.82)'],
+          [15, 'rgba(255, 170, 182, 0.705)']
+        ]
+      tunnel:
+        # PolygonalRoadsTunnel.Color
+        color: rgba(131, 140, 140, .51)
+        # PolygonalRoadsTunnel.Width
+        width: [[15, .75px], [20, 1px]]
+        z14:
+          dash: [4.5, 2.5]
+        z15:
+          dash: [4.5, 2.5]
+        z16:
+          dash: [5, 3]
+        z17:
+          dash: [5.5, 3.5]
+        z18:
+          dash: [6, 4]
+        z19:
+          dash: [6.5, 4.5]
+        z20:
+          dash: [7, 5]
+        z21:
+          dash: [7.5, 5.5]
+      decorative_lines:
+        # DecorativeLines.Width
+        width: [[15, 0.5px], [20, 1px]]
+        toll_gate:
+          # TollGate.DashArray - adjusted
+          dash: [4, 4]
+          # Divider.Color
+          color: global.landuse.IPC.divider.color
+        decorative_ferry_route:
+          # ferryDashArray - adjusted
+          dash: [5, 4]
+          # Ferry.PolylineStyles.Color
+          color: rgb(202, 231, 252)
+          # Ferry.PolylineStyles.SecondaryColor
+          dash_background_color: rgba(123, 186, 229, 0)
+          # Ferry.PolylineStyles.Width
+          width: [[8, 1px], [15, 1.5px]]
+        decorative_stairs_line:
+          # DecorativeStairs.Color
+          color: rgb(207, 220, 230)
+        flood_gate:
+          # FloodGate.Color
+          color: rgb(149, 170, 184)
+        decorative_road:
+          # DecorativeRoadLine.Color
+          color: rgba(131, 140, 140, .51)
+        decorative_center_divider:
+          # Divider.Color
+          color: global.landuse.IPC.divider.color
+        decorative_railroad_overpass:
+          # DecorativeRailRoadLine.Color -> DecorativeRoadLine.Color
+          color: rgba(131, 140, 140, .51)
+        decorative_solid_line:
+          # DecorativeLine.Color
+          color: rgb(190, 203, 212)
+  ######################################################  ROADS  #######################################################
+  road:
+    IPC:
+      default:
+        label:
+          font:
+            fill: '#506875'
+      highway:
+        line:
+          # Street.Category0.Width
+          width: [
+            [0, 1.75px],
+            [5, 1.75px],
+            [6, 2.25px],
+            [7, 2.5px],
+            [8, 2px],
+            [9, 2.5px],
+            [10, 2.75px],
+            [12, 3px],
+            [15, 3px],
+            [16, 5.25px],
+            [17, 11px],
+            [18, 19.25px],
+            [19, 38.5px],
+            [20, 77px]
+          ]
+        outline:
+          # Street.Category0.Outline.Width
+          width: [
+            [7, 0px],
+            [8, 0.5px],
+            [14, 0.75px],
+            [15, 0.75px],
+            [16, 1px],
+            [18, 1.5px]
+          ]
+        label:
+          font:
+            size: [
+              [0, 8px],
+              [10, 8px],
+              [11, 9px],
+              [12, 11px],
+              [13, 12px],
+              [14, 13px],
+              [15, 15px],
+              [16, 18px],
+              [17, 22px],
+              [18, 24px],
+              [20, 24px],
+            ]
+        link:
+          line:
+            # Street.Category0.RampWidth
+            width: [
+              [0, 2px],
+              [9, 2px],
+              [15, 2.25px],
+              [16, 3.25px],
+              [17, 6.5px],
+              [18, 11px],
+              [19, 22px],
+              [20, 38.5px]
+            ]
+          label:
+            font:
+              size: [
+                [0, 8px],
+                [11, 8px],
+                [12, 9px],
+                [13, 10px],
+                [14, 11px],
+                [15, 13px],
+                [16, 15px],
+                [17, 20px],
+                [18, 22px],
+                [20, 22px]
+              ]
+        trunk:
+          label:
+            font:
+              size: [
+                [0, 8px],
+                [11, 8px],
+                [12, 9px],
+                [13, 10px],
+                [14, 11px],
+                [15, 13px],
+                [16, 15px],
+                [17, 20px],
+                [18, 22px],
+                [20, 22px]
+              ]
+        bridge:
+          toll:
+            outline:
+              # Street.Category0.TollBridgeColor (alpha was adjusted)
+              color: rgba(135, 180, 171, .85)
+        toll:
+          line:
+            # Street.Category0.TollColor
+            color: [[0, '#94c4c6'], [8, '#a3d0c9'], [11, '#a7d2cb'], [11, '#add8d2'], [13, '#a2cdc7']]
+          outline:
+            # Street.Category0.TollOutlineColor
+            color: [[7, '#546e6e'], [8, '#577871'], [11, '#61877e'], [13, '#6d968f']]
+          centerline:
+            # Street.Category0.TollCenterlineColor
+            color: [[11, '#94beb5'], [13, '#89b4ac']]
+          label:
+            font:
+              # Street.Category0.Color
+              fill: 'rgb(0, 63, 50)'
+              stroke:
+                # Street.Category0.TollOutlineColor
+                color: [
+                  [11, 'rgba(250, 255, 255, .95)'],
+                  [12, 'rgba(250, 255, 255, .95)'],
+                  [14, 'rgba(250, 255, 255, .85)'],
+                  [17, 'rgba(250, 255, 255, .8)']
+                  ]
+      major:
+        line:
+          # Street.Category1.Width
+          width: [
+            [0, 1.25px],
+            [5, 1.25px],
+            [8, 2px],
+            [9, 2.5px],
+            [10, 1.75px],
+            [13, 2.25px],
+            [15, 2.75px],
+            [16, 5px],
+            [17, 11px],
+            [18, 17px],
+            [19, 38.5px],
+            [20, 77px]
+          ]
+        link:
+          line:
+            # Street.Category1.RampWidth
+            width: [
+              [0, 1.75px],
+              [9, 1.75px],
+              [15, 2px],
+              [16, 2.5px],
+              [17, 5.5px],
+              [18, 11px],
+              [19, 22px],
+              [20, 38.5px]
+            ]
+        label:
+          font:
+            size: [
+              [0, 8px],
+              [11, 8px],
+              [12, 9px],
+              [13, 10px],
+              [14, 11px],
+              [15, 13px],
+              [16, 15px],
+              [17, 20px],
+              [18, 22px],
+              [20, 22px]
+            ]
+        secondary:
+          line:
+            # Street.Category2.Width
+            width: [
+              [0, 1px],
+              [8, 1.25px],
+              [10, 1.5px],
+              [11, 2px],
+              [15, 2.5px],
+              [16, 5px],
+              [17, 11px],
+              [18, 17px],
+              [19, 38.5px],
+              [20, 77px]
+            ]
+          label:
+            font:
+              size: [
+                [0, 8px],
+                [12, 8px],
+                [13, 9px],
+                [14, 10px],
+                [15, 12px],
+                [16, 14px],
+                [17, 18px],
+                [18, 19px],
+                [20, 19px]
+              ]
+          link:
+            line:
+              # Street.Category2.RampWidth
+              width: [
+                [0, 1px],
+                [9, 1px],
+                [15, 1.25px],
+                [16, 2.5px],
+                [17, 5.5px],
+                [18, 11px],
+                [19, 22px],
+                [20, 38.5px]
+              ]
+        tertiary:
+          line:
+            # Street.Category3.Width
+            width: [
+              [0, 1px],
+              [10, 1.25px],
+              [13, 1.65px],
+              [15, 2px],
+              [16, 4px],
+              [17, 9px],
+              [18, 17px],
+              [19, 38.5px],
+              [20, 77px]
+            ]
+          label:
+            font:
+              size: [
+                [0, 8px],
+                [13, 8px],
+                [14, 9px],
+                [15, 11px],
+                [16, 11px],
+                [17, 15px],
+                [18, 16px],
+                [20, 16px]
+              ]
+          link:
+            line:
+              # Street.Category3.RampWidth
+              width: [
+                [0, 1px],
+                [15, 1.5px],
+                [16, 2.5px],
+                [17, 5.5px],
+                [18, 11px],
+                [19, 22px],
+                [20, 38.5px]
+              ]
+      minor:
+        line:
+          # Street.Category4.Width
+          width: [
+            [0, 1px],
+            [13, 1px],
+            [15, 1.5px],
+            [16, 3.75px],
+            [17, 6.5px],
+            [18, 13.75px],
+            [19, 27.5px],
+            [20, 55px]
+          ]
+        label:
+          font:
+            size: [
+              [0, 8px],
+              [14, 8px],
+              [15, 10px],
+              [16, 10px],
+              [17, 12px],
+              [18, 13px],
+              [20, 13px]
+            ]
+        service:
+          label:
+            font:
+              size: [
+                [0, 8px],
+                [14, 8px],
+                [15, 10px],
+                [16, 10px],
+                [17, 12px],
+                [18, 13px],
+                [20, 13px]
+              ]
+      path:
+        label:
+          font:
+            size: [
+              [0, 8px],
+              [15, 8px],
+              [16, 10px],
+              [17, 11px],
+              [20, 11px]
+            ]
+        footway:
+          label:
+            font:
+              size: [
+                [0, 8px],
+                [15, 8px],
+                [16, 10px],
+                [17, 11px],
+                [20, 11px]
+              ]
+      rail:
+        # Default zoom level filter must be the lowest to allow more specific overrides
+        zoom: {min: 7}
+        line:
+          # SpeedRail.PolylineStyles.DashArray (modified)
+          dash: [7, 14]
+          # Rail.PolylineStyles.Width
+          width: [[13, 1px], [16, 1px], [17, 1.25px], [20, 1.5px], [24, 2px]]
+          # Rail.PolylineStyles.Color
+          color: [[14, '#e1e1e1'], [15, '#e1e1e1'], [17, '#787878'], [18, '#5a5a5a']]
+        label:
+          font:
+            # Rail.FontStyle.Color
+            fill: [[15, '#cdcdcd'], [17, '#646464'], [18, '#464646']]
+            # Rail.FontStyle.Size
+            size: 10px
+            stroke:
+              # Rail.FontStyle.OutlineColor
+              color: rgba(255, 255, 255, .6)
+              # Rail.FontStyle.OutlineWidth
+              width: 0.5px
+        speed:
+          zoom: {min: 7}
+          line:
+            # SpeedRail.PolylineStyles.Width
+            width: [[0, 1.5px], [12, 1.75px], [14, 2px], [16, 2.5px], [18, 3.25px], [20, 3.5px], [24, 4.5px]]
+            # SpeedRail.PolylineStyles.SecondaryColor
+            color: '#b3d2ff'
+            dash: [3.5, 3.5]
+            # SpeedRail.PolylineStyles.Color
+            dashBgColor: '#1d58ce'
+          label:
+            font:
+              # SpeedRail.FontStyle.Color
+              fill: '#0b58dc'
+              stroke:
+                # SpeedRail.FontStyle.OutlineColor
+                color: rgba(255, 255, 255, .6)
+                # SpeedRail.FontStyle.OutlineWidth
+                width: 0.5px
+        state:
+          zoom: {min: 9}
+          line:
+            # StateRail.PolylineStyles.Width
+            width: [[10, 1.25px], [12, 1.25px], [16, 1.75px], [18, 2px], [20, 2.25px], [24, 3.25px]]
+            # StateRail.PolylineStyles.Color
+            color: '#505050'
+            # StateRail.PolylineStyles.DashArray
+            dash: [3.5, 3.5]
+            # StateRail.PolylineStyles.SecondaryColor
+            dashBgColor: '#b4b4b4'
+          label:
+            font:
+              # StateRail.FontStyle.Color
+              fill: '#303030'
+              stroke:
+                # StateRail.FontStyle.OutlineColor
+                color: rgba(255, 255, 255, .6)
+                # StateRail.FontStyle.OutlineWidth
+                width: .5px
+        private:
+          zoom: {min: 11}
+          line:
+            # PrivateRail.PolylineStyles.Width
+            width: [[11, 1px], [13, 1.35px], [16, 1.65px], [20, 2px], [24, 3px]]
+            # PrivateRail.PolylineStyles.Color
+            color: [[14, '#464646'], [15, '#505050']]
+          label:
+            font:
+              # PrivateRail.FontStyle.Color
+              fill: '#303030'
+              stroke:
+                # PrivateRail.FontStyle.OutlineColor
+                color: rgba(255, 255, 255, .5)
+                # PrivateRail.FontStyle.OutlineWidth
+                width: .5px
+        subway:
+          zoom: {min: 12}
+          line:
+            # SubwayRail.PolylineStyles.Width
+            width: [[11, 0.75px], [13, 1px], [16, 1.25px], [20, 1.75px], [24, 2.25px]]
+            # SubwayRail.PolylineStyles.Color
+            color: [[11, '#4a2173'], [15, '#4c2178']]
+          label:
+            font:
+              # SubwayRail.FontStyle.Color
+              fill: [[11, '#480d81'], [15, '#470d86']]
+              # SubwayRail.FontStyle.Size
+              size: 9px
+              stroke:
+                # SubwayRail.FontStyle.OutlineColor
+                color: rgba(255, 255, 255, .6)
+                # SubwayRail.FontStyle.OutlineWidth
+                width: 0.5px
+        light:
+          zoom: {min: 12}
+          line:
+            # TramRail.PolylineStyles.Color
+            color: [[10, '#787878'], [12, '#828282'], [14, '#6e6e6e']]
+            # TramRail.PolylineStyles.Width
+            width: [[11, 0.75px], [13, 1px], [16, 1px], [20, 1.5px], [24, 2px]]
+          label:
+            font:
+              # TramRail.FontStyle.Color
+              fill: '#404040'
+              # TramRail.FontStyle.Size
+              size: 8.5px
+              stroke:
+                # TramRail.FontStyle.OutlineColor
+                color: rgba(255, 255, 255, .5)
+                # TramRail.FontStyle.OutlineWidth
+                width: 0.5
+        monorail:
+          zoom: {min: 13}
+          line:
+            color: global.road.IPC.rail.light.line.color
+            width: global.road.IPC.rail.light.line.width
+          label:
+            font:
+              size: global.road.IPC.rail.light.label.font.size
+              fill: global.road.IPC.rail.light.label.font.fill
+              stroke:
+                color: global.road.IPC.rail.light.label.font.stroke.color
+                width: global.road.IPC.rail.light.label.font.stroke.width
+  ##################################################  BOUNDARIES  ######################################################
+  boundary:
+    IPC:
+      region:
+        # StateBoundary.Color
+        color: [
+          [6, "#d9cbca"],
+          [9, "#cebebc"],
+          [10, "#bd9b97"],
+          [13, "#a68681"],
+          [14, "#9e807b"],
+          [16, "#946e67"]
+        ]
+        # StateBoundary.BackgroundColor
+        outline:
+          color: [
+            [12, "rgba(242, 198, 194, .14)"],
+            [13, "rgba(242, 198, 194, .22)"],
+            [14, "rgba(228, 186, 183, .28)"],
+            [16, "rgba(215, 175, 172, .35)"]
+          ]
+    municipality:
+      line:
+        # MunicipalityBoundary.Color
+        color: [
+          [10, "#d6bab6"],
+          [13, "#c29e97"],
+          [14, "#ba9891"],
+          [16, "#b2857d"]
+        ]
+        # MunicipalityBoundary.Width
+        width: 1px
+        dash: [6, 3, 1, 3]
+        # dash_background_color doesn't support stops. It must have the same value as outline.color
+        dash_background_color: rgba(215, 175, 172, .35)
+        outline:
+          # MunicipalityBoundary.BackgroundColor - adjusted
+          color: rgba(215, 175, 172, .35)
+          # MunicipalityBoundary.BackgroundWidth - adjusted
+          width: [
+            [10, 0px],
+            [14, 1px],
+            [16, 2px]
+          ]
+    district:
+      line:
+        # DistrictBoundary.Color
+        color: [
+          [14, "rgb(217, 182, 178)"],
+          [15, "rgb(199, 172, 169)"],
+          [16, "rgb(199, 169, 165)"],
+        ]
+        # DistrictBoundary.Width - adjusted
+        width: 1px
+        dash: [4, 2]
+        # dash_background_color doesn't support stops. It must have the same value as outline.color
+        dash_background_color: rgba(228, 186, 183, .28)
+        outline:
+          # DistrictBoundary.BackgroundColor
+          color: [
+            [14, "rgba(242, 198, 194, .08)"],
+            [15, "rgba(228, 186, 183, .24)"],
+            [17, "rgba(228, 186, 183, .28)"],
+          ]
+          # DistrictBoundary.BackgroundWidth - adjusted
+          width: [
+            [14, 1px],
+            [16, 1.5px],
+            [18, 2px]
+          ]
+    neighbourhood:
+      line:
+        # NeighbourhoodBoundary.Color
+        color: [
+          [15, "#ccb299"],
+          [16, "#c7b29b"]
+        ]
+        # NeighbourhoodBoundary.Width - adjusted
+        width: 1px
+        # NeighbourhoodBoundary.LineLength/GapLength - adjusted
+        dash: [2, 1]
+        # dash_background_color doesn't support stops. It must have the same value as outline.color
+        dash_background_color: rgba(224, 207, 190, .28)
+        outline:
+          # NeighbourhoodBoundary.BackgroundColor - adjusted
+          color: rgba(224, 207, 190, .28)
+          # NeighbourhoodBoundary.BackgroundWidth - adjusted
+          width: [
+            [15, 1px],
+            [16, 2px]
+          ]
+    microhood:
+      line:
+        # MicrohoodBoundary.Color
+        color: "#d1bca3"
+        # MicrohoodBoundary.Width - adjusted
+        width: 1px
+        # MicrohoodBoundary.LineLength/GapLength - adjusted
+        dash: [1, 1]
+        # dash_background_color doesn't support stops. It must have the same value as outline.color
+        dash_background_color: rgba(224, 207, 190, .28)
+        outline:
+          # MicrohoodBoundary.BackgroundColor - adjusted
+          color: rgba(224, 207, 190, .28)
+          # MicrohoodBoundary.BackgroundWidth - adjusted
+          width: 2px
+  ####################################################  BUILDINGS  #####################################################
+  building:
+    IPC:
+      zoom: {min: 16}
+      ### Default values: ###
+      # Building.Color
+      color: rgb(250, 254, 255)
+      outline:
+        # BuildingOutline.Color
+        color: rgb(216, 224, 227)
+      label:
+        font:
+          # BuildingInfo.FontStyle.Size
+          size: 8.75px
+          # BuildingInfo.FontStyle.Color
+          fill: rgb(86, 105, 112)
+          stroke:
+            # BuildingInfo.FontStyle.OutlineColor
+            color: rgba(240, 246, 247, 0.38)
+      address:
+        label:
+          zoom: {min: 18}
+          font:
+            # BuildingAddress.FontStyle.Size (adjusted)
+            size: 10px
+            # BuildingAddress.FontStyle.Color
+            fill: rgb(122, 147, 153)
+      ### Kind-detail specific values: ###
+      by_kind_detail:
+        hospital:
+          zoom: {min: 15}
+          # Building.Hospital.Color (adjusted)
+          color: rgba(255, 223, 230, 0.7)
+          outline:
+            # Building.Hospital.OutlineColor (adjusted)
+            color: rgba(210, 169, 177, 0.7)
+          label:
+            font:
+              # BuildingInfo.Hospital.FontStyle.Color (adjusted)
+              fill: rgb(140, 30, 67)
+        government:
+          zoom: {min: 15}
+          # Building.Government.Color (adjusted)
+          color: rgba(215, 228, 251, 0.7)
+          outline:
+            # Building.Government.OutlineColor (adjusted)
+            color: rgba(167, 180, 207, 0.7)
+          label:
+            font:
+              # BuildingInfo.Government.FontStyle.Color
+              fill: rgb(30, 89, 140)
+        toll_booth:
+          zoom: {min: 16}
+          # Building.TollBooth.Color (adjusted)
+          color: rgba(207, 230, 216, 0.7)
+          outline:
+            # Building.TollBooth.OutlineColor (adjusted)
+            color: rgba(161, 200, 181, 0.7)
+          label:
+            font:
+              # BuildingInfo.TollBooth.FontStyle.Color
+              fill: rgb(57, 140, 90)
+        educational_institution:
+          zoom: {min: 15}
+          # Building.Education.Color (adjusted)
+          color: rgba(251, 241, 219, 0.7)
+          outline:
+            # Building.Education.OutlineColor (adjusted)
+            color: rgba(205, 193, 179, 0.7)
+          label:
+            font:
+              # BuildingInfo.Education.FontStyle.Color (adjusted)
+              fill: rgb(140, 96, 30)
+        hotel:
+          zoom: {min: 15}
+          # Building.Hotel.Color (adjusted)
+          color: rgba(228, 224, 252, 0.7)
+          outline:
+            # Building.Hotel.OutlineColor (adjusted)
+            color: rgba(176, 169, 210, 0.7)
+          label:
+            font:
+              # BuildingInfo.Hotel.FontStyle.Color (adjusted)
+              fill: rgb(63, 30, 140)
+        train_station:
+          zoom: {min: 13}
+          # Building.TrainStation.Color (adjusted)
+          color: rgba(255, 170, 182, 0.7)
+          outline:
+            # Building.TrainStation.OutlineColor (zl:15 color used)
+            color: rgba(209, 82, 99, 0.7)
+          label:
+            font:
+              # BuildingInfo.TrainStation.FontStyle.Color
+              fill: rgb(175, 0, 23)
+        residential:
+          zoom: {min: 15}
+          color: rgba(250, 254, 255, 0.5)
+          outline:
+            # Building.Residential.OutlineColor
+            color: rgb(216, 224, 227)
+          label:
+            font:
+              # TODO: to be defined
+              # fill: red
+        commercial:
+          zoom: {min: 15}
+          color: rgba(250, 254, 255, 0.5)
+          outline:
+            # Building.Residential.OutlineColor
+            color: rgb(216, 224, 227)
+          label:
+            font:
+              # TODO: to be defined
+              # fill: red
+        factory:
+          zoom: {min: 15}
+          color: rgba(250, 254, 255, 0.5)
+          outline:
+            # Building.Residential.OutlineColor
+            color: rgb(216, 224, 227)
+          label:
+            font:
+              # TODO: to be defined
+              # fill: red
+      ### Values specific for extruded buildings: ###
+      extrusion:
+        zoom: {min: 17}
+        # ExtrudedBuilding.Wall.Color
+        color: rgba(240, 245, 247, 0.7)
+        outline:
+          # ExtrudedBuildings.Line.Color
+          color: rgb(220, 228, 245)
+          width: 1px
+        ### Kind-detail specific values for extruded buildings: ###
+        by_kind_detail:
+          hospital:
+            # ExtrudedBuilding.Hospital.Wall.Color (adjusted)
+            color: rgba(255, 223, 230, 0.7)
+            outline:
+              # Doesn't exist in HARP
+              color: rgba(210, 169, 177, 0.7)
+          government:
+            # ExtrudedBuilding.Government.Wall.Color (adjusted)
+            color: rgba(215, 228, 251, 0.7)
+            outline:
+              # Doesn't exist in HARP
+              color: rgba(167, 180, 207, 0.7)
+          toll_booth:
+            # ExtrudedBuilding.TollBooth.Wall.Color (adjusted)
+            color: rgba(207, 230, 216, 0.7)
+            outline:
+              # Doesn't exist in HARP
+              color: rgba(161, 200, 181, 0.7)
+          educational_institution:
+            # ExtrudedBuilding.Education.Wall.Color (adjusted)
+            color: rgba(251, 241, 219, 0.7)
+            outline:
+              # Doesn't exist in HARP
+              color: rgba(205, 193, 179, 0.7)
+          hotel:
+            # ExtrudedBuilding.Hotel.Wall.Color (adjusted)
+            color: rgba(228, 224, 252, 0.7)
+            outline:
+              # Doesn't exist in HARP
+              color: rgba(176, 169, 210, 0.7)
+          train_station:
+            # ExtrudedBuilding.TrainStation.Roof.Color (zl:15 color used)
+            color: rgba(255, 170, 182, 0.7)
+            outline:
+              # Building.TrainStation.OutlineColor (zl:15 color used)
+              color: rgba(209, 82, 99, 0.7)
+
+    #####################################################  PLACES  #####################################################
+  places:
+    IPC:
+      label:
+        microhood:
+          block:
+            font:
+              size: 11px
+              fill: global.places.IPC.label.oaza.font.fill
+              stroke:
+                color: global.places.IPC.label.oaza.font.stroke.color
+        oaza:
+          font:
+            # Japan.Oaza.FontStyle.Color
+            fill: "#8c7781"
+            # Japan.Oaza.FontStyle.Size
+            size: [
+              [14, 11px],
+              [15, 12.5px],
+              [16, 13.5px],
+              [17, 15px]
+            ]
+            stroke:
+              # Japan.Oaza.FontStyle.OutlineColor
+              color: rgba(242, 242, 242, .75)
+              # Japan.Oaza.FontStyle.OutlineWidth
+              width: global.places.neighbourhood.label.font.stroke.width
+        aza:
+          font:
+            # Japan.Aza.FontStyle.Color
+            fill: global.places.IPC.label.oaza.font.fill
+            # Japan.Aza.FontStyle.Size
+            size: [
+              [15, 10px],
+              [16, 10.5px],
+              [16, 11px],
+              [17, 12px]
+            ]
+            stroke:
+              # Japan.Aza.FontStyle.OutlineColor
+              color: global.places.IPC.label.oaza.font.stroke.color
+              # Japan.Aza.FontStyle.OutlineWidth
+              width: global.places.IPC.label.oaza.font.stroke.width
+    # StateLabel.FontStyle
+    region:
+      label:
+        font:
+          # StateLabel.FontStyle.Size
+          size: [[4, 11px], [5, 12px], [6, 15px], [7, 16px]]
+          # StateLabel.FontStyle.Color
+          fill: rgb(166, 144, 155)
+          stroke:
+            # StateLabel.FontStyle.OutlineColor
+            color: rgba(250, 253, 255, .78)
+########################################################################################################################
+#######################################################  LAYERS  #######################################################
+########################################################################################################################
+layers:
+  ################################################  POLYGONAL ROADS  ###################################################
+  # the mismatch in the min_zoom filter poylgonal roads should appear at zl 15
+  #
+  # General issue for landuse's sublayers:
+  #   'landuse' layer in the skeleton contains a root-level zoom filter based on the min_zoom attribute.
+  #   However, this approach doesn't seem to be correct as it doesn't allow to redefine looser zoom filters
+  #   in the inner levels.
+  #   For example, with the following configuration:
+  #
+  #   landuse:
+  #     filter:
+  #       $zoom: {min: 16} // it's in fact dependent on the value of min_zoom attribute
+  #     sub_layer:
+  #       filter:
+  #        $zoom: {min: 14}
+  #
+  #    Style defined in 'sub_layer' will be applied only to features from zoom level 16.
+  #   Can we safely remove that filter?
+  # move under landuse after the issue is fixed
+  polygonal_roads:
+    data:
+      layer: landuse
+      source: omv
+    filter:
+      all:
+        - source: ipc
+        - global.feature_min_zoom_filter
+        - kind: [urban_expressway, expressway, national_road, major_road, other_road, road_in_restricted_area, decorative_dashed_line]
+    draw:
+      polygons:
+        order: global.feature_order
+      lines:
+        order: global.feature_order
+    expressway:
+      filter:
+        kind: [urban_expressway, expressway]
+      draw:
+        polygons:
+          color: global.highway_fill
+      toll:
+        filter:
+          - toll: true
+        draw:
+          polygons:
+            color: global.road.IPC.highway.toll.line.color
+    national_road:
+      filter:
+        kind: national_road
+      draw:
+        polygons:
+          color: global.major_road_fill
+      toll:
+        filter:
+          - toll: true
+        draw:
+          polygons:
+            color: global.road.IPC.highway.toll.line.color
+    major_road:
+      filter:
+        kind: major_road
+      draw:
+        polygons:
+          color: global.major_road_secondary_fill
+      secondary_city:
+        filter:
+          kind_detail: secondary_city
+        draw:
+          polygons:
+            color: global.major_road_secondary_fill
+      tertiary:
+        filter:
+          kind_detail: tertiary
+        draw:
+          polygons:
+            color: global.major_road_tertiary_fill
+      tertiary_city:
+        filter:
+          kind_detail: tertiary_city
+        draw:
+          polygons:
+            color: global.major_road_tertiary_fill
+    other_road:
+      filter:
+        kind: other_road
+      draw:
+        polygons:
+          color: global.major_road_tertiary_fill
+      toll:
+        filter:
+          - toll: true
+        draw:
+          polygons:
+            color: global.road.IPC.highway.toll.line.color
+    road_in_restricted_area:
+      filter:
+        kind: road_in_restricted_area
+      draw:
+        polygons:
+          # Remove once OLPRPS-7122 is fixed
+          order: 407
+          color: global.landuse.IPC.road_in_restricted_area.color
+    tunnel:
+      filter:
+        kind: decorative_dashed_line
+      z14:
+        filter:
+          $zoom: {min: 14, max: 15}
+        draw:
+          z14-draw-group:
+            style: tunnel-z14
+      z15:
+        filter:
+          $zoom: {min: 15, max: 16}
+        draw:
+          z15-draw-group:
+            style: tunnel-z15
+      z16:
+        filter:
+          $zoom: {min: 16, max: 17}
+        draw:
+          z16-draw-group:
+            style: tunnel-z16
+      z17:
+        filter:
+          $zoom: {min: 17, max: 18}
+        draw:
+          z17-draw-group:
+            style: tunnel-z17
+      z18:
+        filter:
+          $zoom: {min: 18, max: 19}
+        draw:
+          z18-draw-group:
+            style: tunnel-z18
+      z19:
+        filter:
+          $zoom: {min: 19, max: 20}
+        draw:
+          z19-draw-group:
+            style: tunnel-z19
+      z20:
+        filter:
+          $zoom: {min: 20, max: 21}
+        draw:
+          z20-draw-group:
+            style: tunnel-z20
+
+  ####################################################   WATER   #######################################################
+  water:
+    river:
+      IPC:
+        filter:
+          source: ipc
+        draw:
+          lines:
+            width: global.water.IPC.river.line.width
+
+  ####################################################  LANDUSE  #######################################################
+  jp_landuse:
+    filter: global.jp_feature_min_zoom_filter
+    data:
+      layer: landuse
+      source: omv
+    draw:
+      polygons:
+        order: global.feature_order
+    label:
+      IPC:
+        filter:
+          all:
+            - $geometry: point
+            - source: ipc
+        draw:
+          text-blend-order:
+            text_source: global.ux_language_text_source
+            priority: global.label.priorities.small-land-use-labels
+            text_wrap: 18
+            font:
+              fill: global.landuse_default_label_color
+              size: global.landuse_default_label_font_size
+              family: global.text_font_family
+              weight: normal
+              stroke:
+                color: global.landuse_default_label_font_stroke_color
+                width: global.landuse_default_label_font_stroke_width
+        hidden_station_labels:
+          filter:
+            kind: ['commuter_station', 'railway_station']
+          draw:
+            text-blend-order:
+              visible: false
+        school:
+          filter:
+            kind: [school, university]
+          draw:
+            text-blend-order:
+              font:
+                fill: global.landuse.IPC.university.label.font.fill
+                size: global.landuse.IPC.university.label.font.size
+                stroke:
+                  color: global.landuse.IPC.university.label.font.stroke.color
+                  width: global.landuse.IPC.university.label.font.stroke.width
+        zoo:
+          filter:
+            kind: zoo
+          draw:
+            text-blend-order:
+              font:
+                fill: global.landuse.IPC.zoo.label.font.fill
+                size: global.landuse.IPC.zoo.label.font.size
+                stroke:
+                  color: global.landuse.IPC.zoo.label.font.stroke.color
+                  width: global.landuse.IPC.zoo.label.font.stroke.width
+        cemetery:
+          filter:
+            kind: cemetery
+          draw:
+            text-blend-order:
+              font:
+                fill: global.landuse.IPC.cemetery.label.font.fill
+                size: global.landuse.IPC.cemetery.label.font.size
+                stroke:
+                  color: global.landuse.IPC.cemetery.label.font.stroke.color
+                  width: global.landuse.IPC.cemetery.label.font.stroke.width
+        accomodation_facility:
+          filter:
+            kind: accomodation_facility
+          draw:
+            text-blend-order:
+              font:
+                fill: global.landuse.IPC.accomodation_facility.label.font.fill
+                size: global.landuse.IPC.accomodation_facility.label.font.size
+                stroke:
+                  color: global.landuse.IPC.accomodation_facility.label.font.stroke.color
+                  width: global.landuse.IPC.accomodation_facility.label.font.stroke.width
+        attraction:
+          filter:
+            kind: attraction
+          draw:
+            text-blend-order:
+              font:
+                fill: global.landuse.IPC.attraction.label.font.fill
+                size: global.landuse.IPC.attraction.label.font.size
+                stroke:
+                  color: global.landuse.IPC.attraction.label.font.stroke.color
+                  width: global.landuse.IPC.attraction.label.font.stroke.width
+        dam:
+          filter:
+            kind: dam
+          draw:
+            text-blend-order:
+              font:
+                fill: global.landuse.IPC.dam.label.font.fill
+                size: global.landuse.IPC.dam.label.font.size
+                stroke:
+                  color: global.landuse.IPC.dam.label.font.stroke.color
+                  width: global.landuse.IPC.dam.label.font.stroke.width
+        imperial_facility:
+          filter:
+            kind: imperial_facility
+          draw:
+            text-blend-order:
+              font:
+                fill: global.landuse.IPC.imperial_facility.label.font.fill
+                size: global.landuse.IPC.imperial_facility.label.font.size
+                stroke:
+                  color: global.landuse.IPC.imperial_facility.label.font.stroke.color
+                  width: global.landuse.IPC.imperial_facility.label.font.stroke.width
+        institutional_office:
+          filter:
+            kind: institutional_office
+          draw:
+            text-blend-order:
+              font:
+                fill: global.landuse.IPC.institutional_office.label.font.fill
+                size: global.landuse.IPC.institutional_office.label.font.size
+                stroke:
+                  color: global.landuse.IPC.institutional_office.label.font.stroke.color
+                  width: global.landuse.IPC.institutional_office.label.font.stroke.width
+        outdoor_facility:
+          filter:
+            kind: outdoor_facility
+          draw:
+            text-blend-order:
+              font:
+                fill: global.landuse.IPC.outdoor_facility.label.font.fill
+                size: global.landuse.IPC.outdoor_facility.label.font.size
+                stroke:
+                  color: global.landuse.IPC.outdoor_facility.label.font.stroke.color
+                  width: global.landuse.IPC.outdoor_facility.label.font.stroke.width
+        retail:
+          filter:
+            kind: retail
+          draw:
+            text-blend-order:
+              font:
+                fill: global.landuse.IPC.retail.label.font.fill
+                size: global.landuse.IPC.retail.label.font.size
+                stroke:
+                  color: global.landuse.IPC.retail.label.font.stroke.color
+                  width: global.landuse.IPC.retail.label.font.stroke.width
+        service_area:
+          filter:
+            kind: service_area
+          draw:
+            text-blend-order:
+              font:
+                fill: global.landuse.IPC.service_area.label.font.fill
+                size: global.landuse.IPC.service_area.label.font.size
+                stroke:
+                  color: global.landuse.IPC.service_area.label.font.stroke.color
+                  width: global.landuse.IPC.service_area.label.font.stroke.width
+        transportation:
+          filter:
+            kind: transportation
+          draw:
+            text-blend-order:
+              font:
+                fill: global.landuse.IPC.transportation.label.font.fill
+                size: global.landuse.IPC.transportation.label.font.size
+                stroke:
+                  color: global.landuse.IPC.transportation.label.font.stroke.color
+                  width: global.landuse.IPC.transportation.label.font.stroke.width
+        place_of_worship:
+          filter:
+            kind: place_of_worship
+          draw:
+            text-blend-order:
+              font:
+                fill: global.landuse.IPC.place_of_worship.label.font.fill
+                size: global.landuse.IPC.place_of_worship.label.font.size
+                stroke:
+                  color: global.landuse.IPC.place_of_worship.label.font.stroke.color
+                  width: global.landuse.IPC.place_of_worship.label.font.stroke.width
+        wetland:
+          filter:
+            kind: wetland
+          draw:
+            text-blend-order:
+              font:
+                fill: global.landuse.IPC.wetland.label.font.fill
+                size: global.landuse.IPC.wetland.label.font.size
+                stroke:
+                  color: global.landuse.IPC.wetland.label.font.stroke.color
+                  width: global.landuse.IPC.wetland.label.font.stroke.width
+    IPC:
+      filter:
+        all:
+          - source: ipc
+      decorative_lines:
+        filter:
+          $geometry: line
+        draw:
+          translucent-lines:
+            order: global.feature_order
+            width: global.landuse.IPC.decorative_lines.width
+          lines:
+            order: global.feature_order
+            width: global.landuse.IPC.decorative_lines.width
+        toll_gate:
+          filter:
+            kind: toll_gate
+          draw:
+            toll_gate:
+              order: global.feature_order
+              color: global.landuse.IPC.decorative_lines.toll_gate.color
+              width: global.landuse.IPC.decorative_lines.width
+        decorative_ferry_route:
+          filter:
+            kind: [decorative_ferry_route, decorative_passenger_boat_route]
+          draw:
+            decorative_ferry_route:
+              order: global.feature_order
+              color: global.landuse.IPC.decorative_lines.decorative_ferry_route.color
+              width: global.landuse.IPC.decorative_lines.decorative_ferry_route.width
+        decorative_stairs_line:
+          filter:
+            kind: [decorative_stairs_line, decorative_road_surface_or_stairs_line]
+          draw:
+            lines:
+              color: global.landuse.IPC.decorative_lines.decorative_stairs_line.color
+        flood_gate:
+          filter:
+            kind: [flood_gate, erosion_control_dam]
+          draw:
+            lines:
+              color: global.landuse.IPC.decorative_lines.flood_gate.color
+        decorative_road:
+          filter:
+            kind: [decorative_road_background, decorative_expressway, decorative_road_overpass]
+          draw:
+            translucent-lines:
+              color: global.landuse.IPC.decorative_lines.decorative_road.color
+        decorative_center_divider:
+          filter:
+            kind: decorative_center_divider
+          draw:
+            lines:
+              color: global.landuse.IPC.decorative_lines.decorative_center_divider.color
+        decorative_railroad_overpass:
+          filter:
+            kind: decorative_railroad_overpass
+          draw:
+            translucent-lines:
+              color: global.landuse.IPC.decorative_lines.decorative_railroad_overpass.color
+        decorative_solid_line:
+          filter:
+            kind: [decorative_buffer_stop, decorative_solid_line]
+          draw:
+            lines:
+              color: global.landuse.IPC.decorative_lines.decorative_solid_line.color
+      divider:
+        filter:
+          kind: [divider, city_divider]
+        draw:
+          polygons:
+            # Remove this once OLPRPS-7101 is resolved
+            order: 385
+            # Divider.Color
+            color: global.landuse.IPC.divider.color
+      underground_city:
+        filter:
+          kind: underground_city
+        draw:
+          translucent-polygons:
+            color: global.landuse.IPC.underground_city.color
+            # To remove once OLPRPS-6405 is solved - push it above the other features
+            order: 474
+      grass:
+        filter:
+          kind: grass
+        draw:
+          polygons-dots-pattern:
+            # grass features are styled by landuse.park in the skeleton using polygons.
+            # For some reason polygons-dots-pattern can't override using the same render order.
+            order: 127
+      pedestrian:
+        filter:
+          all:
+            - kind: pedestrian
+            - $zoom: {min: 15} # optimization, we want it to be displayed from zoom level 15
+        draw:
+          polygons:
+            color: global.landuse.IPC.pedestrian.color
+      steps:
+        filter:
+          kind: steps
+        draw:
+          polygons:
+            # Remove this once OLPRPS-7102 is resolved
+            order: 379
+            color: global.landuse.IPC.steps.color
+      zoo:
+        filter:
+          kind: zoo
+        draw:
+          polygons:
+            color: global.landuse.IPC.zoo.color
+      cemetery:
+        filter:
+          kind: cemetery
+        draw:
+          polygons:
+            color: global.landuse.IPC.cemetery.color
+      hospital:
+        filter:
+          kind: hospital
+        draw:
+          polygons:
+            color: global.landuse.IPC.hospital.color
+      golf_course:
+        filter:
+          kind: golf_course
+        draw:
+          polygons:
+            # GolfCourse.Color -> Park.Color
+            color: global.landuse.park.color
+      university:
+        filter:
+          kind: [college, university, school]
+        draw:
+          polygons:
+            color: global.landuse.IPC.university.color
+      accomodation_facility:
+        filter:
+          kind: accomodation_facility
+        draw:
+          polygons:
+            # Remove once OLPRPS-7126 is fixed
+            order: 89
+            color: global.landuse.IPC.accomodation_facility.color
+      attraction:
+        filter:
+          kind: attraction
+        draw:
+          polygons:
+            color: global.landuse.IPC.attraction.color
+      dam:
+        filter:
+          kind: dam
+        draw:
+          polygons:
+            color: global.landuse.IPC.dam.color
+      imperial_facility:
+        filter:
+          kind: imperial_facility
+        draw:
+          polygons:
+            color: global.landuse.IPC.imperial_facility.color
+      institutional_office:
+        filter:
+          kind: institutional_office
+        draw:
+          polygons:
+            # Remove once OLPRPS-7111 and OLPRPS-7131 are fixed
+            order: 124
+            color: global.landuse.IPC.institutional_office.color
+      outdoor_facility:
+        filter:
+          kind: outdoor_facility
+        draw:
+          polygons:
+            # Remove once OLPRPS-7121 is fixed
+            order: 124
+            color: global.landuse.IPC.outdoor_facility.color
+      retail:
+        filter:
+          kind: retail
+        draw:
+          polygons:
+            color: global.landuse.IPC.retail.color
+      service_area:
+        filter:
+          kind: service_area
+        draw:
+          polygons:
+            color: global.landuse.IPC.service_area.color
+      transportation:
+        filter:
+          kind: transportation
+        draw:
+          polygons:
+            color: global.landuse.IPC.transportation.color
+      place_of_worship:
+        filter:
+          kind: place_of_worship
+        draw:
+          polygons:
+            color: global.landuse.IPC.place_of_worship.color
+      block:
+        filter:
+          all:
+            - kind: block
+            - $zoom: {min: 15} # optimization, we want it to be displayed from zoom level 15
+        draw:
+          polygons:
+            color: global.landuse.IPC.block.color
+      beach:
+        filter:
+          kind: beach
+        draw:
+          polygons:
+            color: global.landuse.IPC.beach.color
+      pool:
+        filter:
+          kind: pool
+        draw:
+          polygons:
+            color: global.landuse.IPC.pool.color
+      tunnel_entrance:
+        filter:
+          kind: tunnel_entrance
+        draw:
+          polygons:
+            color: global.landuse.IPC.tunnel_entrance.color
+      grassland:
+        filter:
+          kind: grassland
+        draw:
+          polygons:
+            color: global.landuse.IPC.grassland.color
+      flood_prone_area:
+        filter:
+          kind: flood_prone_area
+        draw:
+          polygons:
+            color: global.landuse.IPC.flood_prone_area.color
+      wetland:
+        filter:
+          kind: wetland
+        draw:
+          polygons:
+            # Remove once OLPRPS-7125 is fixed
+            order: 199
+            color: global.landuse.IPC.wetland.color
+      paved_area:
+        filter:
+          kind: paved_area
+        draw:
+          polygons:
+            # Remove once OLPRPS-7123 and OLPRPS-7127 are fixed
+            order: 118
+            color: global.landuse.IPC.paved_area.color
+      railway_station:
+        filter:
+          kind: railway_station
+        draw:
+          translucent-polygons:
+            # Remove once OLPRPS-7259 is fixed
+            order: 1002
+            color: global.landuse.IPC.railway_station.color
+      commuter_station:
+        filter:
+          all:
+            - kind: commuter_station
+            - $zoom: {min: 14}
+        draw:
+          translucent-polygons:
+            color: global.landuse.IPC.commuter_station.color
+            # Remove once OLPRPS-7259 is fixed
+            order: 1002
+  # Check OLPRPS-7143 and move sand and breakwater back to landuse once fixed
+  landuse_z15:
+    data:
+      layer: landuse
+      source: omv
+    filter:
+      source: ipc
+    draw:
+      polygons:
+        order: global.feature_order
+    breakwater:
+      filter:
+        kind: breakwater
+      draw:
+        polygons:
+          color: global.landuse.IPC.breakwater.color
+    sand:
+      filter:
+        kind: sand
+      draw:
+        polygons:
+          color: global.landuse.IPC.sand.color
+
+  ####################################################  TRANSIT  #######################################################
+  transit:
+    data:
+      layer: transit
+      source: omv
+    IPC:
+      filter:
+        source: ipc
+      platform:
+        filter:
+          kind: [railway_station_platform, subway_station_platform]
+        draw:
+          translucent-polygons:
+            # Use global.feature_order once OLPRPS-7258 is fixed
+            order: 1002
+            color: global.building.IPC.by_kind_detail.train_station.color
+          translucent-lines:
+            # Use global.feature_order once OLPRPS-7258 is fixed
+            order: 1002
+            color: global.building.IPC.by_kind_detail.train_station.outline.color
+            width: global.building.outline.width
+  ##################################################  BOUNDARIES  ######################################################
+  boundaries:
+    IPC:
+      filter:
+        source: ipc
+      # Municipality.Boundary.Japan
+      municipality:
+        filter:
+          kind: locality
+          $zoom: {min: 11}
+        draw:
+          municipality:
+            # Hard-coded order.
+            # Remove and replace with global.feature_order once OLPRPS-7312 is fixed
+            order: 450
+            color: global.boundary.municipality.line.color
+            width: global.boundary.municipality.line.width
+            outline:
+              color: global.boundary.municipality.line.outline.color
+              width: global.boundary.municipality.line.outline.width
+      # StateBoundary.Color
+      state:
+        filter:
+          kind: [state, region]
+          kind_detail: [3, 4]
+        draw:
+          translucent-lines:
+            color: global.boundary.IPC.region.color
+            outline:
+              color: global.boundary.IPC.region.outline.color
+      # District.Boundary.Japan
+      district:
+        filter:
+          kind: oaza
+          $zoom: {min: 14}
+        draw:
+          district:
+            # Hard-coded order.
+            # Remove and replace with global.feature_order once OLPRPS-7312 is fixed
+            order: 450
+            color: global.boundary.district.line.color
+            width: global.boundary.district.line.width
+            outline:
+              color: global.boundary.district.line.outline.color
+              width: global.boundary.district.line.outline.width
+      # Neighbourhood.Boundary.Japan
+      neighbourhood:
+        filter:
+          kind: aza
+          $zoom: {min: 15}
+        draw:
+          neighbourhood:
+            # Hard-coded order.
+            # Remove and replace with global.feature_order once OLPRPS-7312 is fixed
+            order: 450
+            color: global.boundary.neighbourhood.line.color
+            width: global.boundary.neighbourhood.line.width
+            outline:
+              color: global.boundary.neighbourhood.line.outline.color
+              width: global.boundary.neighbourhood.line.outline.width
+      # Microhood.Boundary.Japan
+      microhood:
+        filter:
+          kind: block
+          $zoom: {min: 18}
+        draw:
+          microhood:
+            # Hard-coded order.
+            # Remove and replace with global.feature_order once OLPRPS-7312 is fixed
+            order: 450
+            color: global.boundary.microhood.line.color
+            width: global.boundary.microhood.line.width
+            outline:
+              color: global.boundary.microhood.line.outline.color
+              width: global.boundary.microhood.line.outline.width
+
+  ######################################################  ROADS  #######################################################
+  roads:
+    rail:
+      filter:
+         - all:
+            - kind: rail
+            - under_construction: false
+            - any:
+              - all:
+                - source: ipc
+                - $zoom: global.road.IPC.rail.zoom
+              - all:
+                - not: {source: ipc}
+                - $zoom: global.road.rail.zoom
+                - global.feature_min_zoom_filter
+      IPC:
+        filter:
+          source: ipc
+        draw:
+          rail:
+            visible: false
+          text-blend-order:
+            priority: global.label.priorities.rail-labels
+            text_source: global.ux_language_text_source
+            font:
+              fill: global.road.IPC.rail.label.font.fill
+              family: global.text_font_family
+              size: global.road.IPC.rail.label.font.size
+              stroke:
+                color: global.road.IPC.rail.label.font.stroke.color
+                width: global.road.IPC.rail.label.font.stroke.width
+        speed:
+          filter:
+            all:
+              - kind_detail: speed_rail
+              - $zoom: global.road.IPC.rail.speed.zoom
+          draw:
+            speed:
+              # To remove once OLPRPS-7258 is solved - push railways to the top
+              order: 1000
+              width: global.road.IPC.rail.speed.line.width
+              color: global.road.IPC.rail.speed.line.color
+            text-blend-order:
+              priority: global.label.priorities.japan-speed-rail-labels
+              font:
+                fill: global.road.IPC.rail.speed.label.font.fill
+                stroke:
+                  color: global.road.IPC.rail.speed.label.font.stroke.color
+                  width: global.road.IPC.rail.speed.label.font.stroke.width
+        state:
+          filter:
+            all:
+              - kind_detail: state_rail
+              - $zoom: global.road.IPC.rail.state.zoom
+          draw:
+            state:
+              # To remove once OLPRPS-7258 is solved - push railways to the top
+              order: 999
+              width: global.road.IPC.rail.state.line.width
+              color: global.road.IPC.rail.state.line.color
+            text-blend-order:
+              priority: global.label.priorities.japan-state-rail-labels
+              font:
+                fill: global.road.IPC.rail.state.label.font.fill
+                stroke:
+                  color: global.road.IPC.rail.state.label.font.stroke.color
+                  width: global.road.IPC.rail.state.label.font.stroke.width
+        private:
+          filter:
+            all:
+              - kind_detail: private_rail
+              - $zoom: global.road.IPC.rail.private.zoom
+          draw:
+            lines:
+              # To remove once OLPRPS-7258 is solved - push railways to the top
+              order: 998
+              width:  global.road.IPC.rail.private.line.width
+              color: global.road.IPC.rail.private.line.color
+            text-blend-order:
+              priority: global.label.priorities.japan-private-rail-labels
+              font:
+                fill: global.road.IPC.rail.private.label.font.fill
+                stroke:
+                  color: global.road.IPC.rail.private.label.font.stroke.color
+                  width: global.road.IPC.rail.private.label.font.stroke.width
+        rail:
+          filter:
+            all:
+              - kind_detail: rail
+              - $zoom: {min: 11}
+          draw:
+            lines:
+              # To remove once OLPRPS-7258 is solved - push railways to the top
+              order: 997
+              color: global.road.IPC.rail.line.color
+              width: global.road.IPC.rail.line.width
+        subway:
+          filter:
+            all:
+              - kind_detail: subway
+              - $zoom: global.road.IPC.rail.subway.zoom
+          draw:
+            lines:
+              # To remove once OLPRPS-7258 is solved - push railways to the top
+              order: 996
+              width: global.road.IPC.rail.subway.line.width
+              color: global.road.IPC.rail.subway.line.color
+            text-blend-order:
+              priority: global.label.priorities.japan-subway-rail-labels
+              font:
+                fill: global.road.IPC.rail.subway.label.font.fill
+                size: global.road.IPC.rail.subway.label.font.size
+                stroke:
+                  color: global.road.IPC.rail.subway.label.font.stroke.color
+                  width: global.road.IPC.rail.subway.label.font.stroke.width
+        light:
+          filter:
+            all:
+              - kind_detail: light_rail
+              - $zoom: global.road.IPC.rail.light.zoom
+          draw:
+            lines:
+              # To remove once OLPRPS-7258 is solved - push railways to the top
+              order: 995
+              width: global.road.IPC.rail.light.line.width
+              color: global.road.IPC.rail.light.line.color
+            text-blend-order:
+              priority: global.label.priorities.japan-tram-rail-labels
+              font:
+                fill: global.road.IPC.rail.light.label.font.fill
+                size: global.road.IPC.rail.light.label.font.size
+                stroke:
+                  color: global.road.IPC.rail.light.label.font.stroke.color
+                  width: global.road.IPC.rail.light.label.font.stroke.width
+        monorail:
+          filter:
+            all:
+              - kind_detail: monorail
+              - $zoom: global.road.IPC.rail.monorail.zoom
+          draw:
+            lines:
+              # To remove once OLPRPS-7258 is solved - push railways to the top
+              order: 994
+              width: global.road.IPC.rail.monorail.line.width
+              color: global.road.IPC.rail.monorail.line.color
+            text-blend-order:
+              priority: global.label.priorities.japan-tram-rail-labels
+              font:
+                size: global.road.IPC.rail.monorail.label.font.size
+                fill: global.road.IPC.rail.monorail.label.font.fill
+                stroke:
+                  color: global.road.IPC.rail.monorail.label.font.stroke.color
+                  width: global.road.IPC.rail.monorail.label.font.stroke.width
+    shields:
+      IPC:
+        filter:
+          all:
+            - kind: [highway, major_road, minor_road]
+            - shield_text: true
+            - global.feature_min_zoom_filter
+            - source: ipc
+        draw:
+          jp_shields:
+            visible: global.shields_visible
+        highway:
+          filter:
+            kind: highway
+          draw:
+            jp_shields:
+              priority: global.label.priorities.road-shield0-labels
+          trunk:
+            filter:
+              kind_detail: trunk
+            draw:
+              jp_shields:
+                priority: global.label.priorities.road-shield1-labels
+        major_road:
+          filter:
+            kind: major_road
+          draw:
+            jp_shields:
+              priority: global.label.priorities.road-shield2-labels
+          primary:
+            filter:
+              kind_detail: primary
+            draw:
+              jp_shields:
+                priority: global.label.priorities.road-shield1-labels
+          tertiary:
+            filter:
+              kind_detail: tertiary
+            draw:
+              jp_shields:
+                priority: global.label.priorities.road-shield3-labels
+        minor_road:
+          filter:
+            kind: minor_road
+          draw:
+            jp_shields:
+              priority: global.label.priorities.road-shield4-labels
+    highway:
+      filter:
+        all:
+          - kind: highway
+          - $zoom: global.road.highway.zoom
+          - global.road_lines_visibility_filter
+      IPC:
+        filter:
+          source: ipc
+        draw:
+          lines:
+            width: global.road.IPC.highway.line.width
+            outline:
+              width: global.road.IPC.highway.outline.width
+        bridge:
+          filter:
+            is_bridge: true
+          draw:
+            bridge:
+              width: global.road.IPC.highway.line.width
+        toll:
+          filter:
+            toll: true
+          draw:
+            lines:
+              color: global.road.IPC.highway.toll.line.color
+              outline:
+                color: global.road.IPC.highway.toll.outline.color
+            center-lines:
+              color: global.road.IPC.highway.toll.centerline.color
+          bridge:
+            filter:
+              is_bridge: true
+            draw:
+              bridge:
+                color: global.road.IPC.highway.toll.line.color
+                outline:
+                  color: global.road.IPC.highway.bridge.toll.outline.color
+          tunnel:
+            filter:
+              is_tunnel: true
+            draw:
+              lines:
+                color: global.road.IPC.highway.toll.line.color
+              center-lines:
+                color: global.road.IPC.highway.toll.centerline.color
+        link:
+          filter:
+            is_link: true
+          draw:
+            lines:
+              width: global.road.IPC.highway.link.line.width
+          trunk:
+            filter:
+              kind_detail: trunk
+            draw:
+              lines:
+                width: global.road.IPC.highway.link.line.width
+          bridge:
+            filter:
+              is_bridge: true
+            draw:
+              bridge:
+                width: global.road.IPC.highway.link.line.width
+        trunk:
+          filter:
+            kind_detail: trunk
+          bridge:
+            filter:
+              is_bridge: true
+            draw:
+              bridge:
+                width: global.road.IPC.major.line.width
+    major_road:
+      filter:
+        all:
+          - kind: major_road
+          - global.road_lines_visibility_filter
+      IPC:
+        filter:
+          source: ipc
+        draw:
+          lines:
+            width: global.road.IPC.major.line.width
+        bridge:
+          filter:
+            is_bridge: true
+          draw:
+            bridge:
+              width: global.road.IPC.major.line.width
+        link:
+          filter:
+            is_link: true
+          draw:
+            lines:
+              width: global.road.IPC.major.link.line.width
+        toll: &toll_road_coloring
+          filter:
+            toll: true
+          draw:
+            lines:
+              color: global.road.IPC.highway.toll.line.color
+              outline:
+                color: global.road.IPC.highway.toll.outline.color
+          bridge:
+            filter:
+              is_bridge: true
+            draw:
+              bridge:
+                color: global.road.IPC.highway.toll.line.color
+                outline:
+                  color: global.road.IPC.highway.bridge.toll.outline.color
+          tunnel:
+            filter:
+              is_tunnel: true
+            draw:
+              lines:
+                color: global.road.IPC.highway.toll.line.color
+          link:
+            filter:
+              is_link: true
+            draw:
+              lines:
+                color: global.road.IPC.highway.toll.line.color
+        secondary:
+          filter:
+            kind_detail: [secondary, secondary_link]
+          toll: *toll_road_coloring
+          draw:
+            lines:
+              width: global.road.IPC.major.secondary.line.width
+          link:
+            filter:
+              is_link: true
+            draw:
+              lines:
+                width: global.road.IPC.major.secondary.link.line.width
+          bridge:
+            filter:
+              is_bridge: true
+            draw:
+              bridge:
+                width: global.road.IPC.major.secondary.line.width
+        tertiary:
+          filter:
+            kind_detail: [tertiary, tertiary_link]
+          draw:
+            lines:
+              width: global.road.IPC.major.tertiary.line.width
+          bridge:
+            filter:
+              is_bridge: true
+            draw:
+              bridge:
+                width: global.road.IPC.major.tertiary.line.width
+          link:
+            filter:
+              is_link: true
+            draw:
+              lines:
+                width: global.road.IPC.major.tertiary.link.line.width
+    minor_road:
+      filter:
+        all:
+        - kind: minor_road
+        - global.road_lines_visibility_filter
+        - global.min_zoom_filter.minor_road
+      IPC:
+        filter:
+          source: ipc
+        draw:
+          lines:
+            width: global.road.IPC.minor.line.width
+        bridge:
+          filter:
+            is_bridge: true
+          draw:
+            bridge:
+              width: global.road.IPC.minor.line.width
+        toll: *toll_road_coloring
+        service:
+          filter:
+            kind_detail: [service, unclassified, road]
+          draw:
+            lines:
+              width: global.road.IPC.minor.line.width
+          bridge:
+            filter:
+              is_bridge: true
+            draw:
+              bridge:
+                width: global.road.IPC.minor.line.width
+          toll: *toll_road_coloring
+        residential:
+          toll: *toll_road_coloring
+    path:
+      filter:
+        all:
+        - kind: path
+        - global.road_lines_visibility_filter
+        - global.min_zoom_filter.path
+
+  ###################################################  ROAD LABELS  ####################################################
+  road_labels:
+    IPC:
+      filter: {source: ipc}
+      draw:
+        text-blend-order:
+          font:
+            fill: global.road.IPC.default.label.font.fill
+    highway:
+      IPC:
+        filter: {source: ipc}
+        draw:
+          text-blend-order:
+            font:
+              size: global.road.IPC.highway.label.font.size
+      link:
+        IPC:
+          filter: {source: ipc}
+          draw:
+            text-blend-order:
+              font:
+                size: global.road.IPC.highway.link.label.font.size
+      trunk:
+        IPC:
+          filter: {source: ipc}
+          draw:
+            text-blend-order:
+              font:
+                size: global.road.IPC.highway.trunk.label.font.size
+      toll:
+        filter:
+          all:
+            - source: ipc
+            - toll: true
+        draw:
+          text-blend-order:
+            font:
+              fill: global.road.IPC.highway.toll.label.font.fill
+              stroke:
+                color: global.road.IPC.highway.toll.label.font.stroke.color
+    major_road:
+      IPC:
+        filter: {source: ipc}
+        draw:
+          text-blend-order:
+            font:
+              size: global.road.IPC.major.label.font.size
+      secondary:
+        IPC:
+          filter: {source: ipc}
+          draw:
+            text-blend-order:
+              font:
+                size: global.road.IPC.major.secondary.label.font.size
+      tertiary:
+        IPC:
+          filter: {source: ipc}
+          draw:
+            text-blend-order:
+              font:
+                size: global.road.IPC.major.tertiary.label.font.size
+    minor_road:
+      IPC:
+        filter: {source: ipc}
+        draw:
+          text-blend-order:
+            font:
+              size: global.road.IPC.minor.label.font.size
+      service:
+        IPC:
+          filter: {source: ipc}
+          draw:
+            text-blend-order:
+              font:
+                size: global.road.IPC.minor.service.label.font.size
+    path:
+      IPC:
+        filter: {source: ipc}
+        draw:
+          text-blend-order:
+            font:
+              size: global.road.IPC.path.label.font.size
+      footway:
+        IPC:
+          filter: {source: ipc}
+          draw:
+            text-blend-order:
+              font:
+                size: global.road.IPC.path.footway.label.font.size
+
+  ###################################################   BUILDINGS   ####################################################
+  buildings:
+    # Footprints and extruded buildings in Japan and in the rest of the World should
+    # be shown on different zoom levels, that's why we override parent filters:
+    filter:
+      - any:
+        - all:
+          - source: ipc
+          - |
+            function() {
+              var building = global.building.IPC.by_kind_detail[feature.kind_detail];
+              if (building && building.zoom) {
+                return $zoom >= building.zoom.min;
+              } else {
+                return $zoom >= global.building.IPC.zoom.min;
+              }
+            }
+        - all:
+          - not: {source: ipc}
+          - $zoom: global.building.zoom
+    extrude:
+      filter:
+        - any:
+          - all:
+            - source: ipc
+            - $zoom: global.building.IPC.extrusion.zoom
+          - all:
+            - not: {source: ipc}
+            - $zoom: global.building.extrusion.zoom
+    IPC:
+      filter:
+        source: ipc
+      # Building footprints
+      draw:
+        translucent-polygons:
+          color: |
+            function() {
+              var building = global.building.IPC.by_kind_detail[feature.kind_detail];
+              if (building && building.color) {
+                return building.color;
+              } else {
+                return global.building.IPC.color;
+              }
+            }
+          # Apply the same order as for extruded building polygons, see the description below:
+          order: 1003
+        translucent-lines:
+          color: |
+            function() {
+              var building = global.building.IPC.by_kind_detail[feature.kind_detail];
+              if (building && building.outline && building.outline.color) {
+                return building.outline.color;
+              } else {
+                return global.building.IPC.outline.color;
+              }
+            }
+          # Apply the same order as for extruded building polygons, see the description below:
+          order: 1003
+      # Extruded buildings
+      extrude:
+        filter:
+          $zoom: global.building.IPC.extrusion.zoom
+        draw:
+          buildings:
+            color: |
+              function() {
+                var building = global.building.IPC.extrusion.by_kind_detail[feature.kind_detail];
+                if (building && building.color) {
+                  return building.color;
+                } else {
+                  return global.building.IPC.extrusion.color;
+                }
+              }
+            # Apply custom order for all IPC extruded buildings in order to:
+            # 1. render passageways above rails (SKYTREE-1050)
+            # 2. render train stations above rails (MAPSJS-2593)
+            # 3. render all buildings according to the distance to the camera (MAPSJS-2728)
+            # TODO: check and remove once OLPRPS-7258 is solved - push train stations over rails
+            order: 1003
+          translucent-lines:
+            color: |
+              function() {
+                var building = global.building.IPC.extrusion.by_kind_detail[feature.kind_detail];
+                if (building && building.outline && building.outline.color) {
+                  return building.outline.color;
+                } else {
+                  return global.building.IPC.extrusion.outline.color;
+                }
+              }
+            width: global.building.IPC.extrusion.outline.width
+            # Apply the same order as for extruded building polygons, see the description above:
+            order: 1003
+      train_stations:
+        filter:
+          kind_detail: train_station
+        underground:
+          filter:
+            layer: -1
+          draw:
+            translucent-polygons:
+              extrude: 0
+            translucent-lines:
+              extrude: 0
+    # building names:
+    labels:
+      IPC:
+        filter:
+          source: ipc
+        draw:
+          text:
+            font:
+              fill: |
+                function() {
+                  var building = global.building.IPC.by_kind_detail[feature.kind_detail];
+                  if (building && building.label && building.label.font && building.label.font.fill) {
+                    return building.label.font.fill;
+                  } else {
+                    return global.building.IPC.label.font.fill;
+                  }
+                }
+              size: global.building.IPC.label.font.size
+              stroke:
+                color: global.building.IPC.label.font.stroke.color
+        hidden_station_labels:
+          filter:
+            kind_detail: train_station
+          draw:
+            points:
+              visible: false
+    # house numbers:
+    address-labels:
+      filter:
+        all:
+          - kind: address
+          - any:
+            - all:
+              - source: ipc
+              - $zoom: global.building.IPC.address.label.zoom
+            - all:
+              - not: {source: ipc}
+              - $zoom: global.building.address.label.zoom
+      IPC:
+        filter:
+          source: ipc
+        draw:
+          text-blend-order:
+            font:
+              size: global.building.IPC.address.label.font.size
+              fill: global.building.IPC.address.label.font.fill
+
+    #####################################################  PLACES  #####################################################
+  places:
+    region:
+      filter:
+        all:
+          - kind: region
+          - any:
+            - all:
+              - $zoom: {max: 13}
+              - not: {source: ipc}
+            - all:
+              - $zoom: {max: 14}
+              - source: ipc
+    IPC:
+      filter:
+        source: ipc
+      microhood:
+        filter:
+          kind: microhood
+        draw:
+          text-blend-order:
+            visible: false
+            text_source: global.ux_language_text_source
+            anchor: center
+            priority: global.label.priorities.city-center-microhood
+            font:
+              fill: global.building_label_color
+              family: global.text_font_family
+              size: global.building.IPC.address.label.font.size
+              stroke:
+                color: global.building_label_outline_color
+                width: global.building.label.font.stroke.width
+        # Banchi
+        block:
+          filter:
+            all:
+              - kind_detail: block
+              - $zoom: {min: 17}
+          draw:
+            text-blend-order:
+              visible: true
+              priority: global.label.priorities.japan-city-center-microhood-block
+              font:
+                size: global.places.IPC.label.microhood.block.font.size
+                fill: global.places.IPC.label.microhood.block.font.fill
+                stroke:
+                  color: global.places.IPC.label.microhood.block.font.stroke.color
+        # Chiban
+        parcel:
+          filter:
+            all:
+              - kind_detail: parcel
+              - $zoom: {min: 18}
+          draw:
+            text-blend-order:
+              visible: true
+              priority: global.label.priorities.japan-city-center-microhood-parcel
+      oaza:
+        filter:
+          kind: oaza
+          $zoom: {min: 14}
+        draw:
+          text-blend-order:
+            visible: true
+            text_source: global.ux_language_text_source
+            priority: global.label.priorities.japan-city-center-oaza
+            font:
+              fill: global.places.IPC.label.oaza.font.fill
+              size: global.places.IPC.label.oaza.font.size
+              stroke:
+                color: global.places.IPC.label.oaza.font.stroke.color
+                width: global.places.IPC.label.oaza.font.stroke.width
+      aza:
+        filter:
+          kind: aza
+          $zoom: {min: 15}
+        draw:
+          text-blend-order:
+            visible: true
+            text_source: global.ux_language_text_source
+            priority: global.label.priorities.japan-city-center-aza
+            font:
+              fill: global.places.IPC.label.aza.font.fill
+              size: global.places.IPC.label.aza.font.size
+              stroke:
+                color: global.places.IPC.label.aza.font.stroke.color
+                width: global.places.IPC.label.aza.font.stroke.width
