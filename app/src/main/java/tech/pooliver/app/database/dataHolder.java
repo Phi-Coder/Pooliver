@@ -1,6 +1,4 @@
-package com.example.poolliver.database;
-
-import java.util.List;
+package tech.pooliver.app.database;
 
 public class dataHolder {
 

@@ -1,4 +1,4 @@
-package com.example.poolliver;
+package tech.pooliver.app;
 
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package com.example.poolliver.Fragments;
+package tech.pooliver.app.Fragments;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -15,10 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.poolliver.Adapters.RecyclerViewAdapter;
-import com.example.poolliver.Adapters.userActivityRecyclerAdapter;
-import com.example.poolliver.R;
-import com.example.poolliver.database.dataHolder;
+import tech.pooliver.app.Adapters.userActivityRecyclerAdapter;
+import tech.pooliver.app.R;
+import tech.pooliver.app.database.dataHolder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

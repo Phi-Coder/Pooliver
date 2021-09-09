@@ -1,8 +1,7 @@
-package com.example.poolliver.Fragments;
+package tech.pooliver.app.Fragments;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -30,8 +29,8 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
-import com.example.poolliver.PriceEstimation;
-import com.example.poolliver.R;
+import tech.pooliver.app.PriceEstimation;
+import tech.pooliver.app.R;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.maps.CameraUpdate;

@@ -1,4 +1,4 @@
-package com.example.poolliver;
+package tech.pooliver.app;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,7 +9,9 @@ import android.view.MenuItem;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.poolliver.Adapters.PageAdapter;
+import tech.pooliver.app.Adapters.PageAdapter;
+
+import tech.pooliver.app.R;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 

@@ -1,4 +1,4 @@
-package com.example.poolliver;
+package tech.pooliver.app;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import tech.pooliver.app.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;

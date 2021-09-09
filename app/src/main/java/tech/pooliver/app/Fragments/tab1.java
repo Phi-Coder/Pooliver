@@ -1,4 +1,4 @@
-package com.example.poolliver.Fragments;
+package tech.pooliver.app.Fragments;
 
 import static android.content.ContentValues.TAG;
 
@@ -14,9 +14,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.poolliver.Adapters.RecyclerViewAdapter;
-import com.example.poolliver.R;
-import com.example.poolliver.database.dataHolder;
+import tech.pooliver.app.Adapters.RecyclerViewAdapter;
+import tech.pooliver.app.R;
+import tech.pooliver.app.database.dataHolder;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

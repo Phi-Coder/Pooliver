@@ -1,22 +1,20 @@
-package com.example.poolliver.Adapters;
+package tech.pooliver.app.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.poolliver.DeliveryInfo;
-import com.example.poolliver.MainActivity;
-import com.example.poolliver.R;
-import com.example.poolliver.database.dataHolder;
+import tech.pooliver.app.DeliveryInfo;
+
+import tech.pooliver.app.R;
+import tech.pooliver.app.database.dataHolder;
 
 import java.util.List;
 

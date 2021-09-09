@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.poolliver">
+    package="tech.pooliver.app">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -15,23 +15,23 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Poolliver">
         <activity
-            android:name=".DeliveryAccepted"
-            android:parentActivityName=".MainActivity" />
+            android:name="tech.pooliver.app.DeliveryAccepted"
+            android:parentActivityName="tech.pooliver.app.MainActivity" />
         <activity
-            android:name=".userDeliveryInfo"
-            android:parentActivityName=".MainActivity" />
+            android:name="tech.pooliver.app.userDeliveryInfo"
+            android:parentActivityName="tech.pooliver.app.MainActivity" />
 
         <activity
-            android:name=".DeliveryInfo"
-            android:parentActivityName=".MainActivity" />
-        <activity android:name=".PriceEstimation" />
+            android:name="tech.pooliver.app.DeliveryInfo"
+            android:parentActivityName="tech.pooliver.app.MainActivity" />
+        <activity android:name="tech.pooliver.app.PriceEstimation" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBIkTPrHapAtWAGp0bIu-J8KFY-_b9ksRM" />
 
         <activity
-            android:name=".LoginActivity"
+            android:name="tech.pooliver.app.LoginActivity"
             android:alwaysRetainTaskState="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,7 +40,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".UserInfo"
+            android:name="tech.pooliver.app.UserInfo"
             android:alwaysRetainTaskState="true"
             android:autoRemoveFromRecents="false"
             android:clearTaskOnLaunch="false">
@@ -48,7 +48,7 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
+        <activity android:name="tech.pooliver.app.MainActivity" />
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package com.example.poolliver.database;
+package tech.pooliver.app.database;
 
 public class Request {
     String username;

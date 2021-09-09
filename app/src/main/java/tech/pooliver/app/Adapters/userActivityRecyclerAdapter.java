@@ -1,4 +1,4 @@
-package com.example.poolliver.Adapters;
+package tech.pooliver.app.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,9 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.poolliver.R;
-import com.example.poolliver.database.dataHolder;
-import com.example.poolliver.userDeliveryInfo;
+import tech.pooliver.app.R;
+import tech.pooliver.app.database.dataHolder;
+import tech.pooliver.app.userDeliveryInfo;
 
 import java.util.List;
 
